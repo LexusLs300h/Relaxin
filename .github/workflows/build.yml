@@ -30,7 +30,9 @@ jobs:
       - name: Package IPA and TIPA
         run: |
           mkdir -p Payload
-          cp -r build/Release-iphoneos/Relaxin.app Payload/
+          APP_PATH=$(find . -name "Relaxin.app" -type d | head -n 1)
+          echo "Found Relaxin.app at $APP_PATH"
+          cp -r "$APP_PATH" Payload/
           zip -r Relaxin.ipa Payload
           cp Relaxin.ipa Relaxin.tipa
 
