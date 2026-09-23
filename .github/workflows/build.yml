@@ -27,11 +27,19 @@ jobs:
       - name: Build with Makefile
         run: make
 
+      - name: Debug - list all Relaxin.app on entire machine
+        run: |
+          echo "===== FULL SYSTEM SEARCH FOR Relaxin.app ====="
+          find / -name "Relaxin.app" -type d 2>/dev/null
+          echo "===== WORKSPACE CONTENTS ====="
+          ls -la
+          echo "===== /Users/runner/Library/Developer/Xcode DIR ====="
+          ls -la /Users/runner/Library/Developer/Xcode || echo "Folder not exists"
+
       - name: Package IPA and TIPA
         run: |
           mkdir -p Payload
-          echo "Searching Relaxin.app inside DerivedData..."
-          APP_PATH=$(find /Users/runner -path '*/DerivedData/*' -name "Relaxin.app" -type d 2>/dev/null | head -n1)
+          APP_PATH=$(find / -name "Relaxin.app" -type d 2>/dev/null | head -n1)
           echo "Found Relaxin.app at: $APP_PATH"
           if [ -z "$APP_PATH" ]; then
             echo "ERROR: Relaxin.app not found!"
