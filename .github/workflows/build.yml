@@ -1,0 +1,31 @@
+name: Build Relaxin IPA & TIPA
+on:
+  push:
+    branches: [ ui ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Build with Makefile
+        run: make
+      - name: Package IPA and TIPA
+        run: |
+          mkdir -p Payload
+          cp -r build/Release-iphoneos/Relaxin.app Payload/
+          zip -r Relaxin.ipa Payload
+          cp Relaxin.ipa Relaxin.tipa
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Relaxin-IPA
+          path: Relaxin.ipa
+      - name: Upload TIPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Relaxin-TIPA
+          path: Relaxin.tipa
