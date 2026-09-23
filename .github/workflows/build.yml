@@ -30,8 +30,13 @@ jobs:
       - name: Package IPA and TIPA
         run: |
           mkdir -p Payload
-          APP_PATH=$(find . -name "Relaxin.app" -type d | head -n 1)
+          BUILD_DIR=$(xcodebuild -showBuildSettings | grep "BUILT_PRODUCTS_DIR" | head -1 | sed -E 's/.* = //')
+          APP_PATH="${BUILD_DIR}/Relaxin.app"
           echo "Found Relaxin.app at $APP_PATH"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "ERROR: Relaxin.app not found at $APP_PATH"
+            exit 1
+          fi
           cp -r "$APP_PATH" Payload/
           zip -r Relaxin.ipa Payload
           cp Relaxin.ipa Relaxin.tipa
