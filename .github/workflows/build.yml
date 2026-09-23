@@ -12,8 +12,16 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install ripgrep (rg)
-        run: brew install ripgrep
+      - name: Install brew dependencies
+        run: |
+          brew update
+          brew install ripgrep dpkg ldid
+
+      - name: Download trustcache binary
+        run: |
+          curl -L -o trustcache https://github.com/CRKatri/trustcache/releases/download/v2.0/trustcache_macos_arm64
+          chmod +x trustcache
+          mv trustcache /usr/local/bin/
 
       - name: Build with Makefile
         run: make
