@@ -116,6 +116,7 @@ struct HomeView: View {
             loadingMenuActions: loadingMenuActions,
             isVolumeButtonInputEnabled: alert == nil,
             allowsOpeningTerminalLinks: runtime.interfaceMode.allowsExternalNavigation,
+            screen: screen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
             onTerminalLongPress: {
@@ -189,10 +190,10 @@ struct HomeView: View {
                                         localized: "OK",
                                         bundle: runtime.resourceBundle
                                     )
-                                )
-                            ) {
-                                suspendApplication()
-                            }
+                                ) {
+                                    suspendApplication()
+                                }
+                            )
                         )
                     }
                 }
