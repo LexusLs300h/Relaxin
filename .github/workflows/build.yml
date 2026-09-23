@@ -11,19 +11,26 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Install ripgrep (rg)
+        run: brew install ripgrep
+
       - name: Build with Makefile
         run: make
+
       - name: Package IPA and TIPA
         run: |
           mkdir -p Payload
           cp -r build/Release-iphoneos/Relaxin.app Payload/
           zip -r Relaxin.ipa Payload
           cp Relaxin.ipa Relaxin.tipa
+
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: Relaxin-IPA
           path: Relaxin.ipa
+
       - name: Upload TIPA
         uses: actions/upload-artifact@v4
         with:
