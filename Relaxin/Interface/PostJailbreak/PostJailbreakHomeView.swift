@@ -122,7 +122,7 @@ struct PostJailbreakHomeView: View {
             screen: screen == .credits ? .credits : .main, // 👈 放置于正确顺序位置，并完成类型匹配转换
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
-            onTerminalLongPress: { _ in } // 👈 补齐缺失的 longPress 参数
+            onTerminalLongPress: { } // 👈 补齐缺失的 longPress 参数
         )
         .disabled(session.isPerformingAction)
         .allowsHitTesting(!session.isPerformingAction)
