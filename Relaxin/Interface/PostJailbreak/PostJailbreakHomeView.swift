@@ -106,6 +106,7 @@ struct PostJailbreakHomeView: View {
 
     var body: some View {
         HomeContent(
+            screen: screen,
             terminalText: terminalText,
             terminalAccessibleLinks: terminalAccessibleLinks,
             terminalHeight: screen.terminalHeight,
