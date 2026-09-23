@@ -119,7 +119,7 @@ struct PostJailbreakHomeView: View {
             isVolumeButtonInputEnabled: alert == nil
                 && !session.isPerformingAction,
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
-            screen: screen == .credits ? .credits : .main, // 👈 放置于正确顺序位置，并完成类型匹配转换
+            screen: screen == .credits ? .credits : nil, // 👈 放置于正确顺序位置，并完成类型匹配转换
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
             onTerminalLongPress: { } // 👈 补齐缺失的 longPress 参数
