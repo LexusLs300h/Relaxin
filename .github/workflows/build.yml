@@ -30,11 +30,11 @@ jobs:
       - name: Package IPA and TIPA
         run: |
           mkdir -p Payload
-          BUILD_DIR=$(xcodebuild -showBuildSettings | grep "BUILT_PRODUCTS_DIR" | head -1 | sed -E 's/.* = //')
-          APP_PATH="${BUILD_DIR}/Relaxin.app"
-          echo "Found Relaxin.app at $APP_PATH"
-          if [ ! -d "$APP_PATH" ]; then
-            echo "ERROR: Relaxin.app not found at $APP_PATH"
+          echo "Searching Relaxin.app inside DerivedData..."
+          APP_PATH=$(find /Users/runner -path '*/DerivedData/*' -name "Relaxin.app" -type d 2>/dev/null | head -n1)
+          echo "Found Relaxin.app at: $APP_PATH"
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: Relaxin.app not found!"
             exit 1
           fi
           cp -r "$APP_PATH" Payload/
