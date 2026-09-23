@@ -56,7 +56,7 @@ struct OptionList<Action: Hashable>: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(spacing: 7) {
             ForEach(entries) { entry in
                 let isSecondary = secondaryActions.contains(entry.id)
                 let isSelected = entry.id == selectedID
@@ -65,7 +65,7 @@ struct OptionList<Action: Hashable>: View {
                 Button {
                     activate(entry.id)
                 } label: {
-                    label(for: entry, isSelected: isSelected, isSecondary: isSecondary)
+                    label(for: entry, isSelected: isSelected, isSecondary: isSecondary, isLoading: isLoading)
                 }
                 .buttonStyle(
                     RowButtonStyle(
@@ -113,16 +113,58 @@ struct OptionList<Action: Hashable>: View {
     private func label(
         for entry: OptionListItem<Action>,
         isSelected: Bool,
-        isSecondary: Bool
+        isSecondary: Bool,
+        isLoading: Bool
     ) -> some View {
-        Text(entry.title)
-            .fontWeight(isSelected ? .bold : .regular)
-            .foregroundStyle(
-                isSelected
-                    ? style.accent
-                    : isSecondary ? style.secondaryForeground : style.foreground
-            )
-            .fixedSize(horizontal: true, vertical: false)
+        HStack(spacing: 11) {
+            if isLoading {
+                ProgressView()
+                    .controlSize(.small)
+                    .tint(style.accent)
+                    .frame(width: 15)
+            } else {
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(
+                        isSelected ? style.accent : .secondary.opacity(0.52)
+                    )
+                    .frame(width: 15)
+            }
+
+            Text(entry.title)
+                .font(
+                    .system(
+                        size: 14,
+                        weight: isSelected ? .semibold : .medium,
+                        design: .rounded
+                    )
+                )
+                .foregroundStyle(
+                    isSelected
+                        ? style.accent
+                        : isSecondary ? style.secondaryForeground : style.foreground
+                )
+                .lineLimit(2)
+
+            Spacer(minLength: 4)
+
+            if isSecondary {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(.secondary)
+            } else if shareItems[entry.id] != nil {
+                Image(systemName: "square.and.arrow.up")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.secondary)
+            } else {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(.secondary.opacity(0.7))
+            }
+        }
+        .padding(.horizontal, 13)
+        .frame(minHeight: 48)
+        .contentShape(Rectangle())
     }
 
     private func activate(_ action: Action) {

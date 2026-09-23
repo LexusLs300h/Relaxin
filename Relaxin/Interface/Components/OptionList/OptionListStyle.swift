@@ -14,7 +14,7 @@ struct OptionListStyle {
     static let standard = OptionListStyle(
         foreground: Theme.foreground,
         secondaryForeground: .secondary,
-        accent: Theme.accent
+        accent: Theme.accentPurple
     )
 
     static let failure = OptionListStyle(
