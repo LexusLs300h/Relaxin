@@ -167,34 +167,36 @@ struct HomeView: View {
             presentedContent
                 .alert(item: $alert) { alert in
                     switch alert.kind {
-                    case .notice:
-                        SwiftUI.Alert(
-                            title: Text(alert.title),
-                            message: Text(alert.message),
-                            dismissButton: .default(
-                                Text(
-                                    String(
-                                        localized: "OK",
-                                        bundle: runtime.resourceBundle
-                                    )
+                case .notice:
+                    SwiftUI.Alert(
+                        title: Text(alert.title),
+                        message: Text(alert.message),
+                        dismissButton: .default(
+                            Text(
+                                String(
+                                    localized: "OK",
+                                    bundle: runtime.resourceBundle
                                 )
                             )
                         )
-                    case .jailbreakRemovalComplete:
-                        SwiftUI.Alert(
-                            title: Text(alert.title),
-                            message: Text(alert.message),
-                            dismissButton: .default(
-                                Text(
-                                    String(
-                                        localized: "OK",
-                                        bundle: runtime.resourceBundle
-                                    )
-                                ) {
-                                    suspendApplication()
-                                }
-                            )
+                    )
+
+                case .jailbreakRemovalComplete:
+                    SwiftUI.Alert(
+                        title: Text(alert.title),
+                        message: Text(alert.message),
+                        dismissButton: .default(
+                            Text(
+                                String(
+                                    localized: "OK",
+                                    bundle: runtime.resourceBundle
+                                )
+                            ),
+                            action: {
+                                suspendApplication()
+                            }
                         )
+                    )
                     }
                 }
         }
