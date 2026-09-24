@@ -26,8 +26,17 @@ jobs:
 
       - name: Build + Generate IPA & TIPA (use Make native target)
         run: |
-          make ipa
-          make tipa
+          make ipa tipa
+
+      - name: Persist bumped build version
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Configuration/Version.xcconfig
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: bump Relaxin build version [skip ci]"
+            git push origin HEAD:ui
+          fi
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
