@@ -27,8 +27,7 @@ extension TerminalStyle {
         let traits = UITraitCollection(
             userInterfaceStyle: colorScheme == .dark ? .dark : .light
         )
-        // Keep the terminal palette stable even when the surrounding app is in
-        // Light Mode. The terminal is a deliberately dark, high-contrast surface.
+        // Keep the terminal readable while matching the app's light dashboard surface.
         view.nativeBackgroundColor = UIColor(Theme.terminalBackground)
         view.nativeForegroundColor = UIColor(Theme.terminalForeground)
         view.caretColor = UIColor(Theme.accentBlue)
