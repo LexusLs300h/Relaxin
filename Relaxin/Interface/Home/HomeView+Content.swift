@@ -61,21 +61,23 @@ struct HomeContent<Action: Hashable>: View {
 
                     if screen == .home {
                         heroCard
+                        homeDashboard
                     } else if isEngine {
                         engineCard
+                        terminalCard
+                    } else {
+                        terminalCard
                     }
 
-                    terminalCard
-
-                    if showsMenu {
+                    if showsMenu && screen != .home {
                         menuCard
                     }
                 }
                 .frame(maxWidth: 620)
                 .frame(maxWidth: .infinity)
-                .padding(.horizontal, Theme.pagePadding)
-                .padding(.top, 12)
-                .padding(.bottom, 28)
+                .padding(.horizontal, screen == .home ? 14 : Theme.pagePadding)
+                .padding(.top, screen == .home ? 8 : 12)
+                .padding(.bottom, screen == .home ? 18 : 28)
                 .frame(minHeight: geometry.size.height, alignment: .top)
             }
         }
@@ -268,6 +270,148 @@ struct HomeContent<Action: Hashable>: View {
             RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous)
                 .strokeBorder(.white.opacity(0.055))
         }
+    }
+
+    private var homeDashboard: some View {
+        VStack(spacing: 14) {
+            deviceInfoCard
+
+            HStack(spacing: 10) {
+                dashboardAction(
+                    title: "日志",
+                    subtitle: "查看执行日志",
+                    systemImage: "doc.text.fill"
+                ) {
+                    screen = .maintenance
+                }
+
+                dashboardAction(
+                    title: "设置",
+                    subtitle: "配置偏好选项",
+                    systemImage: "gearshape.fill"
+                ) {
+                    screen = .advancedOptions
+                }
+
+                dashboardAction(
+                    title: "关于",
+                    subtitle: "了解更多信息",
+                    systemImage: "info.circle.fill"
+                ) {
+                    screen = .credits
+                }
+            }
+
+            dashboardTabBar
+        }
+    }
+
+    private var deviceInfoCard: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            dashboardInfoRow(title: "设备型号", value: DeviceInfo.host, systemImage: "iphone")
+            dashboardInfoRow(title: "系统版本", value: DeviceInfo.os, systemImage: "apple.logo")
+            dashboardInfoRow(title: "越狱引擎", value: "RLXEngine", systemImage: "bolt.fill")
+            dashboardInfoRow(title: "后端方案", value: "RootHide", systemImage: "shippingbox.fill")
+        }
+        .padding(18)
+        .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .strokeBorder(.white.opacity(0.055))
+        }
+    }
+
+    private func dashboardInfoRow(title: String, value: String, systemImage: String) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: systemImage)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(Theme.dashboardIcon)
+                .frame(width: 24)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(size: 9, weight: .medium, design: .rounded))
+                    .foregroundStyle(Theme.dashboardSecondaryText)
+                Text(value)
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(Theme.dashboardText)
+            }
+
+            Spacer()
+        }
+    }
+
+    private func dashboardAction(
+        title: String,
+        subtitle: String,
+        systemImage: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(Theme.dashboardIcon)
+
+                Text(title)
+                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Theme.dashboardText)
+
+                Text(subtitle)
+                    .font(.system(size: 8, weight: .medium, design: .rounded))
+                    .foregroundStyle(Theme.dashboardSecondaryText)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 88)
+            .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(.white.opacity(0.055))
+            }
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var dashboardTabBar: some View {
+        HStack {
+            dashboardTab(title: "首页", systemImage: "house.fill", selected: true) {}
+
+            dashboardTab(title: "工具", systemImage: "briefcase.fill", selected: false) {
+                screen = .maintenance
+            }
+
+            dashboardTab(title: "更多", systemImage: "ellipsis", selected: false) {
+                screen = .credits
+            }
+        }
+        .padding(.horizontal, 18)
+        .frame(height: 58)
+        .background(Theme.dashboardBar, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .strokeBorder(.white.opacity(0.055))
+        }
+    }
+
+    private func dashboardTab(
+        title: String,
+        systemImage: String,
+        selected: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            VStack(spacing: 4) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 15, weight: .semibold))
+                Text(title)
+                    .font(.system(size: 9, weight: .medium, design: .rounded))
+            }
+            .foregroundStyle(selected ? Theme.dashboardAccent : Theme.dashboardSecondaryText)
+            .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.plain)
     }
 
     private var menuCard: some View {
