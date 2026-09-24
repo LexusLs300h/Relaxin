@@ -11,7 +11,6 @@ struct RootView: View {
         }
         .font(Theme.font)
         .dynamicTypeSize(.medium)
-        .preferredColorScheme(.dark)
         .tint(Theme.accent)
         .frame(minWidth: minSize?.width, minHeight: minSize?.height)
     }
