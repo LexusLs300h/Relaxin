@@ -126,7 +126,7 @@ struct OptionList<Action: Hashable>: View {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(
-                        isSelected ? style.accent : .secondary.opacity(0.52)
+                        isSelected ? style.accent : style.secondaryForeground
                     )
                     .frame(width: 15)
             }
@@ -151,15 +151,15 @@ struct OptionList<Action: Hashable>: View {
             if isSecondary {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 10, weight: .bold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(style.secondaryForeground)
             } else if shareItems[entry.id] != nil {
                 Image(systemName: "square.and.arrow.up")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(style.secondaryForeground)
             } else {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 10, weight: .bold))
-                    .foregroundStyle(.secondary.opacity(0.7))
+                     .foregroundStyle(style.secondaryForeground.opacity(0.7))
             }
         }
         .padding(.horizontal, 13)
