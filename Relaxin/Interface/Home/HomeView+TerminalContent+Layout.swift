@@ -130,22 +130,23 @@ extension RelaxinTerminalContent {
         isJailbroken: Bool,
         resourceBundle: Bundle
     ) -> [String] {
-        let bannerTop = "█▀█ █▀▀ █   ▄▀█ ▀▄▀ █ █▄ █"
-        let bannerBottom = "█▀▄ ██▄ █▄▄ █▀█ █ █ █ █ ▀█"
-        let status = isJailbroken
-            ? TerminalStyle.danger("▄")
-            : TerminalStyle.accent("▄")
+        // Keep the terminal as a real SwiftTerm surface, but use a compact
+        // execution-log header instead of the oversized ASCII banner.
+        let state = isJailbroken
+            ? TerminalStyle.danger("JAILBROKEN")
+            : TerminalStyle.accent("READY")
+        let title = TerminalStyle.bold("RELAXIN")
+        let subtitle = TerminalStyle.dim("ENGINE OUTPUT")
+        let support = TerminalStyle.dim(
+            String(
+                localized: "For iOS 16.5.1-17.3.1 devices",
+                bundle: resourceBundle
+            )
+        )
 
         return [
-            TerminalStyle.bold(bannerTop),
-            TerminalStyle.bold(bannerBottom) + " " + status,
-            "",
-            TerminalStyle.dim(
-                String(
-                    localized: "For iOS 16.5.1-17.3.1 devices",
-                    bundle: resourceBundle
-                )
-            ),
+            title + "  " + subtitle + "  " + state,
+            support,
             TerminalStyle.dim(String(repeating: "─", count: dividerWidth)),
         ]
     }
