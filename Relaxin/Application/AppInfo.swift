@@ -13,7 +13,7 @@ enum AppInfo {
     }
 
     static func displayVersion(in resourceBundle: Bundle) -> String {
-        "v\(version(in: resourceBundle))(\(build(in: resourceBundle)))"
+        "v\(version(in: resourceBundle))-\(build(in: resourceBundle))"
     }
 
     static let arch: String = {
