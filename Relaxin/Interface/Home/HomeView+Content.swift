@@ -109,7 +109,7 @@ struct HomeContent<Action: Hashable>: View {
                 Spacer()
 
                 Button {
-                    screen = .advancedOptions
+                    onSelectMenuItem(.advancedOptions)
                 } label: {
                     Image(systemName: "gearshape")
                         .font(.system(size: 21, weight: .medium))
@@ -311,7 +311,7 @@ struct HomeContent<Action: Hashable>: View {
                     subtitle: "查看执行日志",
                     systemImage: "doc.text.fill"
                 ) {
-                    screen = .maintenance
+                    onSelectMenuItem(.maintenance)
                 }
 
                 dashboardAction(
@@ -327,7 +327,7 @@ struct HomeContent<Action: Hashable>: View {
                     subtitle: "了解更多信息",
                     systemImage: "info.circle.fill"
                 ) {
-                    screen = .credits
+                    onSelectMenuItem(.credits)
                 }
             }
 
