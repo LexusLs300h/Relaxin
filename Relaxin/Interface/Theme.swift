@@ -37,6 +37,18 @@ enum Theme {
     static let dashboardSecondaryText = SwiftUI.Color.white.opacity(0.52)
     static let dashboardIcon = SwiftUI.Color(red: 0.74, green: 0.80, blue: 1.0)
     static let dashboardAccent = SwiftUI.Color(red: 0.36, green: 0.42, blue: 1.0)
+
+    // App-wide background: deep blue flowing into violet, matching the dashboard hero.
+    static let appBackgroundGradient = LinearGradient(
+        colors: [
+            SwiftUI.Color(red: 0.025, green: 0.045, blue: 0.13),
+            SwiftUI.Color(red: 0.075, green: 0.045, blue: 0.19),
+            SwiftUI.Color(red: 0.12, green: 0.035, blue: 0.20),
+            SwiftUI.Color(red: 0.025, green: 0.035, blue: 0.10)
+        ],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
     static let accentBlue = SwiftUI.Color(red: 0.20, green: 0.58, blue: 1.0)
     static let accentPurple = SwiftUI.Color(red: 0.47, green: 0.27, blue: 1.0)
     static let accentPink = SwiftUI.Color(red: 0.72, green: 0.31, blue: 1.0)
