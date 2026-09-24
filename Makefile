@@ -15,7 +15,9 @@ CONFIGURATION   := Debug
 LITE_CONFIGURATION := Release
 DERIVED_DATA    ?= /private/tmp/relaxin-deriveddata
 VERSION_CONFIG  := $(ROOT_DIR)/Configuration/Version.xcconfig
-APP_VERSION     := $(strip $(shell awk -F= '/^[[:space:]]*MARKETING_VERSION[[:space:]]*=/ { gsub(/^[[:space:]]+|[[:space:]]+$$/, "", $$2); print $$2; exit }' "$(VERSION_CONFIG)"))
+MARKETING_VERSION = $(strip $(shell awk -F= '/^[[:space:]]*MARKETING_VERSION[[:space:]]*=/ { gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit }' "$(VERSION_CONFIG)"))
+BUILD_VERSION    = $(strip $(shell awk -F= '/^[[:space:]]*CURRENT_PROJECT_VERSION[[:space:]]*=/ { gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit }' "$(VERSION_CONFIG)"))
+APP_VERSION      = $(MARKETING_VERSION)-$(BUILD_VERSION)
 
 IOS_DESTINATION := generic/platform=iOS
 DEV_ENV         := $(ROOT_DIR)/.env.sh
@@ -61,7 +63,7 @@ XCODEBUILD := $(XCODEBUILD_WRAPPER) \
     CODE_SIGN_IDENTITY=""
 
 .PHONY: all help print-version \
-        build build-ios lite-deb tipa ipa bootstrap-resources scan-license check test-host \
+        build build-ios bump-version lite-deb tipa ipa bootstrap-resources scan-license check test-host \
         kernel-offsets \
         format format-lint \
         clean \
@@ -78,6 +80,9 @@ all: build
 
 print-version:
 	@echo "$(APP_VERSION)"
+
+bump-version:
+	@"$(ROOT_DIR)/DevKit/Helpers/bump-version.sh"
 
 help:
 	@echo "Build:"
@@ -185,7 +190,7 @@ $(BOOTSTRAP_RESOURCE): \
 bootstrap-resources: _check-bootstrap-tools
 	@$(MAKE) -C "$(ROOT_DIR)" --no-print-directory "$(BOOTSTRAP_RESOURCE)"
 
-build-ios: _check-xcode-tools
+build-ios: _check-xcode-tools bump-version
 	source "$(DEV_ENV)" && \
 	    relaxin_prepare_build_environment "$(DERIVED_DATA)" && \
 	    XCBUILD_LABEL=build-ios $(XCODEBUILD) \
