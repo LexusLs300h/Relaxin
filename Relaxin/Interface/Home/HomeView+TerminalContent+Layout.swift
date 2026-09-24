@@ -137,6 +137,8 @@ extension RelaxinTerminalContent {
             : TerminalStyle.accent("READY")
         let title = TerminalStyle.bold("RELAXIN")
         let subtitle = TerminalStyle.dim("ENGINE OUTPUT")
+        let version = TerminalStyle.accent("VERSION ") + AppInfo.displayVersion(in: resourceBundle)
+        let uptime = TerminalStyle.accent("UPTIME ") + DeviceInfo.uptime
         let support = TerminalStyle.dim(
             String(
                 localized: "For iOS 16.5.1-17.3.1 devices",
@@ -146,6 +148,7 @@ extension RelaxinTerminalContent {
 
         return [
             title + "  " + subtitle + "  " + state,
+            version + TerminalStyle.dim("  •  ") + uptime,
             support,
             TerminalStyle.dim(String(repeating: "─", count: dividerWidth)),
         ]
