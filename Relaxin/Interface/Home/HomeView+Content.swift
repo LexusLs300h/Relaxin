@@ -143,7 +143,7 @@ struct HomeContent<Action: Hashable>: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(headerTitle)
                         .font(.system(size: 24, weight: .bold, design: .rounded))
-                        .foregroundStyle(Theme.foreground)
+                        .foregroundStyle(Theme.dashboardText)
 
                     Text(headerSubtitle)
                         .font(.system(size: 12, weight: .medium, design: .rounded))
@@ -281,9 +281,10 @@ struct HomeContent<Action: Hashable>: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("正在执行")
                     .font(.system(size: 17, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.dashboardText)
                 Text("Relaxin Engine 正在处理任务，请勿退出应用")
                     .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Theme.dashboardSecondaryText)
             }
 
             Spacer(minLength: 0)
@@ -458,7 +459,7 @@ struct HomeContent<Action: Hashable>: View {
         VStack(alignment: .leading, spacing: 0) {
             Text(screen == .home ? "操作" : "选项")
                 .font(.system(size: 12, weight: .bold, design: .rounded))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Theme.dashboardSecondaryText)
                 .padding(.horizontal, 14)
                 .padding(.top, 14)
                 .padding(.bottom, 4)
