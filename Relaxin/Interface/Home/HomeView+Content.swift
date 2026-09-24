@@ -23,6 +23,13 @@ struct HomeContent<Action: Hashable>: View {
 
     private var isEngine: Bool { screen == .engine }
 
+    private var appVersion: String {
+        let info = Bundle.main.infoDictionary ?? [:]
+        let marketing = info["CFBundleShortVersionString"] as? String ?? "0.0.0"
+        let build = info["CFBundleVersion"] as? String ?? "0"
+        return "v\\(marketing)-\\(build)"
+    }
+
     private var visibleMenuItems: [OptionListItem<Action>] {
         // The home screen already has the primary jailbreak button above.
         // Hide only the duplicated first action from the lower menu.
@@ -64,6 +71,7 @@ struct HomeContent<Action: Hashable>: View {
 
                     if screen == .home {
                         heroCard
+                        homeRuntimeInfo
                         homeDashboard
                     } else if isEngine {
                         engineCard
@@ -78,7 +86,7 @@ struct HomeContent<Action: Hashable>: View {
                 }
                 .frame(maxWidth: 620)
                 .frame(maxWidth: .infinity)
-                .padding(.horizontal, screen == .home ? 14 : Theme.pagePadding)
+                .padding(.horizontal, screen == .home ? 26 : Theme.pagePadding)
                 .padding(.top, screen == .home ? 8 : 12)
                 .padding(.bottom, screen == .home ? 18 : 28)
                 .frame(minHeight: geometry.size.height, alignment: .top)
@@ -107,21 +115,10 @@ struct HomeContent<Action: Hashable>: View {
         HStack(spacing: 12) {
             if screen == .home {
                 Text("Relaxin")
-                    .font(.system(size: 27, weight: .bold, design: .rounded))
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
                     .foregroundStyle(Theme.dashboardText)
 
                 Spacer()
-
-                Button {
-                    onOpenAdvancedOptions()
-                } label: {
-                    Image(systemName: "gearshape")
-                        .font(.system(size: 21, weight: .medium))
-                        .foregroundStyle(Theme.dashboardText)
-                        .frame(width: 40, height: 40)
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel("设置")
             } else {
                 ZStack {
                     RoundedRectangle(cornerRadius: 13, style: .continuous)
@@ -216,6 +213,47 @@ struct HomeContent<Action: Hashable>: View {
         }
         .clipped()
         .shadow(color: Theme.accentPurple.opacity(0.20), radius: 24, y: 12)
+    }
+
+    private var homeRuntimeInfo: some View {
+        HStack(spacing: 0) {
+            runtimeItem(title: "软件版本", value: appVersion, systemImage: "app.badge.fill")
+
+            Divider()
+                .frame(height: 34)
+                .overlay(Theme.dashboardIcon.opacity(0.18))
+
+            runtimeItem(title: "系统运行时间", value: DeviceInfo.uptime, systemImage: "clock.fill")
+        }
+        .padding(.horizontal, 16)
+        .frame(height: 66)
+        .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .strokeBorder(Theme.dashboardIcon.opacity(0.12))
+        }
+    }
+
+    private func runtimeItem(title: String, value: String, systemImage: String) -> some View {
+        HStack(spacing: 9) {
+            Image(systemName: systemImage)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(Theme.dashboardIcon)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(size: 9, weight: .medium, design: .rounded))
+                    .foregroundStyle(Theme.dashboardSecondaryText)
+                Text(value)
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Theme.dashboardText)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.72)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .frame(maxWidth: .infinity)
     }
 
     private var engineCard: some View {
