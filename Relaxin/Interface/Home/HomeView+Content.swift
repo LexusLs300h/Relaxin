@@ -386,17 +386,18 @@ struct HomeContent<Action: Hashable>: View {
     }
 
     private var deviceInfoCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            dashboardInfoRow(title: "设备型号", value: DeviceInfo.host, systemImage: "iphone")
-            dashboardInfoRow(title: "系统版本", value: DeviceInfo.os, systemImage: "apple.logo")
-            dashboardInfoRow(title: "越狱引擎", value: "RLXEngine", systemImage: "bolt.fill")
-            dashboardInfoRow(title: "后端方案", value: "RootHide", systemImage: "shippingbox.fill")
+        VStack(alignment: .leading, spacing: 12) {
+            dashboardInfoRow(title: "OS", value: DeviceInfo.os, systemImage: "apple.logo")
+            dashboardInfoRow(title: "host", value: DeviceInfo.host, systemImage: "iphone")
+            dashboardInfoRow(title: "kernel", value: "Darwin 23.0.0", systemImage: "terminal.fill")
+            dashboardInfoRow(title: "build", value: appVersion, systemImage: "hammer.fill")
+            dashboardInfoRow(title: "uptime", value: DeviceInfo.uptime, systemImage: "clock.fill")
         }
         .padding(18)
         .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                 .strokeBorder(Theme.dashboardIcon.opacity(0.10))
+                .strokeBorder(Theme.dashboardIcon.opacity(0.10))
         }
     }
 
