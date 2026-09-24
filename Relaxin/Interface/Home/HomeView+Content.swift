@@ -216,23 +216,36 @@ struct HomeContent<Action: Hashable>: View {
 
     private var terminalCard: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                HStack(spacing: 7) {
-                    Circle().fill(.red.opacity(0.82)).frame(width: 7, height: 7)
-                    Circle().fill(.yellow.opacity(0.82)).frame(width: 7, height: 7)
-                    Circle().fill(Theme.accentBlue).frame(width: 7, height: 7)
+            VStack(spacing: 10) {
+                HStack(spacing: 9) {
+                    HStack(spacing: 6) {
+                        Circle().fill(.red.opacity(0.82)).frame(width: 7, height: 7)
+                        Circle().fill(.yellow.opacity(0.82)).frame(width: 7, height: 7)
+                        Circle().fill(Theme.accentBlue).frame(width: 7, height: 7)
+                    }
+
+                    Text(isEngine ? "ENGINE OUTPUT" : "RELAXIN TERMINAL")
+                        .font(.system(size: 10, weight: .bold, design: .monospaced))
+                        .tracking(1.1)
+                        .foregroundStyle(Theme.terminalDim)
+
+                    Spacer()
+
+                    Label(isEngine ? "LIVE" : "READY", systemImage: isEngine ? "waveform" : "terminal")
+                        .font(.system(size: 9, weight: .bold, design: .rounded))
+                        .foregroundStyle(isEngine ? Theme.accentBlue : Theme.terminalDim)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 5)
+                        .background(.white.opacity(0.045), in: Capsule())
                 }
 
-                Text(isEngine ? "ENGINE OUTPUT" : "RELAXIN TERMINAL")
-                    .font(.system(size: 10, weight: .bold, design: .monospaced))
-                    .tracking(1.1)
-                    .foregroundStyle(Theme.terminalDim)
-
-                Spacer()
+                Rectangle()
+                    .fill(.white.opacity(0.06))
+                    .frame(height: 1)
             }
             .padding(.horizontal, 14)
             .padding(.top, 12)
-            .padding(.bottom, 8)
+            .padding(.bottom, 4)
 
             TerminalPresenter(
                 content: terminalText,
@@ -248,7 +261,7 @@ struct HomeContent<Action: Hashable>: View {
                 alignment: .topLeading
             )
             .padding(.horizontal, 10)
-            .padding(.bottom, 10)
+            .padding(.bottom, 12)
         }
         .background(Theme.terminalBackground, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
         .overlay {
