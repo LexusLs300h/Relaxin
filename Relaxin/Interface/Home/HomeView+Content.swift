@@ -27,7 +27,7 @@ struct HomeContent<Action: Hashable>: View {
         let info = Bundle.main.infoDictionary ?? [:]
         let marketing = info["CFBundleShortVersionString"] as? String ?? "0.0.0"
         let build = info["CFBundleVersion"] as? String ?? "0"
-        return "v\\(marketing)-\\(build)"
+        return "v\(marketing)-\(build)"
     }
 
     private var visibleMenuItems: [OptionListItem<Action>] {
@@ -65,31 +65,43 @@ struct HomeContent<Action: Hashable>: View {
 
     var body: some View {
         GeometryReader { geometry in
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 16) {
-                    header
-
-                    if screen == .home {
+            Group {
+                if screen == .home {
+                    VStack(alignment: .leading, spacing: 16) {
+                        header
                         heroCard
                         homeRuntimeInfo
                         homeDashboard
-                    } else if isEngine {
-                        engineCard
-                        terminalCard
-                    } else {
-                        terminalCard
                     }
+                    .frame(maxWidth: 620)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 26)
+                    .padding(.vertical, 8)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                } else {
+                    ScrollView(showsIndicators: false) {
+                        VStack(alignment: .leading, spacing: 16) {
+                            header
 
-                    if showsMenu && screen != .home {
-                        menuCard
+                            if isEngine {
+                                engineCard
+                                terminalCard
+                            } else {
+                                terminalCard
+                            }
+
+                            if showsMenu {
+                                menuCard
+                            }
+                        }
+                        .frame(maxWidth: 620)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, Theme.pagePadding)
+                        .padding(.top, 12)
+                        .padding(.bottom, 28)
+                        .frame(minHeight: geometry.size.height, alignment: .top)
                     }
                 }
-                .frame(maxWidth: 620)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, screen == .home ? 26 : Theme.pagePadding)
-                .padding(.top, screen == .home ? 8 : 12)
-                .padding(.bottom, screen == .home ? 18 : 28)
-                .frame(minHeight: geometry.size.height, alignment: .top)
             }
         }
         .background {
@@ -115,7 +127,7 @@ struct HomeContent<Action: Hashable>: View {
         HStack(spacing: 12) {
             if screen == .home {
                 Text("Relaxin")
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                    .font(.system(size: 38, weight: .bold, design: .rounded))
                     .foregroundStyle(Theme.dashboardText)
 
                 Spacer()
