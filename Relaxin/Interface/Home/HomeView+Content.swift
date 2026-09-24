@@ -86,7 +86,8 @@ struct HomeContent<Action: Hashable>: View {
         }
         .background {
             ZStack {
-                screen == .home ? Theme.dashboardBackground : Theme.background
+                Theme.appBackgroundGradient
+                    .ignoresSafeArea()
 
                 if screen != .home {
                     Theme.subtleGradient
