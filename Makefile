@@ -15,8 +15,8 @@ CONFIGURATION   := Debug
 LITE_CONFIGURATION := Release
 DERIVED_DATA    ?= /private/tmp/relaxin-deriveddata
 VERSION_CONFIG  := $(ROOT_DIR)/Configuration/Version.xcconfig
-MARKETING_VERSION = $(strip $(shell awk -F= '/^[[:space:]]*MARKETING_VERSION[[:space:]]*=/ { gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit }' "$(VERSION_CONFIG)"))
-BUILD_VERSION    = $(strip $(shell awk -F= '/^[[:space:]]*CURRENT_PROJECT_VERSION[[:space:]]*=/ { gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit }' "$(VERSION_CONFIG)"))
+MARKETING_VERSION = $(strip $(shell sed -n 's/^[[:space:]]*MARKETING_VERSION[[:space:]]*=[[:space:]]*//p' "$(VERSION_CONFIG)" | head -n 1))
+BUILD_VERSION    = $(strip $(shell sed -n 's/^[[:space:]]*CURRENT_PROJECT_VERSION[[:space:]]*=[[:space:]]*//p' "$(VERSION_CONFIG)" | head -n 1))
 APP_VERSION      = $(MARKETING_VERSION)-$(BUILD_VERSION)
 
 IOS_DESTINATION := generic/platform=iOS
@@ -82,7 +82,7 @@ print-version:
 	@echo "$(APP_VERSION)"
 
 bump-version:
-	@"$(ROOT_DIR)/DevKit/Helpers/bump-version.sh"
+	@bash "$(ROOT_DIR)/DevKit/Helpers/bump-version.sh"
 
 help:
 	@echo "Build:"
