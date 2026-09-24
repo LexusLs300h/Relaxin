@@ -83,72 +83,94 @@ struct HomeContent<Action: Hashable>: View {
         }
         .background {
             ZStack {
-                Theme.background
-                Theme.subtleGradient
-                    .ignoresSafeArea()
+                screen == .home ? Theme.dashboardBackground : Theme.background
 
-                TerminalCharacterBackground(
-                    rendersActively: rendersTerminalBackgroundActively
-                )
-                .opacity(isEngine ? 0.035 : 0.018)
-                .ignoresSafeArea()
+                if screen != .home {
+                    Theme.subtleGradient
+                        .ignoresSafeArea()
+
+                    TerminalCharacterBackground(
+                        rendersActively: rendersTerminalBackgroundActively
+                    )
+                    .opacity(isEngine ? 0.035 : 0.018)
+                    .ignoresSafeArea()
+                }
             }
         }
     }
 
     private var header: some View {
         HStack(spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 13, style: .continuous)
-                    .fill(Theme.accentGradient)
-                    .frame(width: 46, height: 46)
+            if screen == .home {
+                Text("Relaxin")
+                    .font(.system(size: 27, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.dashboardText)
 
-                Text("R")
-                    .font(.system(size: 25, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
-            }
-            .shadow(color: Theme.accentPurple.opacity(0.28), radius: 14, y: 7)
+                Spacer()
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(headerTitle)
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundStyle(Theme.foreground)
+                Button {
+                    screen = .advancedOptions
+                } label: {
+                    Image(systemName: "gearshape")
+                        .font(.system(size: 21, weight: .medium))
+                        .foregroundStyle(Theme.dashboardText)
+                        .frame(width: 40, height: 40)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("设置")
+            } else {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 13, style: .continuous)
+                        .fill(Theme.accentGradient)
+                        .frame(width: 46, height: 46)
 
-                Text(headerSubtitle)
-                    .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
-            }
+                    Text("R")
+                        .font(.system(size: 25, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
+                }
+                .shadow(color: Theme.accentPurple.opacity(0.28), radius: 14, y: 7)
 
-            Spacer(minLength: 0)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(headerTitle)
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .foregroundStyle(Theme.foreground)
 
-            if isEngine {
-                statusPill(title: "RUNNING", systemImage: "bolt.fill")
-            } else if screen == .home {
-                statusPill(title: "READY", systemImage: "checkmark.circle.fill")
+                    Text(headerSubtitle)
+                        .font(.system(size: 12, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer(minLength: 0)
+
+                if isEngine {
+                    statusPill(title: "RUNNING", systemImage: "bolt.fill")
+                }
             }
         }
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
     }
 
     private var heroCard: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(alignment: .top, spacing: 14) {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 13) {
                 ZStack {
-                    Circle()
-                        .fill(.white.opacity(0.16))
-                        .frame(width: 56, height: 56)
-                    Image(systemName: "bolt.horizontal.circle.fill")
-                        .font(.system(size: 28))
+                    RoundedRectangle(cornerRadius: 13, style: .continuous)
+                        .fill(Theme.accentGradient)
+                        .frame(width: 52, height: 52)
+
+                    Text("R")
+                        .font(.system(size: 29, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
                 }
 
-                VStack(alignment: .leading, spacing: 5) {
+                VStack(alignment: .leading, spacing: 3) {
                     Text("准备越狱")
-                        .font(.system(size: 22, weight: .bold, design: .rounded))
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
-                    Text("保持设备连接并开始执行 Relaxin")
-                        .font(.system(size: 13, weight: .medium, design: .rounded))
-                        .foregroundStyle(.white.opacity(0.78))
+
+                    Text("点击下方按钮开始执行越狱流程")
+                        .font(.system(size: 11, weight: .medium, design: .rounded))
+                        .foregroundStyle(.white.opacity(0.72))
                 }
 
                 Spacer(minLength: 0)
@@ -160,21 +182,28 @@ struct HomeContent<Action: Hashable>: View {
                 }
             } label: {
                 HStack {
-                    Text("开始越狱")
-                        .font(.system(size: 15, weight: .semibold, design: .rounded))
                     Spacer()
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 13, weight: .bold))
+                    Text("开始越狱")
+                        .font(.system(size: 13, weight: .semibold, design: .rounded))
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 11, weight: .bold))
+                    Spacer()
                 }
-                .foregroundStyle(Theme.accentPurple)
-                .padding(.horizontal, 16)
-                .frame(height: 46)
-                .background(.white, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .foregroundStyle(.white)
+                .frame(height: 40)
+                .background(
+                    Theme.dashboardBackground.opacity(0.58),
+                    in: Capsule()
+                )
+                .overlay {
+                    Capsule()
+                        .strokeBorder(.white.opacity(0.08))
+                }
             }
             .disabled(menuItems.isEmpty)
         }
-        .padding(18)
-        .background(Theme.accentGradient, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
+        .padding(16)
+        .background(Theme.accentGradient, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .overlay(alignment: .topTrailing) {
             Circle()
                 .fill(.white.opacity(0.08))
