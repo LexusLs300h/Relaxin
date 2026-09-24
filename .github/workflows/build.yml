@@ -24,39 +24,19 @@ jobs:
           chmod +x trustcache
           sudo mv trustcache /usr/local/bin/
 
-      - name: Build with Makefile
-        run: make
-
-      - name: Debug - list all Relaxin.app on entire machine
+      - name: Build + Generate IPA & TIPA (use Make native target)
         run: |
-          echo "===== FULL SYSTEM SEARCH FOR Relaxin.app ====="
-          find / -name "Relaxin.app" -type d 2>/dev/null
-          echo "===== WORKSPACE CONTENTS ====="
-          ls -la
-          echo "===== /Users/runner/Library/Developer/Xcode DIR ====="
-          ls -la /Users/runner/Library/Developer/Xcode || echo "Folder not exists"
+          make ipa
+          make tipa
 
-      - name: Package IPA and TIPA
-        run: |
-          mkdir -p Payload
-          APP_PATH=$(find / -name "Relaxin.app" -type d 2>/dev/null | head -n1)
-          echo "Found Relaxin.app at: $APP_PATH"
-          if [ -z "$APP_PATH" ]; then
-            echo "ERROR: Relaxin.app not found!"
-            exit 1
-          fi
-          cp -r "$APP_PATH" Payload/
-          zip -r Relaxin.ipa Payload
-          cp Relaxin.ipa Relaxin.tipa
-
-      - name: Upload IPA
+      - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
           name: Relaxin-IPA
-          path: Relaxin.ipa
+          path: build/Artifacts/*.ipa
 
-      - name: Upload TIPA
+      - name: Upload TIPA artifact
         uses: actions/upload-artifact@v4
         with:
           name: Relaxin-TIPA
-          path: Relaxin.tipa
+          path: build/Artifacts/*.tipa
