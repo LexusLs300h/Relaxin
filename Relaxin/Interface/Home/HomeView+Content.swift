@@ -335,7 +335,6 @@ struct HomeContent<Action: Hashable>: View {
                 }
             }
 
-            dashboardTabBar
         }
     }
 
@@ -403,46 +402,6 @@ struct HomeContent<Action: Hashable>: View {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .strokeBorder(.white.opacity(0.055))
             }
-        }
-        .buttonStyle(.plain)
-    }
-
-    private var dashboardTabBar: some View {
-        HStack {
-            dashboardTab(title: "首页", systemImage: "house.fill", selected: true) {}
-
-            dashboardTab(title: "工具", systemImage: "briefcase.fill", selected: false) {
-                onOpenMaintenance()
-            }
-
-            dashboardTab(title: "更多", systemImage: "ellipsis", selected: false) {
-                onOpenCredits()
-            }
-        }
-        .padding(.horizontal, 18)
-        .frame(height: 58)
-        .background(Theme.dashboardBar, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(.white.opacity(0.055))
-        }
-    }
-
-    private func dashboardTab(
-        title: String,
-        systemImage: String,
-        selected: Bool,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action) {
-            VStack(spacing: 4) {
-                Image(systemName: systemImage)
-                    .font(.system(size: 15, weight: .semibold))
-                Text(title)
-                    .font(.system(size: 9, weight: .medium, design: .rounded))
-            }
-            .foregroundStyle(selected ? Theme.dashboardAccent : Theme.dashboardSecondaryText)
-            .frame(maxWidth: .infinity)
         }
         .buttonStyle(.plain)
     }
