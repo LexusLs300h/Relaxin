@@ -218,14 +218,15 @@ struct HomeContent<Action: Hashable>: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 HStack(spacing: 7) {
-                    Circle().fill(.red.opacity(0.72)).frame(width: 7, height: 7)
-                    Circle().fill(.yellow.opacity(0.72)).frame(width: 7, height: 7)
-                    Circle().fill(.green.opacity(0.72)).frame(width: 7, height: 7)
+                    Circle().fill(.red.opacity(0.82)).frame(width: 7, height: 7)
+                    Circle().fill(.yellow.opacity(0.82)).frame(width: 7, height: 7)
+                    Circle().fill(Theme.accentBlue).frame(width: 7, height: 7)
                 }
 
-                Text(isEngine ? "ENGINE OUTPUT" : "RELAXIN")
+                Text(isEngine ? "ENGINE OUTPUT" : "RELAXIN TERMINAL")
                     .font(.system(size: 10, weight: .bold, design: .monospaced))
-                    .foregroundStyle(.secondary)
+                    .tracking(1.1)
+                    .foregroundStyle(Theme.terminalDim)
 
                 Spacer()
             }
@@ -249,7 +250,7 @@ struct HomeContent<Action: Hashable>: View {
             .padding(.horizontal, 10)
             .padding(.bottom, 10)
         }
-        .background(Theme.secondaryBackground, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
+        .background(Theme.terminalBackground, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous)
                 .strokeBorder(.white.opacity(0.055))
