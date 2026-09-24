@@ -20,6 +20,15 @@ struct HomeContent<Action: Hashable>: View {
 
     private var isEngine: Bool { screen == .engine }
 
+    private var visibleMenuItems: [OptionListItem<Action>] {
+        // The home screen already has the primary jailbreak button above.
+        // Hide only the duplicated first action from the lower menu.
+        if screen == .home {
+            return Array(menuItems.dropFirst())
+        }
+        return menuItems
+    }
+
     private var headerTitle: String {
         switch screen {
         case .home: "Relaxin"
@@ -257,7 +266,7 @@ struct HomeContent<Action: Hashable>: View {
                 .padding(.bottom, 4)
 
             OptionList(
-                entries: menuItems,
+                entries: visibleMenuItems,
                 preferredSelection: preferredMenuAction,
                 secondaryActions: secondaryMenuActions,
                 shareItems: shareItems,
