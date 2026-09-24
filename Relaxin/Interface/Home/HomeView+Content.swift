@@ -16,9 +16,9 @@ struct HomeContent<Action: Hashable>: View {
     let screen: HomeView.Screen
     let onTerminalColumnCountChange: (Int) -> Void
     let onSelectMenuItem: (Action) -> Void
-    let onOpenAdvancedOptions: () -> Void
-    let onOpenMaintenance: () -> Void
-    let onOpenCredits: () -> Void
+    var onOpenAdvancedOptions: () -> Void = {}
+    var onOpenMaintenance: () -> Void = {}
+    var onOpenCredits: () -> Void = {}
     var onTerminalLongPress: (() -> Void)?
 
     private var isEngine: Bool { screen == .engine }
