@@ -16,6 +16,9 @@ struct HomeContent<Action: Hashable>: View {
     let screen: HomeView.Screen
     let onTerminalColumnCountChange: (Int) -> Void
     let onSelectMenuItem: (Action) -> Void
+    let onOpenAdvancedOptions: () -> Void
+    let onOpenMaintenance: () -> Void
+    let onOpenCredits: () -> Void
     var onTerminalLongPress: (() -> Void)?
 
     private var isEngine: Bool { screen == .engine }
@@ -109,7 +112,7 @@ struct HomeContent<Action: Hashable>: View {
                 Spacer()
 
                 Button {
-                    onSelectMenuItem(.advancedOptions)
+                    onOpenAdvancedOptions()
                 } label: {
                     Image(systemName: "gearshape")
                         .font(.system(size: 21, weight: .medium))
@@ -311,7 +314,7 @@ struct HomeContent<Action: Hashable>: View {
                     subtitle: "查看执行日志",
                     systemImage: "doc.text.fill"
                 ) {
-                    onSelectMenuItem(.maintenance)
+                    onOpenMaintenance()
                 }
 
                 dashboardAction(
@@ -319,7 +322,7 @@ struct HomeContent<Action: Hashable>: View {
                     subtitle: "配置偏好选项",
                     systemImage: "gearshape.fill"
                 ) {
-                    screen = .advancedOptions
+                    onOpenAdvancedOptions()
                 }
 
                 dashboardAction(
@@ -327,7 +330,7 @@ struct HomeContent<Action: Hashable>: View {
                     subtitle: "了解更多信息",
                     systemImage: "info.circle.fill"
                 ) {
-                    onSelectMenuItem(.credits)
+                    onOpenCredits()
                 }
             }
 
@@ -408,11 +411,11 @@ struct HomeContent<Action: Hashable>: View {
             dashboardTab(title: "首页", systemImage: "house.fill", selected: true) {}
 
             dashboardTab(title: "工具", systemImage: "briefcase.fill", selected: false) {
-                screen = .maintenance
+                onOpenMaintenance()
             }
 
             dashboardTab(title: "更多", systemImage: "ellipsis", selected: false) {
-                screen = .credits
+                onOpenCredits()
             }
         }
         .padding(.horizontal, 18)
