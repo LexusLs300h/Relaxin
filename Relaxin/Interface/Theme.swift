@@ -23,6 +23,12 @@ enum Theme {
             ? UIColor(red: 0.055, green: 0.065, blue: 0.10, alpha: 1)
             : UIColor.tertiarySystemBackground
     })
+
+    // The terminal is intentionally dark in both system appearances so its
+    // output remains visually distinct from the surrounding SwiftUI cards.
+    static let terminalBackground = SwiftUI.Color(red: 0.035, green: 0.045, blue: 0.075)
+    static let terminalForeground = SwiftUI.Color(red: 0.93, green: 0.95, blue: 1.0)
+    static let terminalDim = SwiftUI.Color(red: 0.50, green: 0.55, blue: 0.66)
     static let accentBlue = SwiftUI.Color(red: 0.20, green: 0.58, blue: 1.0)
     static let accentPurple = SwiftUI.Color(red: 0.47, green: 0.27, blue: 1.0)
     static let accentPink = SwiftUI.Color(red: 0.72, green: 0.31, blue: 1.0)
