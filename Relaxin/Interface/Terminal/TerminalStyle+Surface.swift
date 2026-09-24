@@ -11,7 +11,7 @@ extension TerminalStyle {
         view.backgroundColor = UIColor(Theme.terminalBackground)
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
-        view.isOpaque = true
+        view.isOpaque = false
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
         view.linkReporting = .explicit
