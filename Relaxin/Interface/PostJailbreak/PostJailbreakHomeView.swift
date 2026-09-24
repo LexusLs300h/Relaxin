@@ -122,6 +122,8 @@ struct PostJailbreakHomeView: View {
             screen: screen == .credits ? .credits : .home, // 👈 匹配 HomeView.Screen.home
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
+            onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
+            onOpenCredits: { performMenuAction(.credits) },
             onTerminalLongPress: { }
         )
         .disabled(session.isPerformingAction)
