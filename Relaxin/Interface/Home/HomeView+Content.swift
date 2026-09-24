@@ -79,28 +79,25 @@ struct HomeContent<Action: Hashable>: View {
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 } else {
-                    ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 16) {
-                            header
+                    VStack(alignment: .leading, spacing: 12) {
+                        header
 
-                            if isEngine {
-                                engineCard
-                                terminalCard
-                            } else {
-                                terminalCard
-                            }
-
-                            if showsMenu {
-                                menuCard
-                            }
+                        if isEngine {
+                            engineCard
+                            terminalCard(compactHeight: max(220, geometry.size.height * 0.36))
+                        } else {
+                            terminalCard(compactHeight: max(260, geometry.size.height * 0.40))
                         }
-                        .frame(maxWidth: 620)
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal, Theme.pagePadding)
-                        .padding(.top, 12)
-                        .padding(.bottom, 28)
-                        .frame(minHeight: geometry.size.height, alignment: .top)
+
+                        if showsMenu {
+                            menuCard
+                        }
                     }
+                    .frame(maxWidth: 620)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, Theme.pagePadding)
+                    .padding(.vertical, 8)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 }
             }
         }
@@ -145,12 +142,12 @@ struct HomeContent<Action: Hashable>: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(headerTitle)
-                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .font(.system(size: 30, weight: .bold, design: .rounded))
                         .foregroundStyle(Theme.foreground)
 
                     Text(headerSubtitle)
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary)
+                        .font(.system(size: 13, weight: .medium, design: .rounded))
+                        .foregroundStyle(Theme.dashboardSecondaryText)
                 }
 
                 Spacer(minLength: 0)
@@ -292,14 +289,14 @@ struct HomeContent<Action: Hashable>: View {
             Spacer(minLength: 0)
         }
         .padding(16)
-        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
+        .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous)
-                .strokeBorder(.white.opacity(0.06))
+                .strokeBorder(Theme.dashboardIcon.opacity(0.10))
         }
     }
 
-    private var terminalCard: some View {
+    private func terminalCard(compactHeight: CGFloat) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(spacing: 10) {
                 HStack(spacing: 9) {
@@ -312,20 +309,20 @@ struct HomeContent<Action: Hashable>: View {
                     Text(isEngine ? "ENGINE OUTPUT" : "RELAXIN TERMINAL")
                         .font(.system(size: 10, weight: .bold, design: .monospaced))
                         .tracking(1.1)
-                        .foregroundStyle(Theme.terminalDim)
+                         .foregroundStyle(Theme.dashboardSecondaryText)
 
                     Spacer()
 
                     Label(isEngine ? "LIVE" : "READY", systemImage: isEngine ? "waveform" : "terminal")
                         .font(.system(size: 9, weight: .bold, design: .rounded))
-                        .foregroundStyle(isEngine ? Theme.accentBlue : Theme.terminalDim)
+                         .foregroundStyle(Theme.dashboardIcon)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 5)
-                        .background(.white.opacity(0.045), in: Capsule())
+                         .background(Theme.dashboardIcon.opacity(0.08), in: Capsule())
                 }
 
                 Rectangle()
-                    .fill(.white.opacity(0.06))
+                     .fill(Theme.dashboardIcon.opacity(0.12))
                     .frame(height: 1)
             }
             .padding(.horizontal, 14)
@@ -341,17 +338,17 @@ struct HomeContent<Action: Hashable>: View {
             )
             .frame(
                 maxWidth: .infinity,
-                minHeight: terminalHeight,
-                maxHeight: isEngine ? .infinity : terminalHeight,
+                minHeight: compactHeight,
+                maxHeight: compactHeight,
                 alignment: .topLeading
             )
             .padding(.horizontal, 10)
             .padding(.bottom, 12)
         }
-        .background(Theme.terminalBackground, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
+        .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous)
-                .strokeBorder(.white.opacity(0.055))
+                .strokeBorder(Theme.dashboardIcon.opacity(0.10))
         }
     }
 
@@ -399,7 +396,7 @@ struct HomeContent<Action: Hashable>: View {
         .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .strokeBorder(.white.opacity(0.055))
+                 .strokeBorder(Theme.dashboardIcon.opacity(0.10))
         }
     }
 
@@ -478,10 +475,10 @@ struct HomeContent<Action: Hashable>: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 8)
         }
-        .background(Theme.card, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
+        .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous)
-                .strokeBorder(.white.opacity(0.055))
+                .strokeBorder(Theme.dashboardIcon.opacity(0.10))
         }
     }
 
