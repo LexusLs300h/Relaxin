@@ -29,22 +29,22 @@ enum Theme {
     static let terminalBackground = SwiftUI.Color(red: 0.035, green: 0.045, blue: 0.075)
     static let terminalForeground = SwiftUI.Color(red: 0.93, green: 0.95, blue: 1.0)
     static let terminalDim = SwiftUI.Color(red: 0.50, green: 0.55, blue: 0.66)
-    // Home dashboard palette. Kept dark to match the compact reference design.
-    static let dashboardBackground = SwiftUI.Color(red: 0.035, green: 0.045, blue: 0.075)
-    static let dashboardCard = SwiftUI.Color(red: 0.060, green: 0.075, blue: 0.115)
-    static let dashboardBar = SwiftUI.Color(red: 0.045, green: 0.055, blue: 0.085)
-    static let dashboardText = SwiftUI.Color.white.opacity(0.94)
-    static let dashboardSecondaryText = SwiftUI.Color.white.opacity(0.52)
-    static let dashboardIcon = SwiftUI.Color(red: 0.74, green: 0.80, blue: 1.0)
-    static let dashboardAccent = SwiftUI.Color(red: 0.36, green: 0.42, blue: 1.0)
+    // Light dashboard palette: soft white cards over a blue-violet gradient.
+    static let dashboardBackground = SwiftUI.Color(red: 0.93, green: 0.95, blue: 1.0)
+    static let dashboardCard = SwiftUI.Color.white.opacity(0.88)
+    static let dashboardBar = SwiftUI.Color.white.opacity(0.82)
+    static let dashboardText = SwiftUI.Color(red: 0.10, green: 0.12, blue: 0.18)
+    static let dashboardSecondaryText = SwiftUI.Color(red: 0.34, green: 0.38, blue: 0.48)
+    static let dashboardIcon = SwiftUI.Color(red: 0.30, green: 0.38, blue: 0.88)
+    static let dashboardAccent = SwiftUI.Color(red: 0.32, green: 0.40, blue: 0.95)
 
-    // App-wide background: deep blue flowing into violet, matching the dashboard hero.
+    // App-wide background: light blue flowing into soft violet.
     static let appBackgroundGradient = LinearGradient(
         colors: [
-            SwiftUI.Color(red: 0.025, green: 0.045, blue: 0.13),
-            SwiftUI.Color(red: 0.075, green: 0.045, blue: 0.19),
-            SwiftUI.Color(red: 0.12, green: 0.035, blue: 0.20),
-            SwiftUI.Color(red: 0.025, green: 0.035, blue: 0.10)
+            SwiftUI.Color(red: 0.88, green: 0.94, blue: 1.0),
+            SwiftUI.Color(red: 0.94, green: 0.90, blue: 1.0),
+            SwiftUI.Color(red: 0.99, green: 0.91, blue: 0.98),
+            SwiftUI.Color(red: 0.88, green: 0.93, blue: 1.0)
         ],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
