@@ -70,6 +70,12 @@ extension TerminalPresenter {
         override func layoutSubviews() {
             super.layoutSubviews()
 
+            // Keep the terminal glyph grid safely inside the rounded surface.
+            // SwiftTerm can recalculate its scroll geometry during layout, so
+            // apply the inset here as well as during initial configuration.
+            contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+            scrollIndicatorInsets = contentInset
+
             let columnCount = getTerminal().cols
             guard columnCount != reportedColumnCount else { return }
             reportedColumnCount = columnCount
