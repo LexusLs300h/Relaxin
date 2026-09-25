@@ -124,33 +124,33 @@ struct HomeContent<Action: Hashable>: View {
             if screen == .home {
                 HStack(spacing: 18) {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        RoundedRectangle(cornerRadius: 19, style: .continuous)
                             .fill(Theme.accentGradient)
-                            .frame(width: 108, height: 108)
+                            .frame(width: 82, height: 82)
 
                         Text("R")
-                            .font(.system(size: 56, weight: .bold, design: .rounded))
+                            .font(.system(size: 42, weight: .bold, design: .rounded))
                             .foregroundStyle(.white)
                     }
                     .shadow(color: Theme.accentPurple.opacity(0.22), radius: 18, y: 8)
 
                     VStack(alignment: .leading, spacing: 3) {
                         Text("Relaxin")
-                            .font(.system(size: 58, weight: .bold, design: .rounded))
+                            .font(.system(size: 44, weight: .bold, design: .rounded))
                             .foregroundStyle(Theme.dashboardText)
 
                         Text("RootHide jailbreak utility")
-                            .font(.system(size: 22, weight: .medium, design: .rounded))
+                            .font(.system(size: 17, weight: .medium, design: .rounded))
                             .foregroundStyle(Theme.dashboardSecondaryText)
                     }
 
                     Spacer(minLength: 8)
 
                     Label("READY", systemImage: "checkmark.circle.fill")
-                        .font(.system(size: 15, weight: .bold, design: .rounded))
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
                         .foregroundStyle(Theme.accentBlue)
-                        .padding(.horizontal, 18)
-                        .frame(height: 54)
+                        .padding(.horizontal, 15)
+                        .frame(height: 46)
                         .background(Theme.accentBlue.opacity(0.10), in: Capsule())
                 }
                 .offset(y: -10)
@@ -461,8 +461,8 @@ struct HomeContent<Action: Hashable>: View {
                 onSelectionChange: { _ in },
                 onSelect: onSelectMenuItem
             )
-            .padding(.horizontal, 8)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
         }
         .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: Theme.cardRadius, style: .continuous))
         .overlay {
