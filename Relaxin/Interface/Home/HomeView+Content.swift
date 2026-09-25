@@ -122,9 +122,9 @@ struct HomeContent<Action: Hashable>: View {
     private var header: some View {
         Group {
             if screen == .home {
-                HStack(spacing: 18) {
+                HStack(spacing: 14) {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 28, style: .continuous)
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
                             .fill(Theme.accentGradient)
                              .frame(width: 46, height: 46)
 
@@ -136,11 +136,11 @@ struct HomeContent<Action: Hashable>: View {
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Relaxin")
-                            .font(.system(size: 38, weight: .bold, design: .rounded))
+                             .font(.system(size: 38, weight: .bold, design: .rounded))
                             .foregroundStyle(Theme.dashboardText)
 
                         Text("RootHide jailbreak utility")
-                            .font(.system(size: 17, weight: .medium, design: .rounded))
+                             .font(.system(size: 17, weight: .medium, design: .rounded))
                             .foregroundStyle(Theme.dashboardSecondaryText)
                     }
 
