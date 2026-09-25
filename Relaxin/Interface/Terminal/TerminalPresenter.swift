@@ -75,6 +75,9 @@ extension TerminalPresenter {
             // apply the inset here as well as during initial configuration.
             contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
             scrollIndicatorInsets = contentInset
+            // SwiftTerm draws from the scroll view content origin; keep that
+            // origin inside the rounded surface so the first glyph is not clipped.
+            contentOffset = CGPoint(x: -16, y: -10)
 
             let columnCount = getTerminal().cols
             guard columnCount != reportedColumnCount else { return }
