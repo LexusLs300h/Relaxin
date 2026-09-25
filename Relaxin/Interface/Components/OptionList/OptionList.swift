@@ -162,7 +162,7 @@ struct OptionList<Action: Hashable>: View {
                      .foregroundStyle(style.secondaryForeground.opacity(0.7))
             }
         }
-        .padding(.horizontal, 13)
+        .padding(.horizontal, 17)
         .frame(minHeight: 48)
         .contentShape(Rectangle())
     }
