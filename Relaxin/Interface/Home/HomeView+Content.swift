@@ -126,13 +126,13 @@ struct HomeContent<Action: Hashable>: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 28, style: .continuous)
                             .fill(Theme.accentGradient)
-                            .frame(width: 138, height: 138)
+                             .frame(width: 46, height: 46)
 
                         Text("R")
-                            .font(.system(size: 72, weight: .bold, design: .rounded))
+                             .font(.system(size: 25, weight: .bold, design: .rounded))
                             .foregroundStyle(.white)
                     }
-                    .shadow(color: Theme.accentPurple.opacity(0.28), radius: 18, y: 8)
+                     .shadow(color: Theme.accentPurple.opacity(0.28), radius: 14, y: 7)
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Relaxin")
