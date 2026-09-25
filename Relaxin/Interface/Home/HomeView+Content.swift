@@ -70,7 +70,6 @@ struct HomeContent<Action: Hashable>: View {
                     VStack(alignment: .leading, spacing: 16) {
                         header
                         heroCard
-                        homeRuntimeInfo
                         homeDashboard
                     }
                     .frame(maxWidth: 620)
@@ -121,39 +120,62 @@ struct HomeContent<Action: Hashable>: View {
     }
 
     private var header: some View {
-        HStack(spacing: 12) {
+        Group {
             if screen == .home {
-                Text("Relaxin")
-                    .font(.system(size: 38, weight: .bold, design: .rounded))
-                    .foregroundStyle(Theme.dashboardText)
+                HStack(spacing: 18) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 28, style: .continuous)
+                            .fill(Theme.accentGradient)
+                            .frame(width: 138, height: 138)
 
-                Spacer()
+                        Text("R")
+                            .font(.system(size: 72, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+                    }
+                    .shadow(color: Theme.accentPurple.opacity(0.28), radius: 18, y: 8)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Relaxin")
+                            .font(.system(size: 38, weight: .bold, design: .rounded))
+                            .foregroundStyle(Theme.dashboardText)
+
+                        Text("RootHide jailbreak utility")
+                            .font(.system(size: 17, weight: .medium, design: .rounded))
+                            .foregroundStyle(Theme.dashboardSecondaryText)
+                    }
+
+                    Spacer(minLength: 8)
+
+                    statusPill(title: "READY", systemImage: "checkmark.circle.fill")
+                }
             } else {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 13, style: .continuous)
-                        .fill(Theme.accentGradient)
-                        .frame(width: 46, height: 46)
+                HStack(spacing: 12) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 13, style: .continuous)
+                            .fill(Theme.accentGradient)
+                            .frame(width: 46, height: 46)
 
-                    Text("R")
-                        .font(.system(size: 25, weight: .bold, design: .rounded))
-                        .foregroundStyle(.white)
-                }
-                .shadow(color: Theme.accentPurple.opacity(0.28), radius: 14, y: 7)
+                        Text("R")
+                            .font(.system(size: 25, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white)
+                    }
+                    .shadow(color: Theme.accentPurple.opacity(0.28), radius: 14, y: 7)
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(headerTitle)
-                        .font(.system(size: 24, weight: .bold, design: .rounded))
-                        .foregroundStyle(Theme.dashboardText)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(headerTitle)
+                            .font(.system(size: 24, weight: .bold, design: .rounded))
+                            .foregroundStyle(Theme.dashboardText)
 
-                    Text(headerSubtitle)
-                        .font(.system(size: 12, weight: .medium, design: .rounded))
-                        .foregroundStyle(Theme.dashboardSecondaryText)
-                }
+                        Text(headerSubtitle)
+                            .font(.system(size: 12, weight: .medium, design: .rounded))
+                            .foregroundStyle(Theme.dashboardSecondaryText)
+                    }
 
-                Spacer(minLength: 0)
+                    Spacer(minLength: 0)
 
-                if isEngine {
-                    statusPill(title: "RUNNING", systemImage: "bolt.fill")
+                    if isEngine {
+                        statusPill(title: "RUNNING", systemImage: "bolt.fill")
+                    }
                 }
             }
         }
@@ -222,47 +244,6 @@ struct HomeContent<Action: Hashable>: View {
         }
         .clipped()
         .shadow(color: Theme.accentPurple.opacity(0.20), radius: 24, y: 12)
-    }
-
-    private var homeRuntimeInfo: some View {
-        HStack(spacing: 0) {
-            runtimeItem(title: "软件版本", value: appVersion, systemImage: "app.badge.fill")
-
-            Divider()
-                .frame(height: 34)
-                .overlay(Theme.dashboardIcon.opacity(0.18))
-
-            runtimeItem(title: "系统运行时间", value: DeviceInfo.uptime, systemImage: "clock.fill")
-        }
-        .padding(.horizontal, 16)
-        .frame(height: 66)
-        .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .strokeBorder(Theme.dashboardIcon.opacity(0.12))
-        }
-    }
-
-    private func runtimeItem(title: String, value: String, systemImage: String) -> some View {
-        HStack(spacing: 9) {
-            Image(systemName: systemImage)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(Theme.dashboardIcon)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.system(size: 9, weight: .medium, design: .rounded))
-                    .foregroundStyle(Theme.dashboardSecondaryText)
-                Text(value)
-                    .font(.system(size: 12, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Theme.dashboardText)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.72)
-            }
-
-            Spacer(minLength: 0)
-        }
-        .frame(maxWidth: .infinity)
     }
 
     private var engineCard: some View {
@@ -388,11 +369,11 @@ struct HomeContent<Action: Hashable>: View {
 
     private var deviceInfoCard: some View {
         VStack(alignment: .leading, spacing: 12) {
-            dashboardInfoRow(title: "OS", value: DeviceInfo.os, systemImage: "apple.logo")
-            dashboardInfoRow(title: "host", value: DeviceInfo.host, systemImage: "iphone")
-            dashboardInfoRow(title: "kernel", value: "Darwin 23.0.0", systemImage: "terminal.fill")
-            dashboardInfoRow(title: "build", value: appVersion, systemImage: "hammer.fill")
-            dashboardInfoRow(title: "uptime", value: DeviceInfo.uptime, systemImage: "clock.fill")
+            dashboardInfoRow(title: "系统版本", value: DeviceInfo.os, systemImage: "apple.logo")
+            dashboardInfoRow(title: "设备型号", value: DeviceInfo.host, systemImage: "iphone")
+            dashboardInfoRow(title: "内核版本", value: "Darwin 23.0.0", systemImage: "terminal.fill")
+            dashboardInfoRow(title: "软件版本", value: appVersion, systemImage: "app.badge.fill")
+            dashboardInfoRow(title: "系统运行时间", value: DeviceInfo.uptime, systemImage: "clock.fill")
         }
         .padding(18)
         .background(Theme.dashboardCard, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
