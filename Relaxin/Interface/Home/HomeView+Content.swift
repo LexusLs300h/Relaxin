@@ -121,72 +121,37 @@ struct HomeContent<Action: Hashable>: View {
     }
 
     private var header: some View {
-        Group {
-            if screen == .home {
-                HStack(spacing: 24) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 22, style: .continuous)
-                            .fill(Theme.accentGradient)
-                            .frame(width: 138, height: 138)
+        HStack(spacing: 12) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                    .fill(Theme.accentGradient)
+                    .frame(width: 46, height: 46)
 
-                        Text("R")
-                            .font(.system(size: 68, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                    }
-                    .shadow(color: Theme.accentPurple.opacity(0.22), radius: 18, y: 8)
+                Text("R")
+                    .font(.system(size: 25, weight: .bold, design: .rounded))
+                    .foregroundStyle(.white)
+            }
+            .shadow(color: Theme.accentPurple.opacity(0.28), radius: 14, y: 7)
 
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text("Relaxin")
-                            .font(.system(size: 54, weight: .bold, design: .rounded))
-                            .foregroundStyle(Theme.dashboardText)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(headerTitle)
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .foregroundStyle(Theme.foreground)
 
-                        Text("RootHide jailbreak utility")
-                            .font(.system(size: 23, weight: .medium, design: .rounded))
-                            .foregroundStyle(Theme.dashboardSecondaryText)
-                    }
+                Text(headerSubtitle)
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
 
-                    Spacer(minLength: 8)
+            Spacer(minLength: 0)
 
-                    Label("READY", systemImage: "checkmark.circle.fill")
-                        .font(.system(size: 18, weight: .bold, design: .rounded))
-                        .foregroundStyle(Theme.accentBlue)
-                        .padding(.horizontal, 18)
-                        .frame(height: 56)
-                        .background(Theme.accentBlue.opacity(0.10), in: Capsule())
-                }
-                
-            } else {
-                HStack(spacing: 12) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 13, style: .continuous)
-                            .fill(Theme.accentGradient)
-                            .frame(width: 46, height: 46)
-
-                        Text("R")
-                            .font(.system(size: 25, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
-                    }
-                    .shadow(color: Theme.accentPurple.opacity(0.28), radius: 14, y: 7)
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(headerTitle)
-                            .font(.system(size: 24, weight: .bold, design: .rounded))
-                            .foregroundStyle(Theme.dashboardText)
-
-                        Text(headerSubtitle)
-                            .font(.system(size: 12, weight: .medium, design: .rounded))
-                            .foregroundStyle(Theme.dashboardSecondaryText)
-                    }
-
-                    Spacer(minLength: 0)
-
-                    if isEngine {
-                        statusPill(title: "RUNNING", systemImage: "bolt.fill")
-                    }
-                }
+            if isEngine {
+                statusPill(title: "RUNNING", systemImage: "bolt.fill")
+            } else if screen == .home {
+                statusPill(title: "READY", systemImage: "checkmark.circle.fill")
             }
         }
-        .accessibilityElement(children: .contain)
+        .accessibilityElement(children: .combine)
     }
 
     private var heroCard: some View {
