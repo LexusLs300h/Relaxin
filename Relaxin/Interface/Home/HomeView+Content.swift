@@ -76,7 +76,8 @@ struct HomeContent<Action: Hashable>: View {
                     .frame(maxWidth: .infinity)
                     .padding(.horizontal, 26)
                     .padding(.vertical, 8)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .padding(.top, 8)
                 } else {
                     VStack(alignment: .leading, spacing: 12) {
                         header
@@ -122,38 +123,38 @@ struct HomeContent<Action: Hashable>: View {
     private var header: some View {
         Group {
             if screen == .home {
-                HStack(spacing: 18) {
+                HStack(spacing: 24) {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 19, style: .continuous)
+                        RoundedRectangle(cornerRadius: 22, style: .continuous)
                             .fill(Theme.accentGradient)
-                            .frame(width: 82, height: 82)
+                            .frame(width: 138, height: 138)
 
                         Text("R")
-                            .font(.system(size: 42, weight: .bold, design: .rounded))
+                            .font(.system(size: 68, weight: .bold, design: .rounded))
                             .foregroundStyle(.white)
                     }
                     .shadow(color: Theme.accentPurple.opacity(0.22), radius: 18, y: 8)
 
                     VStack(alignment: .leading, spacing: 3) {
                         Text("Relaxin")
-                            .font(.system(size: 44, weight: .bold, design: .rounded))
+                            .font(.system(size: 54, weight: .bold, design: .rounded))
                             .foregroundStyle(Theme.dashboardText)
 
                         Text("RootHide jailbreak utility")
-                            .font(.system(size: 17, weight: .medium, design: .rounded))
+                            .font(.system(size: 23, weight: .medium, design: .rounded))
                             .foregroundStyle(Theme.dashboardSecondaryText)
                     }
 
                     Spacer(minLength: 8)
 
                     Label("READY", systemImage: "checkmark.circle.fill")
-                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
                         .foregroundStyle(Theme.accentBlue)
-                        .padding(.horizontal, 15)
-                        .frame(height: 46)
+                        .padding(.horizontal, 18)
+                        .frame(height: 56)
                         .background(Theme.accentBlue.opacity(0.10), in: Capsule())
                 }
-                .offset(y: -10)
+                
             } else {
                 HStack(spacing: 12) {
                     ZStack {
