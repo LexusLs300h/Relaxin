@@ -24,6 +24,19 @@ jobs:
           chmod +x trustcache
           sudo mv trustcache /usr/local/bin/
 
+
+      - name: Cache Relaxin build resources
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/BootstrapSources
+            build/BootstrapResources
+            build/Relaxin054Resources
+            build/BaseBinResources
+          key: relaxin-build-resources-v0.5.4-${{ runner.os }}-${{ hashFiles('DevKit/Helpers/download-bootstrap.sh', 'DevKit/Helpers/prepare-v054-resources.sh', 'Makefile') }}
+          restore-keys: |
+            relaxin-build-resources-v0.5.4-${{ runner.os }}-
+
       - name: Build + Generate IPA & TIPA (use Make native target)
         run: |
           make ipa tipa
