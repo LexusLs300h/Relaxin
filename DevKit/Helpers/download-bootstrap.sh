@@ -21,7 +21,7 @@ if [[ -f "$output_archive" ]]; then
 	fi
 fi
 
-source_url="https://raw.githubusercontent.com/roothide/Dopamine2-roothide/$source_revision/Application/Dopamine/Resources/bootstrap_$bootstrap_version.tar.zst"
+source_url="https://api.github.com/repos/roothide/Dopamine2-roothide/git/blobs/b3601eec98d4949645f920d384ee90a61aab8865"
 temporary_archive="$output_archive.tmp.$$"
 trap 'rm -f -- "$temporary_archive"' EXIT
 
@@ -31,6 +31,7 @@ curl \
 	--fail \
 	--location \
 	--retry 3 \
+	--header "Accept: application/vnd.github.raw+json" \
 	--retry-delay 2 \
 	--output "$temporary_archive" \
 	"$source_url"
