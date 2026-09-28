@@ -12,3 +12,6 @@ OTHER_LDFLAGS[sdk=iphoneos*] = $(inherited) -ljailbreak -lxpf -lchoma
 OTHER_LDFLAGS[sdk=iphonesimulator*] = $(inherited) -ljailbreak-sim -lxpf-sim -lchoma-sim
 GCC_OPTIMIZATION_LEVEL = 0
 SWIFT_OPTIMIZATION_LEVEL = -Onone
+
+// The vendored exploit sources intentionally replace stdio logging macros; Clang warns about the expected redefinition.
+WARNING_CFLAGS = $(inherited) -Wno-macro-redefined
