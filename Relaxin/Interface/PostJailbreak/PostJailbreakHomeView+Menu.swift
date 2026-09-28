@@ -6,6 +6,7 @@ extension PostJailbreakHomeView {
         case home
         case advancedOptions
         case resetAndRemoval
+        case packageManagers
         case credits
         case confirmation(ConfirmationAction)
 
@@ -29,6 +30,8 @@ extension PostJailbreakHomeView {
                 .command("relaxin/advanced-options")
             case .resetAndRemoval:
                 .command("relaxin/advanced-options/reset-and-remove")
+            case .packageManagers:
+                .command("relaxin/advanced-options/reset-and-remove/reinstall-package-managers")
             case .credits:
                 .credits
             case .confirmation:
@@ -42,6 +45,8 @@ extension PostJailbreakHomeView {
                 .home
             case .resetAndRemoval:
                 .advancedOptions
+            case .packageManagers:
+                .resetAndRemoval
             case let .confirmation(action):
                 switch action {
                 case .restartSpringBoard, .restartUserspace:
@@ -110,6 +115,10 @@ extension PostJailbreakHomeView {
                         .resetAndRemoval,
                         String(localized: "Reset & Remove", bundle: resourceBundle)
                     ),
+                    (
+                        .packageManagers,
+                        String(localized: "Package Managers", bundle: resourceBundle)
+                    ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
             case .resetAndRemoval:
@@ -138,6 +147,22 @@ extension PostJailbreakHomeView {
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ])
                 return entries
+            case .packageManagers:
+                return [
+                    (
+                        .reinstallPackageManager("sileo"),
+                        String(localized: "Reinstall Sileo", bundle: resourceBundle)
+                    ),
+                    (
+                        .reinstallPackageManager("irisin"),
+                        String(localized: "Reinstall Irisin", bundle: resourceBundle)
+                    ),
+                    (
+                        .reinstallPackageManager("umbra"),
+                        String(localized: "Reinstall Umbra", bundle: resourceBundle)
+                    ),
+                    (.back, String(localized: "Back", bundle: resourceBundle)),
+                ]
             case .credits:
                 var entries: [(MenuAction, String)] = []
                 if allowsExternalNavigation {
@@ -246,6 +271,7 @@ extension PostJailbreakHomeView {
         case refreshJailbreakApps
         case resetMobilePassword
         case reinstallSileo
+        case reinstallPackageManager(String)
         case removeJailbreak
         case confirm(ConfirmationAction)
         case back
