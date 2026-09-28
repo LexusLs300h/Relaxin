@@ -193,7 +193,7 @@ $(BOOTSTRAP_RESOURCE): \
 bootstrap-resources: _check-bootstrap-tools
 	@$(MAKE) -C "$(ROOT_DIR)" --no-print-directory "$(BOOTSTRAP_RESOURCE)"
 
-build-ios: _check-xcode-tools bump-version
+build-ios: _check-xcode-tools bump-version bootstrap-resources
 	source "$(DEV_ENV)" && \
 	    relaxin_prepare_build_environment "$(DERIVED_DATA)" && \
 	    XCBUILD_LABEL=build-ios $(XCODEBUILD) \
