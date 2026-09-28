@@ -78,12 +78,27 @@ extension TerminalPresenter {
         }
 
         override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
-            // Only limit the upper vertical boundary. Keep the original
-            // horizontal position and all other scrolling behavior unchanged.
+            let minimumX = -terminalContentInset.left
             let minimumY = -terminalContentInset.top
-            let boundedY = max(contentOffset.y, minimumY)
+
+            // A terminal that fits entirely inside its viewport is not
+            // scrollable at all. Force the resting inset on every programmatic
+            // and user-driven offset update so SwiftTerm cannot move it while
+            // its content is being rendered.
+            let viewportHeight = max(
+                0,
+                bounds.height - terminalContentInset.top - terminalContentInset.bottom
+            )
+            let fitsViewport = bounds.height > 0 && contentSize.height <= viewportHeight + 1
+
+            let boundedY = fitsViewport
+                ? minimumY
+                : max(contentOffset.y, minimumY)
+
+            // Terminal output is a vertical log. Keep the horizontal origin
+            // fixed even while the vertical view is rubber-banding.
             super.setContentOffset(
-                CGPoint(x: contentOffset.x, y: boundedY),
+                CGPoint(x: minimumX, y: boundedY),
                 animated: animated
             )
         }
@@ -116,7 +131,6 @@ extension TerminalPresenter {
             contentInset = terminalContentInset
             scrollIndicatorInsets = terminalContentInset
             clipsToBounds = true
-            bounces = true
             updateScrollBehavior()
             let columnCount = getTerminal().cols
             guard columnCount != reportedColumnCount else { return }
@@ -176,10 +190,12 @@ extension TerminalPresenter {
             showsHorizontalScrollIndicator = false
             showsVerticalScrollIndicator = needsVerticalScroll
             isScrollEnabled = needsVerticalScroll
-            // Let UIScrollView own the native rubber-band interaction. Its
-            // built-in inset geometry is the source of truth for the resting
-            // top/bottom limits; custom contentOffset clamping would cancel
-            // the rubber-band animation.
+            bounces = needsVerticalScroll
+            alwaysBounceVertical = needsVerticalScroll
+            // When the output fits, disable both scrolling and bouncing. This
+            // is intentionally stricter than just hiding the indicators:
+            // SwiftTerm can still write contentOffset programmatically.
+            // setContentOffset() below also enforces the same fixed position.
 
             // SwiftTerm sizes the scroll content from its terminal column count.
             // That internal width must never become a horizontal scrolling area:
