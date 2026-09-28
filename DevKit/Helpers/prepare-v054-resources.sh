@@ -4,7 +4,7 @@ set -Eeuo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 OUTPUT_DIRECTORY="$ROOT_DIR/build/Relaxin054Resources"
 ARCHIVE="$OUTPUT_DIRECTORY/Relaxin-v0.5.4.tipa"
-URL="https://github.com/OwnGoalStudio/Relaxin/releases/download/v0.5.4/Relaxin-v0.5.4.tipa"
+URL="https://github.com/5hux1n/relaxin/releases/download/v0.5.4/Relaxin-v0.5.4.tipa"
 EXPECTED_SHA256="002f597fa62f1ef00566abfb7dbdcd76879d6364615e40ab558c6de3bda3062f"
 
 mkdir -p "$OUTPUT_DIRECTORY"
