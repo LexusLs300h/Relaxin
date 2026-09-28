@@ -24,10 +24,22 @@ enum Theme {
             : UIColor.tertiarySystemBackground
     })
 
-    // Light terminal surface to match the dashboard theme.
-    static let terminalBackground = SwiftUI.Color.white.opacity(0.72)
-    static let terminalForeground = SwiftUI.Color(red: 0.12, green: 0.14, blue: 0.20)
-    static let terminalDim = SwiftUI.Color(red: 0.40, green: 0.44, blue: 0.54)
+    // Terminal surface follows the system appearance.
+    static let terminalBackground = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.045, green: 0.055, blue: 0.075, alpha: 0.96)
+            : UIColor.white.withAlphaComponent(0.72)
+    })
+    static let terminalForeground = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.92, green: 0.94, blue: 0.98, alpha: 1)
+            : UIColor(red: 0.12, green: 0.14, blue: 0.20, alpha: 1)
+    })
+    static let terminalDim = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.60, green: 0.64, blue: 0.72, alpha: 1)
+            : UIColor(red: 0.40, green: 0.44, blue: 0.54, alpha: 1)
+    })
     // Light dashboard palette: soft white cards over a blue-violet gradient.
     static let dashboardBackground = SwiftUI.Color(red: 0.93, green: 0.95, blue: 1.0)
     static let dashboardCard = SwiftUI.Color.white.opacity(0.88)
