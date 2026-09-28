@@ -76,6 +76,17 @@ extension TerminalPresenter {
             false
         }
 
+        override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
+            // Only limit the upper vertical boundary. Keep the original
+            // horizontal position and all other scrolling behavior unchanged.
+            let minimumY = -adjustedContentInset.top
+            let boundedY = max(contentOffset.y, minimumY)
+            super.setContentOffset(
+                CGPoint(x: contentOffset.x, y: boundedY),
+                animated: animated
+            )
+        }
+
         override var contentSize: CGSize {
             get { super.contentSize }
             set {
