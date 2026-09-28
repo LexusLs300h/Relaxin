@@ -11,6 +11,7 @@
 
 #include <TargetConditionals.h>
 #include <errno.h>
+#include <libjailbreak/jbroot.h>
 
 #if !TARGET_OS_SIMULATOR
 
@@ -69,6 +70,18 @@ NSError *_Nullable RLXReinstallPackageManager(
                             [NSString stringWithFormat:@"install_%@", packageName]
                         );
                         return EIO;
+                    }
+
+                    if ([packageName isEqualToString:@"irisin"]) {
+                        NSString *source = [resourceBundle pathForResource:@"irisin-default-list-managed"
+                                                                       ofType:@"plist"];
+                        NSString *destination = JBROOT_PATH(@"/Applications/irisin.app/default-list-managed.plist");
+                        if (!source || ![NSFileManager.defaultManager copyItemAtPath:source
+                                                                                 toPath:destination
+                                                                                  error:nil]) {
+                            RLXPostJailbreakSetFailurePhase(failurePhase, @"configure_irisin_sources");
+                            return EIO;
+                        }
                     }
                     return 0;
                 },
