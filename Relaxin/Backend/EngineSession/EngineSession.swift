@@ -109,7 +109,7 @@ final class EngineSession: ObservableObject {
                 try await engine.perform(
                     action: .reinstallPackageManager,
                     arguments: [
-                        "packageName": packageName,
+                        RLXEngineActionArgumentPackageNameKey: packageName,
                     ],
                     output: outputHandler
                 )
