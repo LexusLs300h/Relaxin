@@ -69,6 +69,7 @@
 			membershipExceptions = (
 				Resources/Info.plist,
 				Resources/roothideapp.deb,
+				Resources/KernelOffsets.plist,
 			);
 			target = 506994F130121FDF00065F85 /* Relaxin */;
 		};
