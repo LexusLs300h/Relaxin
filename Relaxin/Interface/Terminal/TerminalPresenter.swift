@@ -80,7 +80,7 @@ extension TerminalPresenter {
         override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
             // Only limit the upper vertical boundary. Keep the original
             // horizontal position and all other scrolling behavior unchanged.
-            let minimumY = -adjustedContentInset.top
+            let minimumY = -terminalContentInset.top
             let boundedY = max(contentOffset.y, minimumY)
             super.setContentOffset(
                 CGPoint(x: contentOffset.x, y: boundedY),
@@ -108,12 +108,11 @@ extension TerminalPresenter {
         override func layoutSubviews() {
             super.layoutSubviews()
 
-            // Keep the terminal glyph grid safely inside the rounded surface.
+            // The terminal owns its four-sided content margin. Disable UIKit's
+            // safe-area adjustment so 10/16 always means exactly 10/16.
+            contentInsetAdjustmentBehavior = .never
             // SwiftTerm can recalculate its scroll geometry during layout, so
-            // apply the inset here as well as during initial configuration.
-            // Preserve the original four-sided terminal content margins:
-            // top 10, left 16, bottom 10, right 16. These are the margins
-            // around the first row/column, not font padding.
+            // re-apply the exact inset here as well as during initial setup.
             contentInset = terminalContentInset
             scrollIndicatorInsets = terminalContentInset
             clipsToBounds = true
@@ -197,7 +196,7 @@ extension TerminalPresenter {
                 // When all output fits, keep the complete four-sided margin
                 // visible and make the surface completely static.
                 super.setContentOffset(
-                    CGPoint(x: -adjustedContentInset.left, y: -adjustedContentInset.top),
+                    CGPoint(x: -terminalContentInset.left, y: -terminalContentInset.top),
                     animated: false
                 )
             }
