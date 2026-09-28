@@ -33,9 +33,10 @@ jobs:
             build/BootstrapResources
             build/Relaxin054Resources
             build/BaseBinResources
-          key: relaxin-build-resources-v0.5.4-${{ runner.os }}-${{ hashFiles('DevKit/Helpers/download-bootstrap.sh', 'DevKit/Helpers/prepare-v054-resources.sh', 'Makefile') }}
+            build/BaseBinWork
+          key: relaxin-build-resources-v0.5.4-v2-${{ runner.os }}-${{ hashFiles('DevKit/Helpers/download-bootstrap.sh', 'DevKit/Helpers/prepare-v054-resources.sh', 'DevKit/Helpers/build-basebin-resources.sh', 'Configuration/Targets/RelaxinPostJailbreak.xcconfig', 'Makefile') }}
           restore-keys: |
-            relaxin-build-resources-v0.5.4-${{ runner.os }}-
+            relaxin-build-resources-v0.5.4-v2-${{ runner.os }}-
 
       - name: Build + Generate IPA & TIPA (use Make native target)
         run: |
