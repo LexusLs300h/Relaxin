@@ -180,9 +180,9 @@ extension TerminalPresenter {
             showsHorizontalScrollIndicator = false
             showsVerticalScrollIndicator = needsVerticalScroll
             isScrollEnabled = needsVerticalScroll
-            // Never allow rubber-band overscroll: the log must stay strictly
-            // inside the top/bottom scroll bounds of its visible surface.
-            bounces = false
+            // Restore the native rubber-band feel at the scroll limits while
+            // keeping the resting position clamped to the terminal margins.
+            bounces = needsVerticalScroll
 
             // SwiftTerm sizes the scroll content from its terminal column count.
             // That internal width must never become a horizontal scrolling area:
