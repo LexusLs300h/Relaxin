@@ -51,6 +51,8 @@ extension TerminalPresenter {
     }
 
     final class ReadOnlyView: TerminalView {
+        private let terminalContentInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
+
         var onColumnCountChange: ((Int) -> Void)?
         var onOpenLink: ((URL) -> Void)?
         var onLongPress: (() -> Void)?
@@ -80,8 +82,11 @@ extension TerminalPresenter {
             // Keep the terminal glyph grid safely inside the rounded surface.
             // SwiftTerm can recalculate its scroll geometry during layout, so
             // apply the inset here as well as during initial configuration.
-            contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
-            scrollIndicatorInsets = contentInset
+            // Preserve the original four-sided terminal content margins:
+            // top 10, left 16, bottom 10, right 16. These are the margins
+            // around the first row/column, not font padding.
+            contentInset = terminalContentInset
+            scrollIndicatorInsets = terminalContentInset
             updateScrollBehavior()
             let columnCount = getTerminal().cols
             guard columnCount != reportedColumnCount else { return }
@@ -153,6 +158,9 @@ extension TerminalPresenter {
             isScrollEnabled = needsVerticalScroll
 
             if !needsVerticalScroll {
+                // When all output fits, disable scrolling and keep the complete
+                // four-sided margin visible instead of allowing a rubber-band
+                // movement.
                 super.setContentOffset(
                     CGPoint(x: -adjustedContentInset.left, y: -adjustedContentInset.top),
                     animated: false
