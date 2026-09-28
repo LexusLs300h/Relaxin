@@ -23,7 +23,10 @@ struct TerminalPresenter: UIViewRepresentable {
         // Keep the scroll view enabled so streaming output can follow the newest
         // line while the user can still scroll back through earlier output.
         view.isScrollEnabled = true
-        view.showsVerticalScrollIndicator = true
+        view.isDirectionalLockEnabled = true
+        view.alwaysBounceHorizontal = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
         // Read-only surfaces never gain focus, so cursor rendering must remain independent of responder state.
         view.caretViewTracksFocus = false
         TerminalStyle.configure(view, colorScheme: colorScheme)
@@ -79,6 +82,7 @@ extension TerminalPresenter {
             // apply the inset here as well as during initial configuration.
             contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
             scrollIndicatorInsets = contentInset
+            updateScrollBehavior()
             let columnCount = getTerminal().cols
             guard columnCount != reportedColumnCount else { return }
             reportedColumnCount = columnCount
@@ -124,12 +128,53 @@ extension TerminalPresenter {
 
         override func showContextMenu(forRegion _: CGRect, pos _: Position) {}
 
+        override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
+            // This terminal is intentionally a vertical log surface. Keep the
+            // horizontal position fixed even if SwiftTerm calculates a wider
+            // content area for its terminal grid.
+            let fixedX = -adjustedContentInset.left
+            super.setContentOffset(
+                CGPoint(x: fixedX, y: contentOffset.y),
+                animated: animated
+            )
+        }
+
+        private func updateScrollBehavior() {
+            guard bounds.height > 0 else { return }
+
+            let viewportHeight = bounds.height - adjustedContentInset.top - adjustedContentInset.bottom
+            let contentHeight = contentSize.height
+            let needsVerticalScroll = contentHeight > viewportHeight + 1
+
+            isDirectionalLockEnabled = true
+            alwaysBounceHorizontal = false
+            showsHorizontalScrollIndicator = false
+            showsVerticalScrollIndicator = needsVerticalScroll
+            isScrollEnabled = needsVerticalScroll
+
+            if !needsVerticalScroll {
+                super.setContentOffset(
+                    CGPoint(x: -adjustedContentInset.left, y: -adjustedContentInset.top),
+                    animated: false
+                )
+            }
+        }
+
         func render(_ content: String) {
-            guard content != renderedContent else { return }
+            guard content != renderedContent else {
+                updateScrollBehavior()
+                return
+            }
             renderedContent = content
             feed(text: content)
             selection.selectNone()
             disableSelectionPanGesture()
+
+            // SwiftTerm updates contentSize while feeding the terminal. Defer
+            // the measurement until that layout pass has completed.
+            DispatchQueue.main.async { [weak self] in
+                self?.updateScrollBehavior()
+            }
         }
     }
 }
