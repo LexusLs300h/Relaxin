@@ -34,6 +34,7 @@ static BOOL rlx_post_jailbreak_action(RLXEngineAction action, RLXPostJailbreakAc
 
 RLXEngineActionArgumentKey const RLXEngineActionArgumentPasswordKey = @"password";
 RLXEngineActionArgumentKey const RLXEngineActionArgumentBootLogoDarkAppearanceKey = @"bootLogoDarkAppearance";
+RLXEngineActionArgumentKey const RLXEngineActionArgumentPackageNameKey = @"packageName";
 
 - (BOOL)tweakInjectionEnabled {
     return self.postJailbreakController.tweakInjectionEnabled;
