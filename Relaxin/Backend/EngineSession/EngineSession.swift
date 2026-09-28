@@ -104,15 +104,6 @@ final class EngineSession: ObservableObject {
                     arguments: nil,
                     output: outputHandler
                 )
-            },
-            reinstallPackageManager: { packageName, outputHandler in
-                try await engine.perform(
-                    action: .reinstallPackageManager,
-                    arguments: [
-                        RLXEngineActionArgumentKey.packageNameKey: packageName,
-                    ],
-                    output: outputHandler
-                )
             }
         )
     }
