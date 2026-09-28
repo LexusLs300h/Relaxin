@@ -180,7 +180,9 @@ extension TerminalPresenter {
             showsHorizontalScrollIndicator = false
             showsVerticalScrollIndicator = needsVerticalScroll
             isScrollEnabled = needsVerticalScroll
-            bounces = needsVerticalScroll
+            // Never allow rubber-band overscroll: the log must stay strictly
+            // inside the top/bottom scroll bounds of its visible surface.
+            bounces = false
 
             // SwiftTerm sizes the scroll content from its terminal column count.
             // That internal width must never become a horizontal scrolling area:
@@ -193,12 +195,22 @@ extension TerminalPresenter {
                 contentSize = CGSize(width: viewportWidth, height: contentSize.height)
             }
 
-            if !needsVerticalScroll {
-                // When all output fits, disable scrolling and keep the complete
-                // four-sided margin visible instead of allowing a rubber-band
-                // movement.
+            let minY = -adjustedContentInset.top
+            let maxY = max(
+                minY,
+                contentSize.height - bounds.height + adjustedContentInset.bottom
+            )
+            let clampedY = min(max(contentOffset.y, minY), maxY)
+            if contentOffset.y != clampedY || contentOffset.x != -adjustedContentInset.left {
                 super.setContentOffset(
-                    CGPoint(x: -adjustedContentInset.left, y: -adjustedContentInset.top),
+                    CGPoint(x: -adjustedContentInset.left, y: clampedY),
+                    animated: false
+                )
+            } else if !needsVerticalScroll {
+                // When all output fits, keep the complete four-sided margin
+                // visible and make the surface completely static.
+                super.setContentOffset(
+                    CGPoint(x: -adjustedContentInset.left, y: minY),
                     animated: false
                 )
             }
