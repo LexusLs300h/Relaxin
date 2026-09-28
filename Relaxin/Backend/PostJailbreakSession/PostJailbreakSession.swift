@@ -35,9 +35,12 @@ final class PostJailbreakSession: ObservableObject {
         self.controller = controller
         reinstallSileoAction = reinstallSileo
         reinstallPackageManagerAction = reinstallPackageManager
+        // Defer the jailbreak-runtime probe until after the first frame.
+        // Calling jailbreak-only runtime code from the initializer can terminate
+        // the process when the runtime is unavailable or still loading.
         switch environment.interfaceMode {
         case .full:
-            isAvailable = controller.hasActiveRootHideRuntime()
+            isAvailable = false
         case .lite:
             isAvailable = true
         case .overlay:
