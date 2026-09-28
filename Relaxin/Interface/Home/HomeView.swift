@@ -116,12 +116,8 @@ struct HomeView: View {
             loadingMenuActions: loadingMenuActions,
             isVolumeButtonInputEnabled: alert == nil,
             allowsOpeningTerminalLinks: runtime.interfaceMode.allowsExternalNavigation,
-            screen: screen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
-            onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
-            onOpenMaintenance: { performMenuAction(.maintenance) },
-            onOpenCredits: { performMenuAction(.credits) },
             onTerminalLongPress: {
                 #if DEBUG
                     engineSession.postJailbreakSession.debugSetAvailable(true)
@@ -170,36 +166,34 @@ struct HomeView: View {
             presentedContent
                 .alert(item: $alert) { alert in
                     switch alert.kind {
-                case .notice:
-                    SwiftUI.Alert(
-                        title: Text(alert.title),
-                        message: Text(alert.message),
-                        dismissButton: .default(
-                            Text(
-                                String(
-                                    localized: "OK",
-                                    bundle: runtime.resourceBundle
+                    case .notice:
+                        SwiftUI.Alert(
+                            title: Text(alert.title),
+                            message: Text(alert.message),
+                            dismissButton: .default(
+                                Text(
+                                    String(
+                                        localized: "OK",
+                                        bundle: runtime.resourceBundle
+                                    )
                                 )
                             )
                         )
-                    )
-
-                case .jailbreakRemovalComplete:
-                    SwiftUI.Alert(
-                        title: Text(alert.title),
-                        message: Text(alert.message),
-                        dismissButton: .default(
-                            Text(
-                                String(
-                                    localized: "OK",
-                                    bundle: runtime.resourceBundle
+                    case .jailbreakRemovalComplete:
+                        SwiftUI.Alert(
+                            title: Text(alert.title),
+                            message: Text(alert.message),
+                            dismissButton: .default(
+                                Text(
+                                    String(
+                                        localized: "OK",
+                                        bundle: runtime.resourceBundle
+                                    )
                                 )
-                            ),
-                            action: {
+                            ) {
                                 suspendApplication()
                             }
                         )
-                    )
                     }
                 }
         }
@@ -207,11 +201,9 @@ struct HomeView: View {
 
     var body: some View {
         productContent
-            // Do not probe jailbreak-only runtime APIs during app launch.
-            // Some jailbreak runtimes can terminate the process from these probes.
-            // Availability is refreshed after a successful engine run instead.
             .task {
                 guard runtime.interfaceMode == .full else { return }
+                engineSession.postJailbreakSession.refreshAvailability()
             }
             .modifier(
                 LightImpactFeedbackModifier(trigger: screen) { oldScreen, newScreen in
