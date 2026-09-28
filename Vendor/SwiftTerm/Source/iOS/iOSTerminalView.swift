@@ -1558,13 +1558,25 @@ open class TerminalView: UIScrollView, UITextInputTraits, UIKeyInput, UIScrollVi
     }
 
     private func setContentOffsetFromTerminal(_ newContentOffset: CGPoint) {
-        if abs(contentOffset.x - newContentOffset.x) <= contentOffsetTolerance &&
-            abs(contentOffset.y - newContentOffset.y) <= contentOffsetTolerance {
+        // TerminalView is itself the UIScrollView content view. When an app
+        // supplies a contentInset, SwiftTerm's internal output-following path
+        // must respect that inset too; assigning contentOffset directly would
+        // otherwise bypass the subclass' setContentOffset override and snap
+        // the terminal back to the raw (0, 0) origin.
+        let minimumX = -adjustedContentInset.left
+        let minimumY = -adjustedContentInset.top
+        let boundedOffset = CGPoint(
+            x: minimumX,
+            y: max(newContentOffset.y, minimumY)
+        )
+
+        if abs(contentOffset.x - boundedOffset.x) <= contentOffsetTolerance &&
+            abs(contentOffset.y - boundedOffset.y) <= contentOffsetTolerance {
             return
         }
 
         updatingContentOffsetFromTerminal = true
-        contentOffset = newContentOffset
+        contentOffset = boundedOffset
         updatingContentOffsetFromTerminal = false
     }
 
