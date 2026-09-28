@@ -136,7 +136,7 @@ struct HomeContent<Action: Hashable>: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(headerTitle)
                     .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundStyle(Theme.foreground)
+                    .foregroundStyle(screen == .home ? Theme.dashboardText : Theme.foreground)
 
                 Text(headerSubtitle)
                     .font(.system(size: 12, weight: .medium, design: .rounded))
