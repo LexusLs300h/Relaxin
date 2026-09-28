@@ -11,8 +11,9 @@ extension TerminalStyle {
         view.backgroundColor = UIColor(Theme.terminalBackground)
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
-        // Keep the rounded terminal surface, but inset the glyph grid so the first
-        // row and column never touch the clipped corners.
+        // The terminal uses a fixed four-sided content margin. Do not let
+        // UIKit add safe-area padding on top of these exact values.
+        view.contentInsetAdjustmentBehavior = .never
         view.contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
         view.isOpaque = false
         view.showsHorizontalScrollIndicator = false
