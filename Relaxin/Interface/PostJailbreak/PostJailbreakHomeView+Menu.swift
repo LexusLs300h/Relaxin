@@ -126,11 +126,11 @@ extension PostJailbreakHomeView {
                             bundle: resourceBundle
                         )
                     ),
-                ]
                     (
                         .packageManagers,
                         String(localized: "Package Managers", bundle: resourceBundle)
                     ),
+                ]
                 entries.append(contentsOf: [
                     (
                         .confirm(.removeJailbreak),
