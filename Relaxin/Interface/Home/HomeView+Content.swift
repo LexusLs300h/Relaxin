@@ -140,7 +140,7 @@ struct HomeContent<Action: Hashable>: View {
 
                 Text(headerSubtitle)
                     .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(screen == .home ? Theme.dashboardSecondaryText : .secondary)
             }
 
             Spacer(minLength: 0)
