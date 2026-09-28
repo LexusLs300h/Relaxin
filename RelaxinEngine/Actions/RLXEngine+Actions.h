@@ -9,7 +9,6 @@ typedef NS_ENUM(NSInteger, RLXEngineAction) {
     RLXEngineActionResetJailbreakPassword,
     RLXEngineActionRemoveJailbreak,
     RLXEngineActionReinstallSileo,
-    RLXEngineActionReinstallPackageManager,
 };
 
 typedef void (^RLXEngineOutputHandler)(NSString *message);
@@ -18,7 +17,6 @@ typedef NSString *RLXEngineActionArgumentKey NS_TYPED_EXTENSIBLE_ENUM;
 
 FOUNDATION_EXPORT RLXEngineActionArgumentKey const RLXEngineActionArgumentPasswordKey;
 FOUNDATION_EXPORT RLXEngineActionArgumentKey const RLXEngineActionArgumentBootLogoDarkAppearanceKey;
-FOUNDATION_EXPORT RLXEngineActionArgumentKey const RLXEngineActionArgumentPackageNameKey;
 
 @interface RLXEngine (Actions)
 

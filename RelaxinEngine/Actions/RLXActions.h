@@ -19,10 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 NSError *_Nullable RLXReinstallSileo(NSBundle *resourceBundle, NSString *_Nullable __strong *_Nullable failurePhase);
 
-NSError *_Nullable RLXReinstallPackageManager(NSBundle *resourceBundle,
-                                                NSString *packageName,
-                                                NSString *_Nullable __strong *_Nullable failurePhase);
-
 #pragma GCC visibility pop
 
 #endif /* !TARGET_OS_SIMULATOR */

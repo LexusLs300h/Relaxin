@@ -24,7 +24,6 @@ static BOOL rlx_post_jailbreak_action(RLXEngineAction action, RLXPostJailbreakAc
             *postJailbreakAction = RLXPostJailbreakActionRemoveJailbreak;
             return YES;
         case RLXEngineActionReinstallSileo:
-        case RLXEngineActionReinstallPackageManager:
             return NO;
     }
     return NO;
@@ -34,7 +33,6 @@ static BOOL rlx_post_jailbreak_action(RLXEngineAction action, RLXPostJailbreakAc
 
 RLXEngineActionArgumentKey const RLXEngineActionArgumentPasswordKey = @"password";
 RLXEngineActionArgumentKey const RLXEngineActionArgumentBootLogoDarkAppearanceKey = @"bootLogoDarkAppearance";
-RLXEngineActionArgumentKey const RLXEngineActionArgumentPackageNameKey = @"packageName";
 
 - (BOOL)tweakInjectionEnabled {
     return self.postJailbreakController.tweakInjectionEnabled;
@@ -107,17 +105,9 @@ RLXEngineActionArgumentKey const RLXEngineActionArgumentPackageNameKey = @"packa
                 }
                 else {
                     RLXPublishActionOutput(name, outputHandler);
-                    if (action == RLXEngineActionReinstallSileo) {
-                        error = RLXReinstallSileo(
-                            self.runtimeEnvironment.resourceBundle,
-                            &failurePhase);
-                    } else {
-                        NSString *packageName = arguments[@"packageName"];
-                        error = RLXReinstallPackageManager(
-                            self.runtimeEnvironment.resourceBundle,
-                            packageName ?: @"",
-                            &failurePhase);
-                    }
+                    error = RLXReinstallSileo(
+                        self.runtimeEnvironment.resourceBundle,
+                        &failurePhase);
                 }
             }
 #endif
