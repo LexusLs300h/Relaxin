@@ -118,6 +118,15 @@ struct HomeView: View {
             allowsOpeningTerminalLinks: runtime.interfaceMode.allowsExternalNavigation,
             screen: screen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
+            onOpenAdvancedOptions: { screen = .advancedOptions },
+            onOpenMaintenance: {
+                guard runtime.interfaceMode.showsMaintenance else { return }
+                if runtime.interfaceMode.allowsFileExport {
+                    prepareLogExport()
+                }
+                screen = .maintenance
+            },
+            onOpenCredits: { screen = .credits },
             onSelectMenuItem: performMenuAction,
             onTerminalLongPress: {
                 #if DEBUG
