@@ -13,7 +13,7 @@ extension TerminalStyle {
         view.layer.masksToBounds = true
         // Keep the rounded terminal surface, but inset the glyph grid so the first
         // row and column never touch the clipped corners.
-        view.contentInset = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        view.contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
         view.isOpaque = false
         view.showsHorizontalScrollIndicator = false
         view.showsVerticalScrollIndicator = false
