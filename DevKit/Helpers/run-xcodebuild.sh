@@ -83,6 +83,13 @@ if [ "$XC_STATUS" -ne 0 ] || [ "$FOUND_ERRORS" -ne 0 ]; then
         grep -En "$ERR_RE" "$LOG" | head -40 >&2 || true
         echo "---------------------------------------" >&2
     fi
+    if [ "$XC_STATUS" -ne 0 ]; then
+        echo "---- failure diagnostics: matching lines ----" >&2
+        grep -Ein "failed|failure|error:|fatal error:|undefined symbols|duplicate symbol|command .*failed|phaseScriptExecution|codesign|compile|link" "$LOG" | tail -120 >&2 || true
+        echo "---- failure diagnostics: log tail ----" >&2
+        tail -160 "$LOG" >&2 || true
+        echo "---------------------------------------" >&2
+    fi
     # Prefer propagating the original xcodebuild exit status when it's non-zero;
     # otherwise fail with 1 because the log says the run is bad.
     if [ "$XC_STATUS" -ne 0 ]; then
