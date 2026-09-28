@@ -27,6 +27,8 @@ NSString *_Nullable RLXEngineActionName(RLXEngineAction action) {
             return @"Remove Jailbreak";
         case RLXEngineActionReinstallSileo:
             return @"Reinstall Sileo";
+        case RLXEngineActionReinstallPackageManager:
+            return @"Reinstall Package Manager";
     }
     return nil;
 }
@@ -45,6 +47,8 @@ NSString *_Nullable RLXEngineActionIdentifier(RLXEngineAction action) {
             return @"remove_jailbreak";
         case RLXEngineActionReinstallSileo:
             return @"reinstall_sileo";
+        case RLXEngineActionReinstallPackageManager:
+            return @"reinstall_package_manager";
     }
     return nil;
 }
