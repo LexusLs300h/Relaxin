@@ -40,26 +40,72 @@ enum Theme {
             ? UIColor(red: 0.60, green: 0.64, blue: 0.72, alpha: 1)
             : UIColor(red: 0.40, green: 0.44, blue: 0.54, alpha: 1)
     })
-    // Light dashboard palette: soft white cards over a blue-violet gradient.
-    static let dashboardBackground = SwiftUI.Color(red: 0.93, green: 0.95, blue: 1.0)
-    static let dashboardCard = SwiftUI.Color.white.opacity(0.88)
-    static let dashboardBar = SwiftUI.Color.white.opacity(0.82)
-    static let dashboardText = SwiftUI.Color(red: 0.10, green: 0.12, blue: 0.18)
-    static let dashboardSecondaryText = SwiftUI.Color(red: 0.34, green: 0.38, blue: 0.48)
-    static let dashboardIcon = SwiftUI.Color(red: 0.30, green: 0.38, blue: 0.88)
-    static let dashboardAccent = SwiftUI.Color(red: 0.32, green: 0.40, blue: 0.95)
+    // Dashboard palette follows the system appearance on every screen.
+    static let dashboardBackground = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.035, green: 0.045, blue: 0.07, alpha: 1)
+            : UIColor(red: 0.93, green: 0.95, blue: 1.0, alpha: 1)
+    })
+    static let dashboardCard = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.075, green: 0.09, blue: 0.14, alpha: 0.94)
+            : UIColor.white.withAlphaComponent(0.88)
+    })
+    static let dashboardBar = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.055, green: 0.065, blue: 0.10, alpha: 0.94)
+            : UIColor.white.withAlphaComponent(0.82)
+    })
+    static let dashboardText = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.93, green: 0.95, blue: 0.99, alpha: 1)
+            : UIColor(red: 0.10, green: 0.12, blue: 0.18, alpha: 1)
+    })
+    static let dashboardSecondaryText = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.62, green: 0.66, blue: 0.75, alpha: 1)
+            : UIColor(red: 0.34, green: 0.38, blue: 0.48, alpha: 1)
+    })
+    static let dashboardIcon = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.42, green: 0.62, blue: 1.0, alpha: 1)
+            : UIColor(red: 0.30, green: 0.38, blue: 0.88, alpha: 1)
+    })
+    static let dashboardAccent = SwiftUI.Color(uiColor: UIColor { traits in
+        traits.userInterfaceStyle == .dark
+            ? UIColor(red: 0.45, green: 0.55, blue: 1.0, alpha: 1)
+            : UIColor(red: 0.32, green: 0.40, blue: 0.95, alpha: 1)
+    })
 
-    // App-wide background: light blue flowing into soft violet.
+    // App-wide background also follows the system appearance.
     static let appBackgroundGradient = LinearGradient(
         colors: [
-            SwiftUI.Color(red: 0.88, green: 0.94, blue: 1.0),
-            SwiftUI.Color(red: 0.94, green: 0.90, blue: 1.0),
-            SwiftUI.Color(red: 0.99, green: 0.91, blue: 0.98),
-            SwiftUI.Color(red: 0.88, green: 0.93, blue: 1.0)
+            dynamicColor(
+                light: UIColor(red: 0.88, green: 0.94, blue: 1.0, alpha: 1),
+                dark: UIColor(red: 0.025, green: 0.035, blue: 0.06, alpha: 1)
+            ),
+            dynamicColor(
+                light: UIColor(red: 0.94, green: 0.90, blue: 1.0, alpha: 1),
+                dark: UIColor(red: 0.055, green: 0.04, blue: 0.10, alpha: 1)
+            ),
+            dynamicColor(
+                light: UIColor(red: 0.99, green: 0.91, blue: 0.98, alpha: 1),
+                dark: UIColor(red: 0.075, green: 0.045, blue: 0.10, alpha: 1)
+            ),
+            dynamicColor(
+                light: UIColor(red: 0.88, green: 0.93, blue: 1.0, alpha: 1),
+                dark: UIColor(red: 0.025, green: 0.04, blue: 0.075, alpha: 1)
+            )
         ],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
+
+    private static func dynamicColor(light: UIColor, dark: UIColor) -> SwiftUI.Color {
+        SwiftUI.Color(uiColor: UIColor { traits in
+            traits.userInterfaceStyle == .dark ? dark : light
+        })
+    }
     static let accentBlue = SwiftUI.Color(red: 0.20, green: 0.58, blue: 1.0)
     static let accentPurple = SwiftUI.Color(red: 0.47, green: 0.27, blue: 1.0)
     static let accentPink = SwiftUI.Color(red: 0.72, green: 0.31, blue: 1.0)
