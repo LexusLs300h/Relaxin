@@ -214,6 +214,7 @@
 			buildPhase = 506994F030121FDF00065F85 /* Resources */;
 			membershipExceptions = (
 				Resources/roothideapp.deb,
+				Resources/KernelOffsets.plist,
 			);
 		};
 		50E5F62C3013C68E00B83F30 /* Exceptions for "ElleKit" folder in "Copy Bundle Resources" phase from "Relaxin" target */ = {
