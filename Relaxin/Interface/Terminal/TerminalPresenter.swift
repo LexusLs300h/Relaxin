@@ -77,32 +77,6 @@ extension TerminalPresenter {
             false
         }
 
-        override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
-            let minimumX = -terminalContentInset.left
-            let minimumY = -terminalContentInset.top
-
-            // A terminal that fits entirely inside its viewport is not
-            // scrollable at all. Force the resting inset on every programmatic
-            // and user-driven offset update so SwiftTerm cannot move it while
-            // its content is being rendered.
-            let viewportHeight = max(
-                0,
-                bounds.height - terminalContentInset.top - terminalContentInset.bottom
-            )
-            let fitsViewport = bounds.height > 0 && contentSize.height <= viewportHeight + 1
-
-            let boundedY = fitsViewport
-                ? minimumY
-                : max(contentOffset.y, minimumY)
-
-            // Terminal output is a vertical log. Keep the horizontal origin
-            // fixed even while the vertical view is rubber-banding.
-            super.setContentOffset(
-                CGPoint(x: minimumX, y: boundedY),
-                animated: animated
-            )
-        }
-
         override var contentSize: CGSize {
             get { super.contentSize }
             set {
