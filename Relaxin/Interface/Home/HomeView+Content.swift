@@ -26,8 +26,7 @@ struct HomeContent<Action: Hashable>: View {
     private var appVersion: String {
         let info = Bundle.main.infoDictionary ?? [:]
         let marketing = info["CFBundleShortVersionString"] as? String ?? "0.0.0"
-        let build = info["CFBundleVersion"] as? String ?? "0"
-        return "v\(marketing)-\(build)"
+        return "v\(marketing)"
     }
 
     private var visibleMenuItems: [OptionListItem<Action>] {
@@ -136,11 +135,11 @@ struct HomeContent<Action: Hashable>: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(headerTitle)
                     .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundStyle(screen == .home ? Theme.dashboardText : Theme.foreground)
+                    .foregroundStyle(Theme.dashboardText)
 
                 Text(headerSubtitle)
                     .font(.system(size: 12, weight: .medium, design: .rounded))
-                    .foregroundStyle(screen == .home ? Theme.dashboardSecondaryText : .secondary)
+                    .foregroundStyle(Theme.dashboardSecondaryText)
             }
 
             Spacer(minLength: 0)
