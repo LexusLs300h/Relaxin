@@ -104,6 +104,8 @@ extension TerminalPresenter {
             // around the first row/column, not font padding.
             contentInset = terminalContentInset
             scrollIndicatorInsets = terminalContentInset
+            clipsToBounds = true
+            bounces = true
             updateScrollBehavior()
             let columnCount = getTerminal().cols
             guard columnCount != reportedColumnCount else { return }
@@ -150,23 +152,6 @@ extension TerminalPresenter {
 
         override func showContextMenu(forRegion _: CGRect, pos _: Position) {}
 
-        override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
-            // This terminal is a vertical log surface. Clamp the offset to the
-            // real scrollable range so the top inset can never be pulled past
-            // the visible surface and the bottom inset is never exceeded.
-            let fixedX = -adjustedContentInset.left
-            let minY = -adjustedContentInset.top
-            let maxY = max(
-                minY,
-                contentSize.height - bounds.height + adjustedContentInset.bottom
-            )
-            let clampedY = min(max(contentOffset.y, minY), maxY)
-            super.setContentOffset(
-                CGPoint(x: fixedX, y: clampedY),
-                animated: animated
-            )
-        }
-
         private func updateScrollBehavior() {
             guard bounds.height > 0 else { return }
 
@@ -180,9 +165,10 @@ extension TerminalPresenter {
             showsHorizontalScrollIndicator = false
             showsVerticalScrollIndicator = needsVerticalScroll
             isScrollEnabled = needsVerticalScroll
-            // Restore the native rubber-band feel at the scroll limits while
-            // keeping the resting position clamped to the terminal margins.
-            bounces = needsVerticalScroll
+            // Let UIScrollView own the native rubber-band interaction. Its
+            // built-in inset geometry is the source of truth for the resting
+            // top/bottom limits; custom contentOffset clamping would cancel
+            // the rubber-band animation.
 
             // SwiftTerm sizes the scroll content from its terminal column count.
             // That internal width must never become a horizontal scrolling area:
@@ -195,23 +181,11 @@ extension TerminalPresenter {
                 contentSize = CGSize(width: viewportWidth, height: contentSize.height)
             }
 
-            let minY = -adjustedContentInset.top
-            let maxY = max(
-                minY,
-                contentSize.height - bounds.height + adjustedContentInset.bottom
-            )
-            let currentOffset = self.contentOffset
-            let clampedY = min(max(currentOffset.y, minY), maxY)
-            if currentOffset.y != clampedY || currentOffset.x != -adjustedContentInset.left {
-                super.setContentOffset(
-                    CGPoint(x: -adjustedContentInset.left, y: clampedY),
-                    animated: false
-                )
-            } else if !needsVerticalScroll {
+            if !needsVerticalScroll {
                 // When all output fits, keep the complete four-sided margin
                 // visible and make the surface completely static.
                 super.setContentOffset(
-                    CGPoint(x: -adjustedContentInset.left, y: minY),
+                    CGPoint(x: -adjustedContentInset.left, y: -adjustedContentInset.top),
                     animated: false
                 )
             }
