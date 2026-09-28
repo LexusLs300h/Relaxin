@@ -11,7 +11,7 @@ fi
 bootstrap_version="1900"
 output_archive="$1"
 expected_sha256="420f72d1a62c9f884733cdefc596728469482a48858ec7ceca4d3ab2d3cba56c"
-release_url="https://github.com/OwnGoalStudio/Relaxin/releases/download/v0.5.4/Relaxin-v0.5.4.tipa"
+release_url="https://github.com/5hux1n/relaxin/releases/download/v0.5.4/Relaxin-v0.5.4.tipa"
 release_sha256="002f597fa62f1ef00566abfb7dbdcd76879d6364615e40ab558c6de3bda3062f"
 temporary_archive="$output_archive.tmp.$$"
 temporary_tipa="$output_archive.tipa.$$"
