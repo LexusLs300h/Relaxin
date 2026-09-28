@@ -10,7 +10,7 @@ fi
 
 bootstrap_version="1900"
 output_archive="$1"
-expected_sha256="420f72d1a62c9f884733cdefc596728469482a48858ec7ceca4d3ab2d3cba56c"
+expected_sha256="6a21e2781f91dbbe81a3577bae3af365d95507088a3520ffdf59f69e4a10fd47"
 release_url="https://github.com/5hux1n/relaxin/releases/download/v0.5.4/Relaxin-v0.5.4.tipa"
 release_sha256="002f597fa62f1ef00566abfb7dbdcd76879d6364615e40ab558c6de3bda3062f"
 temporary_archive="$output_archive.tmp.$$"
