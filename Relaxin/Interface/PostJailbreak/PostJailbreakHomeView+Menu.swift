@@ -115,10 +115,6 @@ extension PostJailbreakHomeView {
                         .resetAndRemoval,
                         String(localized: "Reset & Remove", bundle: resourceBundle)
                     ),
-                    (
-                        .packageManagers,
-                        String(localized: "Package Managers", bundle: resourceBundle)
-                    ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
             case .resetAndRemoval:
@@ -131,14 +127,10 @@ extension PostJailbreakHomeView {
                         )
                     ),
                 ]
-                if canReinstallSileo {
-                    entries.append(
-                        (
-                            .reinstallSileo,
-                            String(localized: "Reinstall Sileo", bundle: resourceBundle)
-                        )
-                    )
-                }
+                    (
+                        .packageManagers,
+                        String(localized: "Package Managers", bundle: resourceBundle)
+                    ),
                 entries.append(contentsOf: [
                     (
                         .confirm(.removeJailbreak),
