@@ -76,6 +76,7 @@ NSError *_Nullable RLXReinstallPackageManager(
                         NSString *source = [resourceBundle pathForResource:@"irisin-default-list-managed"
                                                                        ofType:@"plist"];
                         NSString *destination = JBROOT_PATH(@"/Applications/irisin.app/default-list-managed.plist");
+                        [NSFileManager.defaultManager removeItemAtPath:destination error:nil];
                         if (!source || ![NSFileManager.defaultManager copyItemAtPath:source
                                                                                  toPath:destination
                                                                                   error:nil]) {
