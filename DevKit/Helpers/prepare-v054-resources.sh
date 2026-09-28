@@ -44,4 +44,10 @@ cp -f "$APP/umbra.deb" "$OUTPUT_DIRECTORY/umbra.deb"
 cp -f "$APP/irisin.deb" "$OUTPUT_DIRECTORY/irisin.deb"
 cp -f "$APP/irisin-default-list-managed.plist" "$OUTPUT_DIRECTORY/irisin-default-list-managed.plist"
 
+BASEBIN_OUTPUT="$ROOT_DIR/build/BaseBinResources"
+mkdir -p "$BASEBIN_OUTPUT"
+for path in basebin.tar basebin.tc libroot.deb libkrw-dopamine.deb basebin-link.deb libchoma.dylib libjailbreak.dylib libxpf.dylib; do
+    cp -f "$OUTPUT_DIRECTORY/$path" "$BASEBIN_OUTPUT/$path"
+done
+
 echo "staged Relaxin v0.5.4 runtime resources in $OUTPUT_DIRECTORY"
