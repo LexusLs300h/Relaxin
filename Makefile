@@ -17,7 +17,7 @@ DERIVED_DATA    ?= /private/tmp/relaxin-deriveddata
 VERSION_CONFIG  := $(ROOT_DIR)/Configuration/Version.xcconfig
 MARKETING_VERSION = $(strip $(shell sed -n 's/^[[:space:]]*MARKETING_VERSION[[:space:]]*=[[:space:]]*//p' "$(VERSION_CONFIG)" | head -n 1))
 BUILD_VERSION    = $(strip $(shell sed -n 's/^[[:space:]]*CURRENT_PROJECT_VERSION[[:space:]]*=[[:space:]]*//p' "$(VERSION_CONFIG)" | head -n 1))
-APP_VERSION      = $(MARKETING_VERSION)-$(BUILD_VERSION)
+APP_VERSION      = $(MARKETING_VERSION)
 
 IOS_DESTINATION := generic/platform=iOS
 DEV_ENV         := $(ROOT_DIR)/.env.sh
