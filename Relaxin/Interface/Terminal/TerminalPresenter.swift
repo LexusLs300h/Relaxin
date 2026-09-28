@@ -76,6 +76,23 @@ extension TerminalPresenter {
             false
         }
 
+        override var contentSize: CGSize {
+            get { super.contentSize }
+            set {
+                guard bounds.width > 0 else {
+                    super.contentSize = newValue
+                    return
+                }
+                let viewportWidth = max(
+                    0,
+                    bounds.width - adjustedContentInset.left - adjustedContentInset.right
+                )
+                // SwiftTerm owns the height, but this screen must never expose
+                // its terminal-column width as a horizontal scroll range.
+                super.contentSize = CGSize(width: viewportWidth, height: newValue.height)
+            }
+        }
+
         override func layoutSubviews() {
             super.layoutSubviews()
 
