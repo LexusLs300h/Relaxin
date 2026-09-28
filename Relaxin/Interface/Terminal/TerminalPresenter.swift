@@ -151,12 +151,18 @@ extension TerminalPresenter {
         override func showContextMenu(forRegion _: CGRect, pos _: Position) {}
 
         override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
-            // This terminal is intentionally a vertical log surface. Keep the
-            // horizontal position fixed even if SwiftTerm calculates a wider
-            // content area for its terminal grid.
+            // This terminal is a vertical log surface. Clamp the offset to the
+            // real scrollable range so the top inset can never be pulled past
+            // the visible surface and the bottom inset is never exceeded.
             let fixedX = -adjustedContentInset.left
+            let minY = -adjustedContentInset.top
+            let maxY = max(
+                minY,
+                contentSize.height - bounds.height + adjustedContentInset.bottom
+            )
+            let clampedY = min(max(contentOffset.y, minY), maxY)
             super.setContentOffset(
-                CGPoint(x: fixedX, y: contentOffset.y),
+                CGPoint(x: fixedX, y: clampedY),
                 animated: animated
             )
         }
