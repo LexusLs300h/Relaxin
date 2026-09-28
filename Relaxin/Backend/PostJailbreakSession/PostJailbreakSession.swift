@@ -7,6 +7,10 @@ final class PostJailbreakSession: ObservableObject {
     typealias ReinstallSileoAction = @MainActor (
         _ output: @escaping (String) -> Void
     ) async throws -> Void
+    typealias ReinstallPackageManagerAction = @MainActor (
+        _ packageName: String,
+        _ output: @escaping (String) -> Void
+    ) async throws -> Void
 
     @Published private(set) var isAvailable = false
     @Published private(set) var runtimeOptions = RuntimeOptions()
@@ -16,6 +20,7 @@ final class PostJailbreakSession: ObservableObject {
     let environment: PostJailbreakEnvironment
     private let controller: RLXPostJailbreakController
     private let reinstallSileoAction: ReinstallSileoAction?
+    private let reinstallPackageManagerAction: ReinstallPackageManagerAction?
     #if DEBUG
         private var debugAvailableOverride: Bool?
     #endif
@@ -23,11 +28,13 @@ final class PostJailbreakSession: ObservableObject {
     init(
         environment: PostJailbreakEnvironment,
         controller: RLXPostJailbreakController,
-        reinstallSileo: ReinstallSileoAction? = nil
+        reinstallSileo: ReinstallSileoAction? = nil,
+        reinstallPackageManager: ReinstallPackageManagerAction? = nil
     ) {
         self.environment = environment
         self.controller = controller
         reinstallSileoAction = reinstallSileo
+        reinstallPackageManagerAction = reinstallPackageManager
         switch environment.interfaceMode {
         case .full:
             isAvailable = controller.hasActiveRootHideRuntime()
@@ -99,6 +106,15 @@ final class PostJailbreakSession: ObservableObject {
     func reinstallSileo() {
         guard canReinstallSileo, let reinstallSileoAction else { return }
         performOperation(reinstallSileoAction)
+    }
+
+    func reinstallPackageManager(named packageName: String) {
+        guard environment.interfaceMode.allowsSileoReinstallation,
+              let reinstallPackageManagerAction
+        else { return }
+        performOperation { outputHandler in
+            try await reinstallPackageManagerAction(packageName, outputHandler)
+        }
     }
 
     private func performOperation(_ operation: @escaping ReinstallSileoAction) {
