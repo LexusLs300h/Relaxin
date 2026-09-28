@@ -118,6 +118,7 @@ struct HomeView: View {
             allowsOpeningTerminalLinks: runtime.interfaceMode.allowsExternalNavigation,
             screen: screen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
+            onSelectMenuItem: performMenuAction,
             onOpenAdvancedOptions: { screen = .advancedOptions },
             onOpenMaintenance: {
                 guard runtime.interfaceMode.showsMaintenance else { return }
@@ -127,7 +128,6 @@ struct HomeView: View {
                 screen = .maintenance
             },
             onOpenCredits: { screen = .credits },
-            onSelectMenuItem: performMenuAction,
             onTerminalLongPress: {
                 #if DEBUG
                     engineSession.postJailbreakSession.debugSetAvailable(true)
