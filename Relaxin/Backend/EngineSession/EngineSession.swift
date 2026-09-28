@@ -105,6 +105,15 @@ final class EngineSession: ObservableObject {
                     output: outputHandler
                 )
             }
+,            reinstallPackageManager: { packageName, outputHandler in
+                try await engine.perform(
+                    action: .reinstallPackageManager,
+                    arguments: [
+                        "packageName": packageName,
+                    ],
+                    output: outputHandler
+                )
+            }
         )
     }
 
