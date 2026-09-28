@@ -26,7 +26,7 @@ static const NSInteger RLXBootstrapInstallVersion = 2;
 
 static NSDictionary<NSString *, NSString *> *rlx_bundled_package_versions(void) {
     return @{
-        @"libkrw0-dopamine" : @"2.0.4",
+        @"libkrw0-dopamine" : @"2.0.6",
         @"dopamine-basebin-link" : @"1.0.0",
     };
 }
@@ -284,8 +284,8 @@ static NSError *rlx_finalization_error(NSString *phase,
         return error;
     }
 
-    rlx_log_finalization(@"phase=install_roothide_manager begin");
-    error = [RLXBootstrapFinalizer installBundledPackageNamed:@"roothideapp" resourceBundle:_resourceBundle];
+    rlx_log_finalization(@"phase=install_umbra begin");
+    error = [RLXBootstrapFinalizer installBundledPackageNamed:@"umbra" resourceBundle:_resourceBundle];
     if (error) {
         return error;
     }
