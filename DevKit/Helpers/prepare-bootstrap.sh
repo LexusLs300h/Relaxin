@@ -180,10 +180,6 @@ normalize_archive_metadata()
 	local manifest_path="$2"
 	gtar --numeric-owner --full-time -tvf "$archive_path" \
 		| awk '{
-			# Directory entries can be normalized differently by gtar across
-			# macOS runner images; critical directory metadata is validated
-			# explicitly below, while file/symlink metadata remains strict.
-			if ($1 ~ /^d/) next
 			mode = $1
 			owner = $2
 			date = $4

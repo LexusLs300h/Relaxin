@@ -50,23 +50,7 @@ trap 'rm -rf "$WORK_DIRECTORY"; rm -f "$TEMPORARY_TIPA"' EXIT
 mkdir -p "$WORK_DIRECTORY/Payload"
 /usr/bin/ditto "$APP_BUNDLE" "$WORK_DIRECTORY/Payload/$APP_NAME"
 
-PACKAGED_APP="$WORK_DIRECTORY/Payload/$APP_NAME"
-PACKAGED_EXECUTABLE="$PACKAGED_APP/$APP_EXECUTABLE"
-
-# Xcode builds with CODE_SIGNING_ALLOWED=NO. Sign nested code before the
-# application itself so the TIPA cannot contain unsigned framework/dylib
-# executables that can be rejected at launch.
-while IFS= read -r -d '' framework; do
-    framework_binary="$framework/$(basename "$framework" .framework)"
-    if [[ -f "$framework_binary" ]]; then
-        ldid -S "$framework_binary"
-    fi
-done < <(find "$PACKAGED_APP" -type d -name '*.framework' -print0 | sort -rz)
-
-while IFS= read -r -d '' dylib; do
-    ldid -S "$dylib"
-done < <(find "$PACKAGED_APP" -type f -name '*.dylib' -print0 | sort -rz)
-
+PACKAGED_EXECUTABLE="$WORK_DIRECTORY/Payload/$APP_NAME/$APP_EXECUTABLE"
 ldid -S"$ENTITLEMENTS" -Cadhoc "$PACKAGED_EXECUTABLE"
 
 PACKAGED_ENTITLEMENTS="$WORK_DIRECTORY/packaged-entitlements.plist"
@@ -77,14 +61,15 @@ for entitlement in \
     "com.apple.private.persona-mgmt" \
     "com.apple.private.security.storage-exempt.heritable" \
     "com.apple.private.security.storage.AppBundles" \
-    "com.apple.private.security.storage.AppDataContainers" \
     "com.apple.private.security.no-sandbox" \
     "com.apple.springboard.CFUserNotification" \
     "com.apple.springboard.launchapplications" \
     "com.apple.security.network.client" \
     "com.apple.developer.kernel.extended-virtual-addressing" \
     "com.apple.developer.kernel.increased-memory-limit"; do
-    if [[ "$(/usr/libexec/PlistBuddy -c "Print :$entitlement" "$PACKAGED_ENTITLEMENTS" 2>/dev/null)" != "true" ]]; then
+    if [[ "$(/usr/libexec/PlistBuddy \
+        -c "Print :$entitlement" \
+        "$PACKAGED_ENTITLEMENTS" 2>/dev/null)" != "true" ]]; then
         echo "error: packaged executable is missing entitlement: $entitlement" >&2
         exit 65
     fi
