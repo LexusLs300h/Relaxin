@@ -64,7 +64,7 @@ XCODEBUILD := $(XCODEBUILD_WRAPPER) \
 
 .PHONY: all help print-version \
         build build-ios bump-version lite-deb tipa ipa bootstrap-resources scan-license check test-host \
-        kernel-offsets \
+        kernel-offsets v054-resources \
         format format-lint \
         clean \
         _check-bootstrap-tools _check-xcode-tools _check-tipa-tools _check-lite-tools \
@@ -83,6 +83,9 @@ print-version:
 
 bump-version:
 	@bash "$(ROOT_DIR)/DevKit/Helpers/bump-version.sh"
+
+v054-resources:
+	@bash "$(ROOT_DIR)/DevKit/Helpers/prepare-v054-resources.sh"
 
 help:
 	@echo "Build:"
