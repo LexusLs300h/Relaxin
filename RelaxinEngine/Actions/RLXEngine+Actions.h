@@ -9,6 +9,7 @@ typedef NS_ENUM(NSInteger, RLXEngineAction) {
     RLXEngineActionResetJailbreakPassword,
     RLXEngineActionRemoveJailbreak,
     RLXEngineActionReinstallSileo,
+    RLXEngineActionReinstallPackageManager,
 };
 
 typedef void (^RLXEngineOutputHandler)(NSString *message);
