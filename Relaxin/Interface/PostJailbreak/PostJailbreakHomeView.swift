@@ -186,6 +186,8 @@ struct PostJailbreakHomeView: View {
             screen = .advancedOptions
         case .resetAndRemoval:
             screen = .resetAndRemoval
+        case .packageManagers:
+            screen = .packageManagers
         case .credits:
             screen = .credits
         case .openOwnGoalStudioPicks:
@@ -209,6 +211,8 @@ struct PostJailbreakHomeView: View {
         case .reinstallSileo:
             guard session.canReinstallSileo else { return }
             session.reinstallSileo()
+        case let .reinstallPackageManager(packageName):
+            session.reinstallPackageManager(named: packageName)
         case .removeJailbreak:
             session.perform(.removeJailbreak)
         case .back:
