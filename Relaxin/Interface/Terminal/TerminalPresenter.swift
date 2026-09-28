@@ -153,9 +153,22 @@ extension TerminalPresenter {
 
             isDirectionalLockEnabled = true
             alwaysBounceHorizontal = false
+            alwaysBounceVertical = false
             showsHorizontalScrollIndicator = false
             showsVerticalScrollIndicator = needsVerticalScroll
             isScrollEnabled = needsVerticalScroll
+            bounces = needsVerticalScroll
+
+            // SwiftTerm sizes the scroll content from its terminal column count.
+            // That internal width must never become a horizontal scrolling area:
+            // the execution/removal screens are a vertical log only.
+            let viewportWidth = max(
+                0,
+                bounds.width - adjustedContentInset.left - adjustedContentInset.right
+            )
+            if contentSize.width != viewportWidth {
+                contentSize = CGSize(width: viewportWidth, height: contentSize.height)
+            }
 
             if !needsVerticalScroll {
                 // When all output fits, disable scrolling and keep the complete
