@@ -207,9 +207,11 @@ struct HomeView: View {
 
     var body: some View {
         productContent
+            // Do not probe jailbreak-only runtime APIs during app launch.
+            // Some jailbreak runtimes can terminate the process from these probes.
+            // Availability is refreshed after a successful engine run instead.
             .task {
                 guard runtime.interfaceMode == .full else { return }
-                engineSession.postJailbreakSession.refreshAvailability()
             }
             .modifier(
                 LightImpactFeedbackModifier(trigger: screen) { oldScreen, newScreen in
