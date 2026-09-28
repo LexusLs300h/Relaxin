@@ -1,8 +1,9 @@
 import Foundation
 import SwiftUI
 
-/// Read-only SwiftTerm surface used for banners and engine output. It never
-/// scrolls, accepts keyboard focus, or allows text selection.
+/// Read-only SwiftTerm surface used for banners and engine output. It follows
+/// streaming output automatically while still allowing the user to scroll back
+/// through earlier output. It never accepts keyboard focus or text selection.
 struct TerminalPresenter: UIViewRepresentable {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.openURL) private var openURL
@@ -19,7 +20,10 @@ struct TerminalPresenter: UIViewRepresentable {
         view.onOpenLink = allowsOpeningLinks ? { [openURL] in openURL($0) } : nil
         view.onLongPress = onLongPress
         view.accessibleLinks = allowsOpeningLinks ? accessibleLinks : []
-        view.isScrollEnabled = false
+        // Keep the scroll view enabled so streaming output can follow the newest
+        // line while the user can still scroll back through earlier output.
+        view.isScrollEnabled = true
+        view.showsVerticalScrollIndicator = true
         // Read-only surfaces never gain focus, so cursor rendering must remain independent of responder state.
         view.caretViewTracksFocus = false
         TerminalStyle.configure(view, colorScheme: colorScheme)
@@ -75,10 +79,6 @@ extension TerminalPresenter {
             // apply the inset here as well as during initial configuration.
             contentInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
             scrollIndicatorInsets = contentInset
-            // SwiftTerm draws from the scroll view content origin; keep that
-            // origin inside the rounded surface so the first glyph is not clipped.
-            contentOffset = CGPoint(x: -16, y: -10)
-
             let columnCount = getTerminal().cols
             guard columnCount != reportedColumnCount else { return }
             reportedColumnCount = columnCount
