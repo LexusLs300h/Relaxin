@@ -69,7 +69,6 @@
 			membershipExceptions = (
 				Resources/Info.plist,
 				Resources/roothideapp.deb,
-				Resources/KernelOffsets.plist,
 			);
 			target = 506994F130121FDF00065F85 /* Relaxin */;
 		};
@@ -140,7 +139,6 @@
 				Resources/Entitlements.entitlements,
 				Resources/Info.plist,
 				Resources/InfoPlist.xcstrings,
-				Resources/KernelOffsets.plist,
 				Resources/roothideapp.deb,
 				main.swift,
 			);
@@ -215,7 +213,6 @@
 			buildPhase = 506994F030121FDF00065F85 /* Resources */;
 			membershipExceptions = (
 				Resources/roothideapp.deb,
-				Resources/KernelOffsets.plist,
 			);
 		};
 		50E5F62C3013C68E00B83F30 /* Exceptions for "ElleKit" folder in "Copy Bundle Resources" phase from "Relaxin" target */ = {
