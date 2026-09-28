@@ -200,8 +200,9 @@ extension TerminalPresenter {
                 minY,
                 contentSize.height - bounds.height + adjustedContentInset.bottom
             )
-            let clampedY = min(max(contentOffset.y, minY), maxY)
-            if contentOffset.y != clampedY || contentOffset.x != -adjustedContentInset.left {
+            let currentOffset = self.contentOffset
+            let clampedY = min(max(currentOffset.y, minY), maxY)
+            if currentOffset.y != clampedY || currentOffset.x != -adjustedContentInset.left {
                 super.setContentOffset(
                     CGPoint(x: -adjustedContentInset.left, y: clampedY),
                     animated: false
