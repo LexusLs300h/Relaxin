@@ -72,17 +72,32 @@ extension TerminalPresenter {
         private var renderedContent: String?
         private var reportedColumnCount: Int?
 
+        private func updateTerminalViewportMask() {
+            let mask = (layer.mask as? CAShapeLayer) ?? CAShapeLayer()
+            mask.frame = bounds
+            mask.path = UIBezierPath(
+                roundedRect: bounds.inset(by: terminalContentInset),
+                cornerRadius: 0
+            ).cgPath
+            layer.mask = mask
+        }
+
         override var canBecomeFirstResponder: Bool {
             false
         }
 
         override func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
-            // Only limit the upper vertical boundary. Keep the original
-            // horizontal position and all other scrolling behavior unchanged.
+            // The terminal text must never scroll outside its own 10pt/16pt
+            // content viewport. Keep horizontal scrolling fixed and clamp the
+            // vertical resting range to the same inset geometry.
             let minimumY = -adjustedContentInset.top
-            let boundedY = max(contentOffset.y, minimumY)
+            let maximumY = max(
+                minimumY,
+                contentSize.height - bounds.height + adjustedContentInset.bottom
+            )
+            let boundedY = min(max(contentOffset.y, minimumY), maximumY)
             super.setContentOffset(
-                CGPoint(x: contentOffset.x, y: boundedY),
+                CGPoint(x: -adjustedContentInset.left, y: boundedY),
                 animated: animated
             )
         }
@@ -116,6 +131,7 @@ extension TerminalPresenter {
             contentInset = terminalContentInset
             scrollIndicatorInsets = terminalContentInset
             clipsToBounds = true
+            updateTerminalViewportMask()
             bounces = true
             updateScrollBehavior()
             let columnCount = getTerminal().cols
