@@ -40,4 +40,52 @@ NSError *_Nullable RLXReinstallSileo(NSBundle *resourceBundle, NSString *_Nullab
                                    installationError);
 }
 
+NSError *_Nullable RLXReinstallPackageManager(
+    NSBundle *resourceBundle,
+    NSString *packageName,
+    NSString *_Nullable __strong *_Nullable failurePhase
+) {
+    if (packageName.length == 0) {
+        if (failurePhase) {
+            *failurePhase = @"validate_package_manager";
+        }
+        return [NSError errorWithDomain:NSPOSIXErrorDomain
+                                   code:EINVAL
+                               userInfo:@{
+                                   NSLocalizedDescriptionKey : @"A package manager name is required.",
+                               }];
+    }
+
+    __block NSError *installationError = nil;
+    int status = RLXPostJailbreakRunAsEffectiveRoot(
+        ^int {
+            return RLXPostJailbreakRunUnsandboxed(
+                ^int {
+                    installationError = [RLXBootstrapFinalizer installBundledPackageNamed:packageName
+                                                                           resourceBundle:resourceBundle];
+                    if (installationError) {
+                        RLXPostJailbreakSetFailurePhase(
+                            failurePhase,
+                            [NSString stringWithFormat:@"install_%@", packageName]
+                        );
+                        return EIO;
+                    }
+                    return 0;
+                },
+                failurePhase);
+        },
+        failurePhase);
+    if (status == 0) {
+        return nil;
+    }
+
+    NSString *phase = failurePhase && *failurePhase
+        ? *failurePhase
+        : [NSString stringWithFormat:@"install_%@", packageName];
+    return RLXActionExecutionError(RLXEngineActionReinstallPackageManager,
+                                   phase,
+                                   status,
+                                   installationError);
+}
+
 #endif /* !TARGET_OS_SIMULATOR */
