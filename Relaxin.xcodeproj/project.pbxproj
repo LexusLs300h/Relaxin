@@ -139,6 +139,7 @@
 				Resources/Entitlements.entitlements,
 				Resources/Info.plist,
 				Resources/InfoPlist.xcstrings,
+				Resources/KernelOffsets.plist,
 				Resources/roothideapp.deb,
 				main.swift,
 			);
@@ -657,14 +658,10 @@
 				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/libkrw-dopamine.deb",
 				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/basebin-link.deb",
 				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/$(EXECUTABLE_NAME).roothide",
-				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/KernelOffsets.plist",
-				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/umbra.deb",
-				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/irisin.deb",
-				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/irisin-default-list-managed.plist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n. \"$SRCROOT/.env.sh\"\n/usr/bin/make -C \"$SRCROOT\" bootstrap-resources\n\"$SRCROOT/DevKit/Helpers/build-basebin-resources.sh\"\n/usr/bin/make -C \"$SRCROOT\" v054-resources\n/bin/mkdir -p \"${SCRIPT_OUTPUT_FILE_0%/*}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/bootstrap_1900.tar.zst\" \"${SCRIPT_OUTPUT_FILE_0}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/basebin.tar\" \"${SCRIPT_OUTPUT_FILE_1}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/basebin.tc\" \"${SCRIPT_OUTPUT_FILE_2}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/libroot.deb\" \"${SCRIPT_OUTPUT_FILE_3}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/libkrw-dopamine.deb\" \"${SCRIPT_OUTPUT_FILE_4}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/basebin-link.deb\" \"${SCRIPT_OUTPUT_FILE_5}\"\n/usr/bin/touch \"${SCRIPT_OUTPUT_FILE_6}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/KernelOffsets.plist\" \"${SCRIPT_OUTPUT_FILE_7}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/umbra.deb\" \"${SCRIPT_OUTPUT_FILE_8}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/irisin.deb\" \"${SCRIPT_OUTPUT_FILE_9}\"\n/usr/bin/ditto \"$SRCROOT/build/Relaxin054Resources/irisin-default-list-managed.plist\" \"${SCRIPT_OUTPUT_FILE_10}\"\n";
+			shellScript = "set -e\n. \"$SRCROOT/.env.sh\"\n\"$SRCROOT/DevKit/Helpers/build-basebin-resources.sh\"\n/bin/mkdir -p \"${SCRIPT_OUTPUT_FILE_0%/*}\"\n/usr/bin/ditto \"$SRCROOT/build/BootstrapResources/bootstrap_1900.tar.zst\" \"$SCRIPT_OUTPUT_FILE_0\"\n/usr/bin/ditto \"$SRCROOT/build/BaseBinResources/basebin.tar\" \"$SCRIPT_OUTPUT_FILE_1\"\n/usr/bin/ditto \"$SRCROOT/build/BaseBinResources/basebin.tc\" \"$SCRIPT_OUTPUT_FILE_2\"\n/usr/bin/ditto \"$SRCROOT/build/BaseBinResources/libroot.deb\" \"$SCRIPT_OUTPUT_FILE_3\"\n/usr/bin/ditto \"$SRCROOT/build/BaseBinResources/libkrw-dopamine.deb\" \"$SCRIPT_OUTPUT_FILE_4\"\n/usr/bin/ditto \"$SRCROOT/build/BaseBinResources/basebin-link.deb\" \"$SCRIPT_OUTPUT_FILE_5\"\n/usr/bin/touch \"$SCRIPT_OUTPUT_FILE_6\"\n";
 		};
 		50AA10303012A00000065F30 /* Prepare Exploit Dependencies */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -903,7 +900,6 @@
 		506994FE30121FDF00065F85 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ENABLE_DEBUG_DYLIB = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
