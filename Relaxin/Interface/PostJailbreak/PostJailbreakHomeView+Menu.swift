@@ -254,6 +254,7 @@ extension PostJailbreakHomeView {
     enum MenuAction: Hashable {
         case advancedOptions
         case resetAndRemoval
+        case packageManagers
         case credits
         case openOwnGoalStudioPicks
         case showSoftwareLicense
