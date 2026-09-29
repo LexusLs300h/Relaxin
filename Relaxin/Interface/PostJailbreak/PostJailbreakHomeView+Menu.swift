@@ -183,7 +183,7 @@ extension PostJailbreakHomeView {
                 return [
                     (
                         action.menuAction,
-                        "\(String(localized: "Execute", bundle: resourceBundle)): \(action.title(in: resourceBundle))"
+                        "\(action.executeLabel(in: resourceBundle))"
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
@@ -228,14 +228,14 @@ extension PostJailbreakHomeView {
         case restartUserspace
         case removeJailbreak
 
-        func title(in resourceBundle: Bundle) -> String {
+        func executeLabel(in resourceBundle: Bundle) -> String {
             switch self {
             case .restartSpringBoard:
-                String(localized: "Restart SpringBoard", bundle: resourceBundle)
+                String(localized: "Execute: Restart SpringBoard", bundle: resourceBundle)
             case .restartUserspace:
-                String(localized: "Restart Userspace", bundle: resourceBundle)
+                String(localized: "执行：涅槃重生", bundle: resourceBundle)
             case .removeJailbreak:
-                String(localized: "Remove Jailbreak", bundle: resourceBundle)
+                String(localized: "Execute: Remove Jailbreak", bundle: resourceBundle)
             }
         }
 
