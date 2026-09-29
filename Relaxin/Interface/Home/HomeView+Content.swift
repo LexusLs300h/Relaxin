@@ -16,9 +16,10 @@ struct HomeContent<Action: Hashable>: View {
     let screen: HomeView.Screen
     var homeHeroTitle = "准备越狱"
     var homeHeroSubtitle = "点击下方按钮开始执行越狱流程"
+    var homeHeroButtonTitle = "开始越狱"
     var onTerminalColumnCountChange: (Int) -> Void
     let onSelectMenuItem: (Action) -> Void
-    var dashboardFirstTitle = "日志"
+    var dashboardFirstTitle = "维护工具"
     var dashboardFirstSubtitle = "查看执行日志"
     var dashboardFirstSystemImage = "doc.text.fill"
     var onOpenAdvancedOptions: () -> Void = {}
@@ -191,7 +192,7 @@ struct HomeContent<Action: Hashable>: View {
             } label: {
                 HStack {
                     Spacer()
-                    Text("开始越狱")
+                    Text(homeHeroButtonTitle)
                         .font(.system(size: 13, weight: .semibold, design: .rounded))
                     Image(systemName: "chevron.right")
                         .font(.system(size: 11, weight: .bold))
@@ -324,7 +325,7 @@ struct HomeContent<Action: Hashable>: View {
                 }
 
                 dashboardAction(
-                    title: "设置",
+                    title: "高级选项",
                     subtitle: "配置偏好选项",
                     systemImage: "gearshape.fill"
                 ) {
@@ -332,7 +333,7 @@ struct HomeContent<Action: Hashable>: View {
                 }
 
                 dashboardAction(
-                    title: "关于",
+                    title: "特别鸣谢",
                     subtitle: "了解更多信息",
                     systemImage: "info.circle.fill"
                 ) {
