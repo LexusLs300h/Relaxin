@@ -33,7 +33,7 @@ extension HomeView {
         let runEngine = {
             engineSession.start(manifest: manifest) {
                 guard removesJailbreak else { return }
-                AppLog.info(Self.self, "jailbreak removal engine completed")
+                alert = .jailbreakRemovalComplete(in: runtime.resourceBundle)
             }
         }
 
