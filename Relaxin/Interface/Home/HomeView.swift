@@ -13,6 +13,7 @@ struct HomeView: View {
     @State var logExportState = LogExportState.idle
     @State private var visibleCreditCharacterCount = 0
     @State private var terminalColumnCount = 32
+    @State private var isRemovingJailbreak = false
 
     init(runtime: RelaxinRuntime) {
         self.runtime = runtime
@@ -64,6 +65,7 @@ struct HomeView: View {
                 RelaxinTerminalContent.running(
                     output: engineSession.output,
                     isJailbroken: false,
+                    isRemovingJailbreak: isRemovingJailbreak,
                     terminalWidth: terminalColumnCount,
                     resourceBundle: runtime.resourceBundle
                 )
