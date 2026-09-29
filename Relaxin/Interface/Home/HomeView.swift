@@ -166,11 +166,19 @@ struct HomeView: View {
     @ViewBuilder private var productContent: some View {
         if runtime.interfaceMode.showsPostJailbreakInterface,
            engineSession.postJailbreakSession.isAvailable,
+           screen != .maintenance,
            !isShowingFailure
         {
             PostJailbreakHomeView(
                 session: engineSession.postJailbreakSession,
-                environment: runtime.postJailbreakEnvironment
+                environment: runtime.postJailbreakEnvironment,
+                onOpenMaintenance: {
+                    guard runtime.interfaceMode.showsMaintenance else { return }
+                    if runtime.interfaceMode.allowsFileExport {
+                        prepareLogExport()
+                    }
+                    screen = .maintenance
+                }
             )
         } else {
             presentedContent
