@@ -158,6 +158,10 @@ extension PostJailbreakHomeView {
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
+            case .logs:
+                return [
+                    (.back, String(localized: "Back", bundle: resourceBundle))
+                ]
             case .credits:
                 var entries: [(MenuAction, String)] = []
                 if allowsExternalNavigation {
