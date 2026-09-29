@@ -165,7 +165,8 @@ struct HomeView: View {
 
     @ViewBuilder private var productContent: some View {
         if runtime.interfaceMode.showsPostJailbreakInterface,
-           engineSession.postJailbreakSession.isAvailable,
+           (engineSession.postJailbreakSession.isAvailable
+                || engineSession.postJailbreakSession.removalCompleted),
            !isShowingFailure
         {
             PostJailbreakHomeView(
