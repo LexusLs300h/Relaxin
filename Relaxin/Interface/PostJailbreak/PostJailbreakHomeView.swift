@@ -139,6 +139,7 @@ struct PostJailbreakHomeView: View {
             screen: homeContentScreen,
             homeHeroTitle: "妙手回春",
             homeHeroSubtitle: "注销 SpringBoard",
+            homeHeroButtonTitle: "妙手回春",
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
             dashboardFirstTitle: "涅槃重生",
