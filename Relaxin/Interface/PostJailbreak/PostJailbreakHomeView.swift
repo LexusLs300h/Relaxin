@@ -111,7 +111,7 @@ struct PostJailbreakHomeView: View {
             terminalAccessibleLinks: terminalAccessibleLinks,
             terminalHeight: screen.terminalHeight,
             rendersTerminalBackgroundActively: false,
-            showsMenu: session.isAvailable,
+            showsMenu: session.isAvailable || session.removalCompleted,
             menuItems: menuItems,
             preferredMenuAction: nil,
             secondaryMenuActions: [.back],
