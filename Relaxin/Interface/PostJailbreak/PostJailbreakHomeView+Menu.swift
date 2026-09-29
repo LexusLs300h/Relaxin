@@ -113,7 +113,7 @@ extension PostJailbreakHomeView {
                     ),
                     (
                         .resetAndRemoval,
-                        String(localized: "Reset & Remove", bundle: resourceBundle)
+                        String(localized: "重置与移除", bundle: resourceBundle)
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
@@ -122,19 +122,19 @@ extension PostJailbreakHomeView {
                     (
                         .resetMobilePassword,
                         String(
-                            localized: "Reset Mobile Password",
+                            localized: "重置移动密码",
                             bundle: resourceBundle
                         )
                     ),
                     (
                         .packageManagers,
-                        String(localized: "Package Managers", bundle: resourceBundle)
+                        String(localized: "软件包管理器", bundle: resourceBundle)
                     ),
                 ]
                 entries.append(contentsOf: [
                     (
                         .confirm(.removeJailbreak),
-                        String(localized: "Remove Jailbreak", bundle: resourceBundle)
+                        String(localized: "移除越狱", bundle: resourceBundle)
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ])
@@ -143,15 +143,15 @@ extension PostJailbreakHomeView {
                 return [
                     (
                         .reinstallPackageManager("sileo"),
-                        String(localized: "Reinstall Sileo", bundle: resourceBundle)
+                        String(localized: "重新安装 Sileo", bundle: resourceBundle)
                     ),
                     (
                         .reinstallPackageManager("irisin"),
-                        String(localized: "Reinstall Irisin", bundle: resourceBundle)
+                        String(localized: "重新安装 Irisin", bundle: resourceBundle)
                     ),
                     (
                         .reinstallPackageManager("umbra"),
-                        String(localized: "Reinstall Umbra", bundle: resourceBundle)
+                        String(localized: "重新安装 Umbra", bundle: resourceBundle)
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
