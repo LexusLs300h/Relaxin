@@ -165,8 +165,7 @@ struct HomeView: View {
 
     @ViewBuilder private var productContent: some View {
         if runtime.interfaceMode.showsPostJailbreakInterface,
-           (engineSession.postJailbreakSession.isAvailable
-                || engineSession.postJailbreakSession.removalCompleted),
+           engineSession.postJailbreakSession.isAvailable,
            !isShowingFailure
         {
             PostJailbreakHomeView(
@@ -176,18 +175,36 @@ struct HomeView: View {
         } else {
             presentedContent
                 .alert(item: $alert) { alert in
-                    SwiftUI.Alert(
-                        title: Text(alert.title),
-                        message: Text(alert.message),
-                        dismissButton: .default(
-                            Text(
-                                String(
-                                    localized: "OK",
-                                    bundle: runtime.resourceBundle
+                    switch alert.kind {
+                    case .notice:
+                        SwiftUI.Alert(
+                            title: Text(alert.title),
+                            message: Text(alert.message),
+                            dismissButton: .default(
+                                Text(
+                                    String(
+                                        localized: "OK",
+                                        bundle: runtime.resourceBundle
+                                    )
                                 )
                             )
                         )
-                    )
+                    case .jailbreakRemovalComplete:
+                        SwiftUI.Alert(
+                            title: Text(alert.title),
+                            message: Text(alert.message),
+                            dismissButton: .default(
+                                Text(
+                                    String(
+                                        localized: "OK",
+                                        bundle: runtime.resourceBundle
+                                    )
+                                )
+                            ) {
+                                suspendApplication()
+                            }
+                        )
+                    }
                 }
         }
     }
