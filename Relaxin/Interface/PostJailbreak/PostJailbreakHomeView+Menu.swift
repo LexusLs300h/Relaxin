@@ -231,11 +231,11 @@ extension PostJailbreakHomeView {
         func executeLabel(in resourceBundle: Bundle) -> String {
             switch self {
             case .restartSpringBoard:
-                String(localized: "Execute: Restart SpringBoard", bundle: resourceBundle)
+                String(localized: "执行：妙手回春", bundle: resourceBundle)
             case .restartUserspace:
                 String(localized: "执行：涅磐重生", bundle: resourceBundle)
             case .removeJailbreak:
-                String(localized: "Execute: Remove Jailbreak", bundle: resourceBundle)
+                String(localized: "执行：移除越狱", bundle: resourceBundle)
             }
         }
 
