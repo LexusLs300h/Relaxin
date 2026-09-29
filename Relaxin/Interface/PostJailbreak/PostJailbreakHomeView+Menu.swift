@@ -233,7 +233,7 @@ extension PostJailbreakHomeView {
             case .restartSpringBoard:
                 String(localized: "Execute: Restart SpringBoard", bundle: resourceBundle)
             case .restartUserspace:
-                String(localized: "执行：涅槃重生", bundle: resourceBundle)
+                String(localized: "执行：涅磐重生", bundle: resourceBundle)
             case .removeJailbreak:
                 String(localized: "Execute: Remove Jailbreak", bundle: resourceBundle)
             }
