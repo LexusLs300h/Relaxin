@@ -129,7 +129,7 @@ struct HomeContent<Action: Hashable>: View {
         HStack(spacing: 12) {
             ZStack {
                 RoundedRectangle(cornerRadius: 13, style: .continuous)
-                    .fill(Theme.accentGradient)
+                    .fill(Theme.darkModeAccentGradient)
                     .frame(width: 46, height: 46)
 
                 Text("R")
@@ -164,7 +164,7 @@ struct HomeContent<Action: Hashable>: View {
             HStack(spacing: 13) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 13, style: .continuous)
-                        .fill(Theme.accentGradient)
+                        .fill(Theme.darkModeAccentGradient)
                         .frame(width: 52, height: 52)
 
                     Text("R")
@@ -212,7 +212,7 @@ struct HomeContent<Action: Hashable>: View {
             .disabled(menuItems.isEmpty)
         }
         .padding(16)
-        .background(Theme.accentGradient, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .background(Theme.darkModeAccentGradient, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .overlay(alignment: .topTrailing) {
             Circle()
                 .fill(.white.opacity(0.08))
@@ -231,7 +231,7 @@ struct HomeContent<Action: Hashable>: View {
                     .frame(width: 56, height: 56)
                 Circle()
                     .trim(from: 0, to: 0.42)
-                    .stroke(Theme.accentGradient, style: StrokeStyle(lineWidth: 7, lineCap: .round))
+                    .stroke(Theme.darkModeAccentGradient, style: StrokeStyle(lineWidth: 7, lineCap: .round))
                     .frame(width: 56, height: 56)
                     .rotationEffect(.degrees(-90))
             }
