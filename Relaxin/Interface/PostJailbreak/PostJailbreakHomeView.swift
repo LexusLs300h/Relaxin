@@ -135,7 +135,15 @@ struct PostJailbreakHomeView: View {
         .onReceive(session.$removalCompleted.removeDuplicates()) { completed in
             guard completed else { return }
             screen = .resetAndRemoval
-            alert = .jailbreakRemovalComplete(in: environment.resourceBundle)
+
+            // Wait until the removal operation has finished updating its
+            // published state before presenting the alert. The view is
+            // temporarily disabled while the operation is running, so
+            // presenting synchronously here can be swallowed by SwiftUI.
+            Task { @MainActor in
+                await Task.yield()
+                alert = .jailbreakRemovalComplete(in: environment.resourceBundle)
+            }
         }
         .modifier(
             LightImpactFeedbackModifier(trigger: screen) { oldScreen, newScreen in
