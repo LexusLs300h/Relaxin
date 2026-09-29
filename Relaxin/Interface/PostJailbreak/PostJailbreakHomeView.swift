@@ -134,6 +134,7 @@ struct PostJailbreakHomeView: View {
         }
         .onReceive(session.$removalCompleted.removeDuplicates()) { completed in
             guard completed else { return }
+            screen = .resetAndRemoval
             alert = .jailbreakRemovalComplete(in: environment.resourceBundle)
         }
         .modifier(
