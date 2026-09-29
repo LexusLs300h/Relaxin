@@ -8,6 +8,7 @@ extension PostJailbreakHomeView {
         case resetAndRemoval
         case packageManagers
         case credits
+        case logs
         case confirmation(ConfirmationAction)
 
         enum TerminalSurface {
@@ -34,6 +35,8 @@ extension PostJailbreakHomeView {
                 .command("relaxin/advanced-options/reset-and-remove/reinstall-package-managers")
             case .credits:
                 .credits
+            case .logs:
+                .command("relaxin/logs")
             case .confirmation:
                 .command("relaxin/confirm")
             }
@@ -41,7 +44,7 @@ extension PostJailbreakHomeView {
 
         var backDestination: Screen? {
             switch self {
-            case .advancedOptions, .credits:
+            case .advancedOptions, .credits, .logs:
                 .home
             case .resetAndRemoval:
                 .advancedOptions
