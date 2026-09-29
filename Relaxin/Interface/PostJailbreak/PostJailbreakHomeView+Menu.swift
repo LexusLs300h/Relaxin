@@ -133,7 +133,7 @@ extension PostJailbreakHomeView {
                 ]
                 entries.append(contentsOf: [
                     (
-                        .removeJailbreak,
+                        .confirm(.removeJailbreak),
                         String(localized: "Remove Jailbreak", bundle: resourceBundle)
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
