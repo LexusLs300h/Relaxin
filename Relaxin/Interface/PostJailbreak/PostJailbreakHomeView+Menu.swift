@@ -61,7 +61,6 @@ extension PostJailbreakHomeView {
 
         func menuEntries(
             runtimeOptions: PostJailbreakSession.RuntimeOptions,
-            removalCompleted: Bool,
             canReinstallSileo: Bool,
             allowsExternalNavigation: Bool,
             resourceBundle: Bundle
