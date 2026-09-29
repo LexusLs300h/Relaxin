@@ -132,18 +132,18 @@ struct PostJailbreakHomeView: View {
         .task(id: screen == .credits) {
             await animateCreditsIfNeeded()
         }
-        .onReceive(session.$removalCompleted.removeDuplicates()) { completed in
-            guard completed else { return }
+        .onReceive(
+            session.$removalCompleted
+                .combineLatest(session.$isPerformingAction)
+                .map { completed, performing in completed && !performing }
+                .removeDuplicates()
+        ) { ready in
+            guard ready else { return }
+            // The removal operation has fully finished and the page is still
+            // mounted because removalCompleted keeps the post-jailbreak view
+            // alive even though the jailbreak runtime is no longer available.
             screen = .resetAndRemoval
-
-            // Wait until the removal operation has finished updating its
-            // published state before presenting the alert. The view is
-            // temporarily disabled while the operation is running, so
-            // presenting synchronously here can be swallowed by SwiftUI.
-            Task { @MainActor in
-                await Task.yield()
-                alert = .jailbreakRemovalComplete(in: environment.resourceBundle)
-            }
+            alert = .jailbreakRemovalComplete(in: environment.resourceBundle)
         }
         .modifier(
             LightImpactFeedbackModifier(trigger: screen) { oldScreen, newScreen in
