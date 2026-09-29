@@ -23,9 +23,6 @@ extension PostJailbreakHomeView {
         }
 
         var terminalSurface: TerminalSurface {
-            if removalCompleted {
-                return [(.back, String(localized: "Back", bundle: resourceBundle))]
-            }
             switch self {
             case .home:
                 .home
