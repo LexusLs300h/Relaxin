@@ -7,12 +7,11 @@ enum RelaxinTerminalContent {
     ) -> String {
         var lines = baseLines(
             isJailbroken: isJailbroken,
-            isRemovingJailbreak: isRemovingJailbreak,
             resourceBundle: resourceBundle
         )
         lines.append("")
         lines.append(
-            TerminalStyle.dim(
+            TerminalStyle.dim
                 String(
                     localized: "Tap options below to start...",
                     bundle: resourceBundle
