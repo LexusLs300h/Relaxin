@@ -259,6 +259,7 @@ extension PostJailbreakHomeView {
         case resetAndRemoval
         case packageManagers
         case credits
+        case logs
         case openOwnGoalStudioPicks
         case showSoftwareLicense
         case toggleOption(ToggleOption)
