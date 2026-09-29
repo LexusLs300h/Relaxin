@@ -13,7 +13,6 @@ struct HomeView: View {
     @State var logExportState = LogExportState.idle
     @State private var visibleCreditCharacterCount = 0
     @State private var terminalColumnCount = 32
-    @State private var isShowingJailbreakRemovalComplete = false
 
     init(runtime: RelaxinRuntime) {
         self.runtime = runtime
@@ -175,32 +174,21 @@ struct HomeView: View {
             )
         } else {
             presentedContent
-            if isShowingJailbreakRemovalComplete {
-                JailbreakRemovalCompleteView(
-                    resourceBundle: runtime.resourceBundle,
-                    onBack: {
-                        isShowingJailbreakRemovalComplete = false
-                        screen = .home
-                    },
-                    onClose: suspendApplication
-                )
-            } else {
-                presentedContent
-                    .alert(item: $alert) { alert in
-                        SwiftUI.Alert(
-                            title: Text(alert.title),
-                            message: Text(alert.message),
-                            dismissButton: .default(
-                                Text(
-                                    String(
-                                        localized: "OK",
-                                        bundle: runtime.resourceBundle
-                                    )
+            presentedContent
+                .alert(item: $alert) { alert in
+                    SwiftUI.Alert(
+                        title: Text(alert.title),
+                        message: Text(alert.message),
+                        dismissButton: .default(
+                            Text(
+                                String(
+                                    localized: "OK",
+                                    bundle: runtime.resourceBundle
                                 )
                             )
                         )
-                    }
-            }
+                    )
+                }
         }
     }
 
