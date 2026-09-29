@@ -16,6 +16,9 @@ struct HomeContent<Action: Hashable>: View {
     let screen: HomeView.Screen
     let onTerminalColumnCountChange: (Int) -> Void
     let onSelectMenuItem: (Action) -> Void
+    var dashboardFirstTitle = "日志"
+    var dashboardFirstSubtitle = "查看执行日志"
+    var dashboardFirstSystemImage = "doc.text.fill"
     var onOpenAdvancedOptions: () -> Void = {}
     var onOpenMaintenance: () -> Void = {}
     var onOpenCredits: () -> Void = {}
@@ -311,9 +314,9 @@ struct HomeContent<Action: Hashable>: View {
 
             HStack(spacing: 10) {
                 dashboardAction(
-                    title: "日志",
-                    subtitle: "查看执行日志",
-                    systemImage: "doc.text.fill"
+                    title: dashboardFirstTitle,
+                    subtitle: dashboardFirstSubtitle,
+                    systemImage: dashboardFirstSystemImage
                 ) {
                     onOpenMaintenance()
                 }
