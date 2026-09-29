@@ -86,11 +86,11 @@ enum Theme {
             ),
             dynamicColor(
                 light: UIColor(red: 0.94, green: 0.90, blue: 1.0, alpha: 1),
-                dark: UIColor(red: 0.055, green: 0.04, blue: 0.10, alpha: 1)
+                dark: UIColor(red: 0.035, green: 0.028, blue: 0.065, alpha: 1)
             ),
             dynamicColor(
                 light: UIColor(red: 0.99, green: 0.91, blue: 0.98, alpha: 1),
-                dark: UIColor(red: 0.075, green: 0.045, blue: 0.10, alpha: 1)
+                dark: UIColor(red: 0.045, green: 0.03, blue: 0.07, alpha: 1)
             ),
             dynamicColor(
                 light: UIColor(red: 0.88, green: 0.93, blue: 1.0, alpha: 1),
@@ -112,6 +112,25 @@ enum Theme {
 
     static let accentGradient = LinearGradient(
         colors: [accentBlue, accentPurple, accentPink],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+
+    static let darkModeAccentGradient = LinearGradient(
+        colors: [
+            dynamicColor(
+                light: UIColor(red: 0.20, green: 0.58, blue: 1.0, alpha: 1),
+                dark: UIColor(red: 0.12, green: 0.34, blue: 0.58, alpha: 1)
+            ),
+            dynamicColor(
+                light: UIColor(red: 0.47, green: 0.27, blue: 1.0, alpha: 1),
+                dark: UIColor(red: 0.28, green: 0.18, blue: 0.56, alpha: 1)
+            ),
+            dynamicColor(
+                light: UIColor(red: 0.72, green: 0.31, blue: 1.0, alpha: 1),
+                dark: UIColor(red: 0.46, green: 0.20, blue: 0.58, alpha: 1)
+            )
+        ],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
