@@ -13,7 +13,7 @@ struct HomeView: View {
     @State var logExportState = LogExportState.idle
     @State private var visibleCreditCharacterCount = 0
     @State private var terminalColumnCount = 32
-    @State fileprivate var isRemovingJailbreak = false
+    @State var isRemovingJailbreak = false
 
     init(runtime: RelaxinRuntime) {
         self.runtime = runtime
