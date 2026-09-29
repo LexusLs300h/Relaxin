@@ -56,7 +56,7 @@ extension HomeView {
             case let .confirmation(action):
                 switch action {
                 case .removeJailbreak:
-                    .home
+                    .advancedOptions
                 case .resetRelaxin:
                     .maintenance
                 }
