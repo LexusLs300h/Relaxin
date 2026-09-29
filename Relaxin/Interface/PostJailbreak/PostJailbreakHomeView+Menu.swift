@@ -23,6 +23,9 @@ extension PostJailbreakHomeView {
         }
 
         var terminalSurface: TerminalSurface {
+            if removalCompleted {
+                return [(.back, String(localized: "Back", bundle: resourceBundle))]
+            }
             switch self {
             case .home:
                 .home
@@ -61,6 +64,7 @@ extension PostJailbreakHomeView {
 
         func menuEntries(
             runtimeOptions: PostJailbreakSession.RuntimeOptions,
+            removalCompleted: Bool,
             canReinstallSileo: Bool,
             allowsExternalNavigation: Bool,
             resourceBundle: Bundle
