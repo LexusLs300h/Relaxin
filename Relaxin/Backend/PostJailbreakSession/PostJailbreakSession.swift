@@ -16,7 +16,6 @@ final class PostJailbreakSession: ObservableObject {
     @Published private(set) var runtimeOptions = RuntimeOptions()
     @Published private(set) var output: [TerminalOutputLine] = []
     @Published private(set) var isPerformingAction = false
-    @Published private(set) var removalCompleted = false
 
     let environment: PostJailbreakEnvironment
     private let controller: RLXPostJailbreakController
@@ -98,13 +97,13 @@ final class PostJailbreakSession: ObservableObject {
 
     func perform(_ action: Action) {
         guard isAvailable, !isPerformingAction else { return }
-        performOperation({ [controller] outputHandler in
+        performOperation { [controller] outputHandler in
             try await controller.perform(
                 action: action.postJailbreakAction,
                 arguments: action.postJailbreakArguments,
                 output: outputHandler
             )
-        }, completedAction: action)
+        }
     }
 
     func reinstallSileo() {
@@ -121,10 +120,7 @@ final class PostJailbreakSession: ObservableObject {
         }
     }
 
-    private func performOperation(
-        _ operation: @escaping ReinstallSileoAction,
-        completedAction: Action? = nil
-    ) {
+    private func performOperation(_ operation: @escaping ReinstallSileoAction) {
         guard isAvailable, !isPerformingAction else { return }
         isPerformingAction = true
         Task { [self] in
@@ -144,9 +140,6 @@ final class PostJailbreakSession: ObservableObject {
                     }
                 }
                 try await operation(outputHandler)
-                if case .removeJailbreak? = completedAction {
-                    removalCompleted = true
-                }
                 refreshAvailability()
             } catch {
                 append(
