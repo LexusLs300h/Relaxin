@@ -133,7 +133,8 @@ struct PostJailbreakHomeView: View {
                     case .restartSpringBoard, .restartUserspace, .removeJailbreak:
                         .confirmation(.removeJailbreak)
                     }
-                },
+                }
+            },
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
             homeHeroTitle: "妙手回春",
