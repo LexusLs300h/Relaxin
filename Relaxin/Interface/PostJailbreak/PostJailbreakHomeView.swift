@@ -72,7 +72,7 @@ struct PostJailbreakHomeView: View {
     }
 
     private var menuItems: [OptionListItem<MenuAction>] {
-        guard session.isAvailable else { return [] }
+        guard session.isAvailable || session.removalCompleted else { return [] }
         return screen.menuEntries(
             runtimeOptions: session.runtimeOptions,
             removalCompleted: session.removalCompleted,
