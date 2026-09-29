@@ -201,6 +201,8 @@ struct PostJailbreakHomeView: View {
             screen = .packageManagers
         case .credits:
             screen = .credits
+        case .logs:
+            screen = .logs
         case .openOwnGoalStudioPicks:
             guard environment.interfaceMode.allowsExternalNavigation else { return }
             openURL(Self.ownGoalStudioPicksURL)
