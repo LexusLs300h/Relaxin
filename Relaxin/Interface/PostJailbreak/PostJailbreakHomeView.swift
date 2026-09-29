@@ -37,7 +37,7 @@ struct PostJailbreakHomeView: View {
     }
 
     private var terminalText: String {
-        guard session.isAvailable else {
+        guard session.isAvailable || session.removalCompleted else {
             return RelaxinTerminalContent.unavailable(
                 resourceBundle: environment.resourceBundle
             )
@@ -75,6 +75,7 @@ struct PostJailbreakHomeView: View {
         guard session.isAvailable else { return [] }
         return screen.menuEntries(
             runtimeOptions: session.runtimeOptions,
+            removalCompleted: session.removalCompleted,
             canReinstallSileo: session.canReinstallSileo,
             allowsExternalNavigation: environment.interfaceMode.allowsExternalNavigation,
             resourceBundle: environment.resourceBundle
@@ -130,6 +131,10 @@ struct PostJailbreakHomeView: View {
         .allowsHitTesting(!session.isPerformingAction)
         .task(id: screen == .credits) {
             await animateCreditsIfNeeded()
+        }
+        .onChange(of: session.removalCompleted) { _, completed in
+            guard completed else { return }
+            alert = .jailbreakRemovalComplete(in: environment.resourceBundle)
         }
         .modifier(
             LightImpactFeedbackModifier(trigger: screen) { oldScreen, newScreen in
