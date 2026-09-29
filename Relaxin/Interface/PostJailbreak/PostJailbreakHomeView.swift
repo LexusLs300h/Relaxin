@@ -119,10 +119,21 @@ struct PostJailbreakHomeView: View {
             isVolumeButtonInputEnabled: alert == nil
                 && !session.isPerformingAction,
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
-            screen: screen == .credits ? .credits : .home, // 👈 匹配 HomeView.Screen.home
+            screen: {
+                switch screen {
+                case .home: .home
+                case .advancedOptions: .advancedOptions
+                case .resetAndRemoval: .advancedOptions
+                case .packageManagers: .advancedOptions
+                case .logs: .maintenance
+                case .credits: .credits
+                case .confirmation: .confirmation
+                }
+            }(),
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
             onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
+            onOpenMaintenance: { screen = .logs },
             onOpenCredits: { performMenuAction(.credits) },
             onTerminalLongPress: { }
         )
