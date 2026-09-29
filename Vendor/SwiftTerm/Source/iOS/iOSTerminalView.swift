@@ -1500,7 +1500,14 @@ open class TerminalView: UIScrollView, UITextInputTraits, UIKeyInput, UIScrollVi
         // stays true through the whole momentum coast, so it cannot distinguish
         // an active drag from post-lift deceleration. contentSize is still
         // updated above so the newly appended rows remain reachable.
-        if isTracking || (userScrolling && isDecelerating) {
+        // Never fight UIKit's native drag/deceleration/rubber-band animation.
+        // In particular, the top rubber-band temporarily moves contentOffset
+        // beyond the normal inset boundary; re-applying SwiftTerm's terminal
+        // offset during that animation cancels the visual bounce.
+        let minOffsetY = -adjustedContentInset.top
+        let maxOffsetY = maxContentOffsetY()
+        let isBeyondVerticalBounds = contentOffset.y < minOffsetY || contentOffset.y > maxOffsetY
+        if isTracking || isDragging || isDecelerating || isBeyondVerticalBounds {
             return
         }
         let rowOffset = CGFloat (displayBuffer.yDisp) * cellDimension.height
