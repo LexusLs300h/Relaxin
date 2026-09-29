@@ -132,7 +132,7 @@ struct PostJailbreakHomeView: View {
         .task(id: screen == .credits) {
             await animateCreditsIfNeeded()
         }
-        .onChange(of: session.removalCompleted) { _, completed in
+        .onReceive(session.$removalCompleted.removeDuplicates()) { completed in
             guard completed else { return }
             alert = .jailbreakRemovalComplete(in: environment.resourceBundle)
         }
