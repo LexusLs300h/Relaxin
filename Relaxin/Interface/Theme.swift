@@ -120,15 +120,15 @@ enum Theme {
         colors: [
             dynamicColor(
                 light: UIColor(red: 0.20, green: 0.58, blue: 1.0, alpha: 1),
-                dark: UIColor(red: 0.12, green: 0.34, blue: 0.58, alpha: 1)
+                dark: UIColor(red: 0.07, green: 0.20, blue: 0.34, alpha: 1)
             ),
             dynamicColor(
                 light: UIColor(red: 0.47, green: 0.27, blue: 1.0, alpha: 1),
-                dark: UIColor(red: 0.28, green: 0.18, blue: 0.56, alpha: 1)
+                dark: UIColor(red: 0.16, green: 0.10, blue: 0.32, alpha: 1)
             ),
             dynamicColor(
                 light: UIColor(red: 0.72, green: 0.31, blue: 1.0, alpha: 1),
-                dark: UIColor(red: 0.46, green: 0.20, blue: 0.58, alpha: 1)
+                dark: UIColor(red: 0.27, green: 0.11, blue: 0.35, alpha: 1)
             )
         ],
         startPoint: .topLeading,
