@@ -66,12 +66,6 @@ extension PostJailbreakHomeView {
             allowsExternalNavigation: Bool,
             resourceBundle: Bundle
         ) -> [(action: MenuAction, title: String)] {
-            if removalCompleted {
-                return [
-                    (.back, String(localized: "Back", bundle: resourceBundle))
-                ]
-            }
-
             switch self {
             case .home:
                 return [
