@@ -14,7 +14,9 @@ struct HomeContent<Action: Hashable>: View {
     let isVolumeButtonInputEnabled: Bool
     let allowsOpeningTerminalLinks: Bool
     let screen: HomeView.Screen
-    let onTerminalColumnCountChange: (Int) -> Void
+    var homeHeroTitle = "准备越狱"
+    var homeHeroSubtitle = "点击下方按钮开始执行越狱流程"
+    var onTerminalColumnCountChange: (Int) -> Void
     let onSelectMenuItem: (Action) -> Void
     var dashboardFirstTitle = "日志"
     var dashboardFirstSubtitle = "查看执行日志"
@@ -170,11 +172,11 @@ struct HomeContent<Action: Hashable>: View {
                 }
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text("准备越狱")
+                    Text(homeHeroTitle)
                         .font(.system(size: 18, weight: .bold, design: .rounded))
                         .foregroundStyle(.white)
 
-                    Text("点击下方按钮开始执行越狱流程")
+                    Text(homeHeroSubtitle)
                         .font(.system(size: 11, weight: .medium, design: .rounded))
                         .foregroundStyle(.white.opacity(0.72))
                 }
