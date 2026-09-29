@@ -193,7 +193,18 @@ struct HomeView: View {
                         SwiftUI.Alert(
                             title: Text(alert.title),
                             message: Text(alert.message),
-                            dismissButton: .default(
+                            primaryButton: .default(
+                                Text(
+                                    String(
+                                        localized: "Back",
+                                        bundle: runtime.resourceBundle
+                                    )
+                                )
+                            ) {
+                                screen = .home
+                                self.alert = nil
+                            },
+                            secondaryButton: .default(
                                 Text(
                                     String(
                                         localized: "OK",
