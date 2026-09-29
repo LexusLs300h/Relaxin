@@ -160,12 +160,11 @@ extension TerminalPresenter {
 
             isDirectionalLockEnabled = true
             alwaysBounceHorizontal = false
-            alwaysBounceVertical = false
+            alwaysBounceVertical = needsVerticalScroll
             showsHorizontalScrollIndicator = false
             showsVerticalScrollIndicator = needsVerticalScroll
             isScrollEnabled = needsVerticalScroll
             bounces = needsVerticalScroll
-            alwaysBounceVertical = needsVerticalScroll
             // When the output fits, disable both scrolling and bouncing. This
             // is intentionally stricter than just hiding the indicators:
             // SwiftTerm can still write contentOffset programmatically.
