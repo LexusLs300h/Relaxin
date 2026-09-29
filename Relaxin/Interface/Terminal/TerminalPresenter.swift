@@ -154,17 +154,11 @@ extension TerminalPresenter {
         private func updateScrollBehavior() {
             guard bounds.height > 0 else { return }
 
-            // contentSize is the terminal's actual glyph area. The 10pt top/bottom
-            // margins are added by contentInset, so a terminal that fits inside
-            // the view must be tested against the full bounds, not against the
-            // inset-reduced viewport. Otherwise even a one-screen terminal gets
-            // an artificial 20pt scroll range.
-            let availableContentHeight = max(
-                0,
-                bounds.height - adjustedContentInset.top - adjustedContentInset.bottom
-            )
+            // contentInset is only the visual margin. It must not create a
+            // scroll range by itself. Only terminal content taller than the
+            // actual scroll view bounds may enable vertical scrolling.
             let contentHeight = contentSize.height
-            let needsVerticalScroll = contentHeight > availableContentHeight + 1
+            let needsVerticalScroll = contentHeight > bounds.height + 1
 
             isDirectionalLockEnabled = true
             alwaysBounceHorizontal = false
@@ -173,10 +167,7 @@ extension TerminalPresenter {
             showsVerticalScrollIndicator = needsVerticalScroll
             isScrollEnabled = needsVerticalScroll
             bounces = needsVerticalScroll
-            // When the output fits, disable both scrolling and bouncing. This
-            // is intentionally stricter than just hiding the indicators:
-            // SwiftTerm can still write contentOffset programmatically.
-            // setContentOffset() below also enforces the same fixed position.
+            // When the output fits, disable both scrolling and bouncing.
 
             // SwiftTerm sizes the scroll content from its terminal column count.
             // That internal width must never become a horizontal scrolling area:
