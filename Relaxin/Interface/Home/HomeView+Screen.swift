@@ -83,9 +83,7 @@ extension HomeView {
                 var entries: [(MenuAction, String)] = [
                     (
                         .jailbreak,
-                        configuration.removeJailbreakEnabled
-                            ? String(localized: "Remove Jailbreak", bundle: resourceBundle)
-                            : String(localized: "Jailbreak", bundle: resourceBundle)
+                        String(localized: "Jailbreak", bundle: resourceBundle)
                     ),
                     (
                         .advancedOptions,
@@ -127,12 +125,8 @@ extension HomeView {
                         "\(String(localized: "Jetsam Multiplier", bundle: resourceBundle)): \(configuration.jetsamMultiplier.title(in: resourceBundle))"
                     ),
                     (
-                        .toggleOption(.removeJailbreak),
-                        optionTitle(
-                            for: .removeJailbreak,
-                            configuration: configuration,
-                            resourceBundle: resourceBundle
-                        )
+                        .confirm(.removeJailbreak),
+                        String(localized: "Remove Jailbreak", bundle: resourceBundle)
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
