@@ -120,11 +120,29 @@ struct PostJailbreakHomeView: View {
             isVolumeButtonInputEnabled: alert == nil
                 && !session.isPerformingAction,
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
-            screen: screen == .advancedOptions ? .advancedOptions : screen == .credits ? .credits : .home,
+            screen: {
+                switch screen {
+                case .home:
+                    .home
+                case .advancedOptions, .resetAndRemoval, .packageManagers:
+                    .advancedOptions
+                case .credits:
+                    .credits
+                case let .confirmation(action):
+                    switch action {
+                    case .restartSpringBoard, .restartUserspace, .removeJailbreak:
+                        .confirmation(.removeJailbreak)
+                    }
+                },
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
+            homeHeroTitle: "妙手回春",
+            homeHeroSubtitle: "注销 SpringBoard",
+            dashboardFirstTitle: "涅槃重生",
+            dashboardFirstSubtitle: "重启用户空间",
+            dashboardFirstSystemImage: "arrow.clockwise.circle.fill",
             onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
-            onOpenMaintenance: onOpenMaintenance,
+            onOpenMaintenance: { performMenuAction(.confirm(.restartUserspace)) },
             onOpenCredits: { performMenuAction(.credits) },
             onTerminalLongPress: { }
         )
