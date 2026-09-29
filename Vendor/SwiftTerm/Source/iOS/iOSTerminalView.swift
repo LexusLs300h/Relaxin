@@ -1486,8 +1486,27 @@ open class TerminalView: UIScrollView, UITextInputTraits, UIKeyInput, UIScrollVi
     func updateScroller ()
     {
         let displayBuffer = terminal.displayBuffer
+
+        // The buffer reserves a full terminal viewport (and, when enabled,
+        // scrollback capacity). That reserved capacity is not the same thing
+        // as content that actually exists. Using lines.count here makes even a
+        // one-line command look scrollable because the empty viewport rows are
+        // counted as content. Size the scroll view from the last line that
+        // actually contains terminal data, while retaining the full buffer when
+        // real scrollback exists.
+        var usedLineCount = 0
+        if !displayBuffer.lines.isEmpty {
+            for index in stride(from: displayBuffer.lines.count - 1, through: 0, by: -1) {
+                if displayBuffer.lines[index].hasAnyContent() {
+                    usedLineCount = index + 1
+                    break
+                }
+            }
+        }
+        usedLineCount = max(usedLineCount, 1)
+
         contentSize = CGSize (width: CGFloat (displayBuffer.cols) * cellDimension.width,
-                              height: CGFloat (displayBuffer.lines.count) * cellDimension.height)
+                              height: CGFloat (usedLineCount) * cellDimension.height)
         // Let the gesture own contentOffset while the finger is physically down
         // (isTracking), and while frozen history coasts under momentum —
         // re-asserting it there fights the drag and blocks the user from reaching
