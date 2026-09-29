@@ -37,7 +37,7 @@ struct PostJailbreakHomeView: View {
     }
 
     private var terminalText: String {
-        guard session.isAvailable || session.removalCompleted else {
+        guard session.isAvailable else {
             return RelaxinTerminalContent.unavailable(
                 resourceBundle: environment.resourceBundle
             )
@@ -72,7 +72,7 @@ struct PostJailbreakHomeView: View {
     }
 
     private var menuItems: [OptionListItem<MenuAction>] {
-        guard session.isAvailable || session.removalCompleted else { return [] }
+        guard session.isAvailable else { return [] }
         return screen.menuEntries(
             runtimeOptions: session.runtimeOptions,
             removalCompleted: session.removalCompleted,
@@ -111,7 +111,7 @@ struct PostJailbreakHomeView: View {
             terminalAccessibleLinks: terminalAccessibleLinks,
             terminalHeight: screen.terminalHeight,
             rendersTerminalBackgroundActively: false,
-            showsMenu: session.isAvailable || session.removalCompleted,
+            showsMenu: session.isAvailable,
             menuItems: menuItems,
             preferredMenuAction: nil,
             secondaryMenuActions: [.back],
@@ -131,19 +131,6 @@ struct PostJailbreakHomeView: View {
         .allowsHitTesting(!session.isPerformingAction)
         .task(id: screen == .credits) {
             await animateCreditsIfNeeded()
-        }
-        .onReceive(
-            session.$removalCompleted
-                .combineLatest(session.$isPerformingAction)
-                .map { completed, performing in completed && !performing }
-                .removeDuplicates()
-        ) { ready in
-            guard ready else { return }
-            // The removal operation has fully finished and the page is still
-            // mounted because removalCompleted keeps the post-jailbreak view
-            // alive even though the jailbreak runtime is no longer available.
-            screen = .resetAndRemoval
-            alert = .jailbreakRemovalComplete(in: environment.resourceBundle)
         }
         .modifier(
             LightImpactFeedbackModifier(trigger: screen) { oldScreen, newScreen in
