@@ -175,7 +175,6 @@ struct HomeView: View {
             )
         } else {
             presentedContent
-            presentedContent
                 .alert(item: $alert) { alert in
                     SwiftUI.Alert(
                         title: Text(alert.title),
