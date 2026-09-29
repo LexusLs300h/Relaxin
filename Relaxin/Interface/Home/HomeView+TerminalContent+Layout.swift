@@ -130,6 +130,7 @@ extension RelaxinTerminalContent {
 
     static func bannerLines(
         isJailbroken: Bool,
+        isRemovingJailbreak: Bool = false,
         resourceBundle: Bundle
     ) -> [String] {
         // Keep the terminal as a real SwiftTerm surface, but use a compact
