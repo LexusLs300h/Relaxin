@@ -65,6 +65,22 @@ struct PostJailbreakHomeView: View {
         }
     }
 
+    private var homeContentScreen: HomeView.Screen {
+        switch screen {
+        case .home:
+            .home
+        case .advancedOptions, .resetAndRemoval, .packageManagers:
+            .advancedOptions
+        case .credits:
+            .credits
+        case let .confirmation(action):
+            switch action {
+            case .restartSpringBoard, .restartUserspace, .removeJailbreak:
+                .confirmation(.removeJailbreak)
+            }
+        }
+    }
+
     private var terminalAccessibleLinks: [TerminalPresenter.AccessibleLink] {
         guard screen == .credits else { return [] }
         return RelaxinCredits.accessibleLinks(
@@ -120,25 +136,11 @@ struct PostJailbreakHomeView: View {
             isVolumeButtonInputEnabled: alert == nil
                 && !session.isPerformingAction,
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
-            screen: {
-                switch screen {
-                case .home:
-                    .home
-                case .advancedOptions, .resetAndRemoval, .packageManagers:
-                    .advancedOptions
-                case .credits:
-                    .credits
-                case let .confirmation(action):
-                    switch action {
-                    case .restartSpringBoard, .restartUserspace, .removeJailbreak:
-                        .confirmation(.removeJailbreak)
-                    }
-                }
-            },
-            onTerminalColumnCountChange: { terminalColumnCount = $0 },
-            onSelectMenuItem: performMenuAction,
+            screen: homeContentScreen,
             homeHeroTitle: "妙手回春",
             homeHeroSubtitle: "注销 SpringBoard",
+            onTerminalColumnCountChange: { terminalColumnCount = $0 },
+            onSelectMenuItem: performMenuAction,
             dashboardFirstTitle: "涅槃重生",
             dashboardFirstSubtitle: "重启用户空间",
             dashboardFirstSystemImage: "arrow.clockwise.circle.fill",
