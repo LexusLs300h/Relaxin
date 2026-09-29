@@ -4,6 +4,7 @@ import UIKit
 
 extension HomeView {
     func startEngine(removingJailbreak: Bool = false) {
+        isRemovingJailbreak = removingJailbreak
         guard screen != .engine, case .idle = engineSession.phase else { return }
 
         var manifest: [RLXEngineManifestKey: String]
