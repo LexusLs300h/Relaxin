@@ -45,7 +45,11 @@ private struct PostJailbreakRootContent: View {
     }
 
     var body: some View {
-        PostJailbreakHomeView(session: session, environment: environment)
+        PostJailbreakHomeView(
+                session: session,
+                environment: environment,
+                onOpenMaintenance: { }
+            )
             .task {
                 session.refreshAvailability()
             }
