@@ -103,10 +103,12 @@ extension RelaxinTerminalContent {
 
     static func baseLines(
         isJailbroken: Bool,
+        isRemovingJailbreak: Bool = false,
         resourceBundle: Bundle
     ) -> [String] {
         var lines = bannerLines(
             isJailbroken: isJailbroken,
+            isRemovingJailbreak: isRemovingJailbreak,
             resourceBundle: resourceBundle
         )
 
@@ -132,11 +134,17 @@ extension RelaxinTerminalContent {
     ) -> [String] {
         // Keep the terminal as a real SwiftTerm surface, but use a compact
         // execution-log header instead of the oversized ASCII banner.
-        let state = isJailbroken
-            ? TerminalStyle.danger("JAILBROKEN")
-            : TerminalStyle.accent("READY")
+        let state = if isRemovingJailbreak {
+            TerminalStyle.danger("REMOVING JAILBREAK")
+        } else if isJailbroken {
+            TerminalStyle.danger("JAILBROKEN")
+        } else {
+            TerminalStyle.accent("READY")
+        }
         let title = TerminalStyle.bold("RELAXIN")
-        let subtitle = TerminalStyle.dim("ENGINE OUTPUT")
+        let subtitle = TerminalStyle.dim(
+            isRemovingJailbreak ? "JAILBREAK REMOVAL" : "ENGINE OUTPUT"
+        )
         let version = TerminalStyle.accent("VERSION ") + AppInfo.displayVersion(in: resourceBundle)
         let uptime = TerminalStyle.accent("UPTIME ") + DeviceInfo.uptime
         let support = TerminalStyle.dim(
