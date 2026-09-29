@@ -154,9 +154,17 @@ extension TerminalPresenter {
         private func updateScrollBehavior() {
             guard bounds.height > 0 else { return }
 
-            let viewportHeight = bounds.height - adjustedContentInset.top - adjustedContentInset.bottom
+            // contentSize is the terminal's actual glyph area. The 10pt top/bottom
+            // margins are added by contentInset, so a terminal that fits inside
+            // the view must be tested against the full bounds, not against the
+            // inset-reduced viewport. Otherwise even a one-screen terminal gets
+            // an artificial 20pt scroll range.
+            let availableContentHeight = max(
+                0,
+                bounds.height - adjustedContentInset.top - adjustedContentInset.bottom
+            )
             let contentHeight = contentSize.height
-            let needsVerticalScroll = contentHeight > viewportHeight + 1
+            let needsVerticalScroll = contentHeight > availableContentHeight + 1
 
             isDirectionalLockEnabled = true
             alwaysBounceHorizontal = false
