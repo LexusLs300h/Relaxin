@@ -75,7 +75,6 @@ struct PostJailbreakHomeView: View {
         guard session.isAvailable else { return [] }
         return screen.menuEntries(
             runtimeOptions: session.runtimeOptions,
-            removalCompleted: session.removalCompleted,
             canReinstallSileo: session.canReinstallSileo,
             allowsExternalNavigation: environment.interfaceMode.allowsExternalNavigation,
             resourceBundle: environment.resourceBundle
