@@ -31,4 +31,13 @@ extension PostJailbreakHomeView {
             )
         }
     }
+
+    static func jailbreakRemovalComplete(
+        in resourceBundle: Bundle
+    ) -> Alert {
+        Alert(
+            title: String(localized: "Jailbreak Removal Complete", bundle: resourceBundle),
+            message: String(localized: "Jailbreak removal is complete. Tap OK to continue.", bundle: resourceBundle)
+        )
+    }
 }
