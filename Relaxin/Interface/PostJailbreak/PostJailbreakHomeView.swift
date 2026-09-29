@@ -119,21 +119,10 @@ struct PostJailbreakHomeView: View {
             isVolumeButtonInputEnabled: alert == nil
                 && !session.isPerformingAction,
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
-            screen: {
-                switch screen {
-                case .home: .home
-                case .advancedOptions: .advancedOptions
-                case .resetAndRemoval: .advancedOptions
-                case .packageManagers: .advancedOptions
-                case .logs: .maintenance
-                case .credits: .credits
-                case .confirmation: .confirmation
-                }
-            }(),
+            screen: screen == .credits ? .credits : .home, // 👈 匹配 HomeView.Screen.home
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
             onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
-            onOpenMaintenance: { screen = .logs },
             onOpenCredits: { performMenuAction(.credits) },
             onTerminalLongPress: { }
         )
@@ -201,8 +190,6 @@ struct PostJailbreakHomeView: View {
             screen = .packageManagers
         case .credits:
             screen = .credits
-        case .logs:
-            screen = .logs
         case .openOwnGoalStudioPicks:
             guard environment.interfaceMode.allowsExternalNavigation else { return }
             openURL(Self.ownGoalStudioPicksURL)
