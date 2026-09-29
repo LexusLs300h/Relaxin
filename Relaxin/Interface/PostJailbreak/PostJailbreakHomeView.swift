@@ -240,8 +240,22 @@ struct PostJailbreakHomeView: View {
         case .removeJailbreak:
             session.perform(.removeJailbreak)
         case .back:
-            if let destination = screen.backDestination {
-                screen = destination
+            switch screen {
+            case .advancedOptions, .credits:
+                screen = .home
+            case .resetAndRemoval:
+                screen = .advancedOptions
+            case .packageManagers:
+                screen = .resetAndRemoval
+            case let .confirmation(action):
+                switch action {
+                case .restartSpringBoard, .restartUserspace:
+                    screen = .home
+                case .removeJailbreak:
+                    screen = .resetAndRemoval
+                }
+            case .home:
+                break
             }
         }
     }
