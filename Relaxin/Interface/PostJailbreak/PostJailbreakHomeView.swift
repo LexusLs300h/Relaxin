@@ -9,6 +9,7 @@ struct PostJailbreakHomeView: View {
     @ObservedObject var session: PostJailbreakSession
 
     let environment: PostJailbreakEnvironment
+    let onOpenMaintenance: () -> Void
 
     @State private var screen = Screen.home
     @State private var alert: Alert?
@@ -123,6 +124,7 @@ struct PostJailbreakHomeView: View {
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
             onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
+            onOpenMaintenance: onOpenMaintenance,
             onOpenCredits: { performMenuAction(.credits) },
             onTerminalLongPress: { }
         )
