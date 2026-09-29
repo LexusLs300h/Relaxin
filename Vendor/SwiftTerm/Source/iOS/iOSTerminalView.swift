@@ -1497,7 +1497,8 @@ open class TerminalView: UIScrollView, UITextInputTraits, UIKeyInput, UIScrollVi
         var usedLineCount = 0
         if !displayBuffer.lines.isEmpty {
             for index in stride(from: displayBuffer.lines.count - 1, through: 0, by: -1) {
-                if displayBuffer.lines[index].hasAnyContent() {
+                if displayBuffer.lines[index].getTrimmedLength() > 0
+                        || displayBuffer.lines[index].images != nil {
                     usedLineCount = index + 1
                     break
                 }
