@@ -83,6 +83,9 @@ if [ "$XC_STATUS" -ne 0 ] || [ "$FOUND_ERRORS" -ne 0 ]; then
         grep -En "$ERR_RE" "$LOG" | head -40 >&2 || true
         echo "---------------------------------------" >&2
     fi
+    echo "---- last 120 lines of normalized xcodebuild log ----" >&2
+    tail -120 "$LOG" >&2 || true
+    echo "------------------------------------------------------" >&2
     # Prefer propagating the original xcodebuild exit status when it's non-zero;
     # otherwise fail with 1 because the log says the run is bad.
     if [ "$XC_STATUS" -ne 0 ]; then
