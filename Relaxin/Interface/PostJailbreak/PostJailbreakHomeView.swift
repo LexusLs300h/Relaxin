@@ -119,6 +119,7 @@ struct PostJailbreakHomeView: View {
             isVolumeButtonInputEnabled: alert == nil
                 && !session.isPerformingAction,
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
+            screen: screen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction
         )
