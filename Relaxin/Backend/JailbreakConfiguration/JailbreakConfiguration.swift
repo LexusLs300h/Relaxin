@@ -8,6 +8,7 @@ struct JailbreakConfiguration {
         static let appJITEnabled = "appJITEnabled"
         static let jetsamMultiplier = "jetsamMultiplier"
         static let removeJailbreakEnabled = "removeJailbreakEnabled"
+        static let autorunEnabled = "autorunEnabled"
     }
 
     private let defaults: UserDefaults
@@ -39,6 +40,10 @@ struct JailbreakConfiguration {
         }
     }
 
+    var autorunEnabled: Bool {
+        didSet { defaults.set(autorunEnabled, forKey: StorageKey.autorunEnabled) }
+    }
+
     var removeJailbreakEnabled: Bool {
         didSet {
             defaults.set(
@@ -55,6 +60,7 @@ struct JailbreakConfiguration {
             StorageKey.appJITEnabled: true,
             StorageKey.jetsamMultiplier: JetsamMultiplier.three.rawValue,
             StorageKey.removeJailbreakEnabled: false,
+            StorageKey.autorunEnabled: false,
         ])
         tweakInjectionEnabled = defaults.bool(
             forKey: StorageKey.tweakInjectionEnabled
@@ -64,6 +70,7 @@ struct JailbreakConfiguration {
             .string(forKey: StorageKey.jetsamMultiplier)
             .flatMap(JetsamMultiplier.init(rawValue:))
             ?? .three
+        autorunEnabled = defaults.bool(forKey: StorageKey.autorunEnabled)
         removeJailbreakEnabled = defaults.bool(
             forKey: StorageKey.removeJailbreakEnabled
         )
