@@ -210,7 +210,14 @@ struct HomeView: View {
                 startEngine()
             }
             .task {
-                guard runtime.interfaceMode == .full, configuration.autorunEnabled else { return }
+                guard runtime.interfaceMode == .full else { return }
+                if UserDefaults.standard.bool(forKey: "RelaxinQuickJailbreakPending") {
+                    UserDefaults.standard.set(false, forKey: "RelaxinQuickJailbreakPending")
+                    guard screen == .home else { return }
+                    startEngine()
+                    return
+                }
+                guard configuration.autorunEnabled else { return }
                 try? await Task.sleep(for: .seconds(30))
                 guard !Task.isCancelled, screen == .home else { return }
                 startEngine()
