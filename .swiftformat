@@ -1,3 +1,0 @@
---swiftversion 6.0
---disable redundantSendable
---exclude Vendor,Skills,.agents,build,.build,DerivedData,RelaxinEngine/RLXKernelAccess/Rocket
