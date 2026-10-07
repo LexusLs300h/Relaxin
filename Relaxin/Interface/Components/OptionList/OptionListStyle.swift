@@ -12,9 +12,9 @@ struct OptionListStyle {
     let accent: SwiftUI.Color
 
     static let standard = OptionListStyle(
-        foreground: Theme.foreground,
-        secondaryForeground: .secondary,
-        accent: Theme.accent
+        foreground: Theme.dashboardText,
+        secondaryForeground: Theme.dashboardSecondaryText,
+        accent: Theme.accentPurple
     )
 
     static let failure = OptionListStyle(
