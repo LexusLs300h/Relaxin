@@ -90,6 +90,8 @@ extension HomeView {
         case let .confirm(action):
             screen = .confirmation(action)
         case .removeJailbreak:
+            // This action is the confirmed removal flow, not the normal jailbreak flow.
+            configuration.removeJailbreakEnabled = true
             startEngine()
         case .back:
             if let destination = screen.backDestination {
