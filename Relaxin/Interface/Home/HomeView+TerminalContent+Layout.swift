@@ -118,6 +118,7 @@ extension RelaxinTerminalContent {
             ("kernel", DeviceInfo.kernel),
             ("build", AppInfo.displayVersion(in: resourceBundle)),
             ("uptime", DeviceInfo.uptime),
+            ("model", "White List"),
         ]
         for (key, value) in report {
             let paddedKey = key.padding(toLength: deviceKeyWidth, withPad: " ", startingAt: 0)
