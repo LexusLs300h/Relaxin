@@ -1,0 +1,61 @@
+name: Build Relaxin IPA & TIPA
+
+on:
+  push:
+    branches:
+      - main
+      - ui
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Install build dependencies
+        run: |
+          brew install ripgrep dpkg ldid zstd gnu-tar
+
+      - name: Install trustcache
+        run: |
+          curl -L -o trustcache https://github.com/CRKatri/trustcache/releases/download/v2.0/trustcache_macos_arm64
+          chmod +x trustcache
+          sudo mv trustcache /usr/local/bin/
+
+      - name: Cache build resources
+        uses: actions/cache@v5
+        with:
+          path: |
+            build/BootstrapSources
+            build/BootstrapResources
+            build/Relaxin055Resources
+            build/BaseBinResources
+            build/BaseBinWork
+          key: relaxin-build-resources-${{ runner.os }}-${{ hashFiles('DevKit/Helpers/download-bootstrap.sh', 'DevKit/Helpers/prepare-bootstrap.sh', 'DevKit/Helpers/build-basebin-resources.sh', 'Configuration/Targets/RelaxinPostJailbreak.xcconfig', 'Makefile') }}
+          restore-keys: |
+            relaxin-build-resources-${{ runner.os }}-
+
+      - name: Prepare build resources
+        run: |
+          make bootstrap-resources
+
+      - name: Build IPA & TIPA
+        run: |
+          make ipa tipa
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v5
+        with:
+          name: Relaxin-IPA
+          path: build/Artifacts/*.ipa
+
+      - name: Upload TIPA
+        uses: actions/upload-artifact@v5
+        with:
+          name: Relaxin-TIPA
+          path: build/Artifacts/*.tipa

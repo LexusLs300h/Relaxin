@@ -116,18 +116,8 @@ struct HomeView: View {
             loadingMenuActions: loadingMenuActions,
             isVolumeButtonInputEnabled: alert == nil,
             allowsOpeningTerminalLinks: runtime.interfaceMode.allowsExternalNavigation,
-            screen: screen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
-            onOpenAdvancedOptions: { screen = .advancedOptions },
-            onOpenMaintenance: {
-                guard runtime.interfaceMode.showsMaintenance else { return }
-                if runtime.interfaceMode.allowsFileExport {
-                    prepareLogExport()
-                }
-                screen = .maintenance
-            },
-            onOpenCredits: { screen = .credits },
             onTerminalLongPress: {
                 #if DEBUG
                     engineSession.postJailbreakSession.debugSetAvailable(true)
@@ -214,6 +204,23 @@ struct HomeView: View {
             .task {
                 guard runtime.interfaceMode == .full else { return }
                 engineSession.postJailbreakSession.refreshAvailability()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .relaxinQuickJailbreak)) { _ in
+                guard runtime.interfaceMode == .full, screen == .home else { return }
+                startEngine()
+            }
+            .task {
+                guard runtime.interfaceMode == .full else { return }
+                if runtime.defaults.bool(forKey: "RelaxinQuickJailbreakPending") {
+                    runtime.defaults.set(false, forKey: "RelaxinQuickJailbreakPending")
+                    guard screen == .home else { return }
+                    startEngine()
+                    return
+                }
+                guard configuration.autorunEnabled else { return }
+                try? await Task.sleep(for: .seconds(30))
+                guard !Task.isCancelled, screen == .home else { return }
+                startEngine()
             }
             .modifier(
                 LightImpactFeedbackModifier(trigger: screen) { oldScreen, newScreen in

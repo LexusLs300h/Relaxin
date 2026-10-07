@@ -55,7 +55,7 @@ extension HomeView {
                 .advancedOptions
             case let .confirmation(action):
                 switch action {
-                case .jailbreak, .removeJailbreak:
+                case .removeJailbreak:
                     .home
                 case .resetRelaxin:
                     .maintenance
@@ -80,16 +80,12 @@ extension HomeView {
         ) -> [(action: MenuAction, title: String)] {
             switch self {
             case .home:
-                let primaryAction: MenuAction = configuration.removeJailbreakEnabled
-                    ? .confirm(.removeJailbreak)
-                    : .confirm(.jailbreak)
-                let primaryTitle = configuration.removeJailbreakEnabled
-                    ? String(localized: "Remove Jailbreak", bundle: resourceBundle)
-                    : String(localized: "Jailbreak", bundle: resourceBundle)
                 var entries: [(MenuAction, String)] = [
                     (
-                        primaryAction,
-                        primaryTitle
+                        .jailbreak,
+                        configuration.removeJailbreakEnabled
+                            ? String(localized: "Remove Jailbreak", bundle: resourceBundle)
+                            : String(localized: "Jailbreak", bundle: resourceBundle)
                     ),
                     (
                         .advancedOptions,
@@ -127,12 +123,24 @@ extension HomeView {
                         )
                     ),
                     (
+                        .toggleOption(.autorun),
+                        optionTitle(
+                            for: .autorun,
+                            configuration: configuration,
+                            resourceBundle: resourceBundle
+                        )
+                    ),
+                    (
                         .jetsamMultiplier,
                         "\(String(localized: "Jetsam Multiplier", bundle: resourceBundle)): \(configuration.jetsamMultiplier.title(in: resourceBundle))"
                     ),
                     (
-                        .confirm(.removeJailbreak),
-                        String(localized: "Remove Jailbreak", bundle: resourceBundle)
+                        .toggleOption(.removeJailbreak),
+                        optionTitle(
+                            for: .removeJailbreak,
+                            configuration: configuration,
+                            resourceBundle: resourceBundle
+                        )
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
@@ -183,8 +191,6 @@ extension HomeView {
                 } + [(.back, String(localized: "Back", bundle: resourceBundle))]
             case let .confirmation(action):
                 let title = switch action {
-                case .jailbreak:
-                    String(localized: "Jailbreak", bundle: resourceBundle)
                 case .resetRelaxin:
                     String(localized: "Reset Relaxin", bundle: resourceBundle)
                 case .removeJailbreak:

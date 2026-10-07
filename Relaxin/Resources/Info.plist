@@ -11,6 +11,15 @@
 	<string>Authentication is required to change your mobile password.</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.relaxin.jailbreak</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Jailbreak</string>
+		</dict>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

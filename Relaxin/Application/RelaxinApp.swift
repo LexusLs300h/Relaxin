@@ -1,11 +1,30 @@
 import Foundation
 import SwiftUI
+import UIKit
 
 private let networkAccessProbeURL = URL(
     string: "https://captive.apple.com/hotspot-detect.html"
 )!
 
+@MainActor
+final class RelaxinAppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        if shortcutItem.type == "com.relaxin.jailbreak" {
+            UserDefaults.standard.set(true, forKey: "RelaxinQuickJailbreakPending")
+            NotificationCenter.default.post(name: .relaxinQuickJailbreak, object: nil)
+            completionHandler(true)
+        } else {
+            completionHandler(false)
+        }
+    }
+}
+
+extension Notification.Name {
+    static let relaxinQuickJailbreak = Notification.Name("RelaxinQuickJailbreak")
+}
+
 struct RelaxinApp: App {
+    @UIApplicationDelegateAdaptor(RelaxinAppDelegate.self) private var appDelegate
     private let runtime: RelaxinRuntime
 
     init() {

@@ -101,11 +101,17 @@ extension PostJailbreakHomeView {
                     ),
                     (
                         .gotoInstallWhitelistApp,
-                        String(localized: "Install Whitelist App", bundle: resourceBundle)
+                        String(
+                            localized: "Install Whitelist App",
+                            bundle: resourceBundle
+                        )
                     ),
                     (
                         .gotoInstallMountApp,
-                        String(localized: "Install Mount App", bundle: resourceBundle)
+                        String(
+                            localized: "Install Mount App",
+                            bundle: resourceBundle
+                        )
                     ),
                     (
                         .refreshJailbreakApps,
@@ -116,7 +122,7 @@ extension PostJailbreakHomeView {
                     ),
                     (
                         .resetAndRemoval,
-                        String(localized: "重置与移除", bundle: resourceBundle)
+                        String(localized: "Reset & Remove", bundle: resourceBundle)
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
@@ -141,7 +147,7 @@ extension PostJailbreakHomeView {
                 entries.append(contentsOf: [
                     (
                         .confirm(.removeJailbreak),
-                        String(localized: "移除越狱", bundle: resourceBundle)
+                        String(localized: "Remove Jailbreak", bundle: resourceBundle)
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ])

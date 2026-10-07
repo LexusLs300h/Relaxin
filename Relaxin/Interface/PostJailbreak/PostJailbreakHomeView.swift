@@ -9,7 +9,6 @@ struct PostJailbreakHomeView: View {
     @ObservedObject var session: PostJailbreakSession
 
     let environment: PostJailbreakEnvironment
-    var onOpenMaintenance: () -> Void = {}
 
     @State private var screen = Screen.home
     @State private var alert: Alert?
@@ -62,22 +61,6 @@ struct PostJailbreakHomeView: View {
                 visibleCharacterCount: visibleCreditCharacterCount,
                 linksEnabled: environment.interfaceMode.allowsExternalNavigation
             )
-        }
-    }
-
-    private var homeContentScreen: HomeView.Screen {
-        switch screen {
-        case .home:
-            .home
-        case .advancedOptions, .resetAndRemoval:
-            .advancedOptions
-        case .credits:
-            .credits
-        case let .confirmation(action):
-            switch action {
-            case .restartSpringBoard, .restartUserspace, .removeJailbreak:
-                .confirmation(.removeJailbreak)
-            }
         }
     }
 
@@ -136,20 +119,8 @@ struct PostJailbreakHomeView: View {
             isVolumeButtonInputEnabled: alert == nil
                 && !session.isPerformingAction,
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
-            screen: homeContentScreen,
-            homeHeroTitle: "妙手回春",
-            homeHeroSubtitle: "注销 SpringBoard",
-            homeHeroButtonTitle: "妙手回春",
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
-            onSelectMenuItem: performMenuAction,
-            dashboardFirstTitle: "涅槃重生",
-            dashboardFirstSubtitle: "重启用户空间",
-            dashboardFirstSystemImage: "arrow.clockwise.circle.fill",
-            onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
-            // Match “妙手回春”: opening the action first shows the Execute confirmation screen.
-            onOpenMaintenance: { screen = .confirmation(.restartUserspace) },
-            onOpenCredits: { performMenuAction(.credits) },
-            onTerminalLongPress: { }
+            onSelectMenuItem: performMenuAction
         )
         .disabled(session.isPerformingAction)
         .allowsHitTesting(!session.isPerformingAction)
@@ -241,20 +212,8 @@ struct PostJailbreakHomeView: View {
         case .removeJailbreak:
             session.perform(.removeJailbreak)
         case .back:
-            switch screen {
-            case .advancedOptions, .credits:
-                screen = .home
-            case .resetAndRemoval:
-                screen = .advancedOptions
-            case let .confirmation(action):
-                switch action {
-                case .restartSpringBoard, .restartUserspace:
-                    screen = .home
-                case .removeJailbreak:
-                    screen = .resetAndRemoval
-                }
-            case .home:
-                break
+            if let destination = screen.backDestination {
+                screen = destination
             }
         }
     }
@@ -338,6 +297,7 @@ struct PostJailbreakHomeView: View {
             visibleCreditCharacterCount = characterCount
         }
     }
+
     private func gotoInstallWhitelistApp() {
         guard environment.interfaceMode.allowsExternalNavigation else { return }
         let url = URL(string: "sileo://package/cn.zqbb.inject.manager")!
@@ -352,5 +312,4 @@ struct PostJailbreakHomeView: View {
         let finalURL = canOpen ? url : URL(string: "sssss://package/cn.zqbb.hello.mnt")!
         UIApplication.shared.open(finalURL, options: [:], completionHandler: nil)
     }
-
 }

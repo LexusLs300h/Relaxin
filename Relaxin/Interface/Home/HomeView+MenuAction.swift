@@ -4,6 +4,7 @@ extension HomeView {
     enum ToggleOption: CaseIterable, Hashable {
         case tweakInjection
         case appJIT
+        case autorun
         case removeJailbreak
 
         func title(in resourceBundle: Bundle) -> String {
@@ -12,6 +13,8 @@ extension HomeView {
                 String(localized: "Tweak Injection", bundle: resourceBundle)
             case .appJIT:
                 String(localized: "Allow JIT in Apps", bundle: resourceBundle)
+            case .autorun:
+                String(localized: "Autorun Jailbreak", bundle: resourceBundle)
             case .removeJailbreak:
                 String(localized: "Remove Jailbreak", bundle: resourceBundle)
             }
@@ -23,6 +26,8 @@ extension HomeView {
                 \JailbreakConfiguration.tweakInjectionEnabled
             case .appJIT:
                 \JailbreakConfiguration.appJITEnabled
+            case .autorun:
+                \JailbreakConfiguration.autorunEnabled
             case .removeJailbreak:
                 \JailbreakConfiguration.removeJailbreakEnabled
             }
@@ -38,14 +43,11 @@ extension HomeView {
     }
 
     enum ConfirmationAction: Hashable {
-        case jailbreak
         case removeJailbreak
         case resetRelaxin
 
         var menuAction: MenuAction {
             switch self {
-            case .jailbreak:
-                .jailbreak
             case .removeJailbreak:
                 .removeJailbreak
             case .resetRelaxin:
