@@ -123,6 +123,14 @@ extension HomeView {
                         )
                     ),
                     (
+                        .toggleOption(.autorun),
+                        optionTitle(
+                            for: .autorun,
+                            configuration: configuration,
+                            resourceBundle: resourceBundle
+                        )
+                    ),
+                    (
                         .jetsamMultiplier,
                         "\(String(localized: "Jetsam Multiplier", bundle: resourceBundle)): \(configuration.jetsamMultiplier.title(in: resourceBundle))"
                     ),
