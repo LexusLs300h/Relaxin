@@ -205,6 +205,16 @@ struct HomeView: View {
                 guard runtime.interfaceMode == .full else { return }
                 engineSession.postJailbreakSession.refreshAvailability()
             }
+            .onReceive(NotificationCenter.default.publisher(for: .relaxinQuickJailbreak)) { _ in
+                guard runtime.interfaceMode == .full, screen == .home else { return }
+                startEngine()
+            }
+            .task {
+                guard runtime.interfaceMode == .full, configuration.autorunEnabled else { return }
+                try? await Task.sleep(for: .seconds(30))
+                guard !Task.isCancelled, screen == .home else { return }
+                startEngine()
+            }
             .modifier(
                 LightImpactFeedbackModifier(trigger: screen) { oldScreen, newScreen in
                     oldScreen != newScreen && newScreen.showsMenu
