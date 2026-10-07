@@ -19,6 +19,21 @@ struct PostJailbreakHomeView: View {
         colorScheme == .dark
     }
 
+    private var homeContentScreen: HomeView.Screen {
+        switch screen {
+        case .home:
+            .home
+        case .advancedOptions:
+            .advancedOptions
+        case .resetAndRemoval:
+            .maintenance
+        case .credits:
+            .credits
+        case .confirmation:
+            .confirmation(.resetRelaxin)
+        }
+    }
+
     private var terminalOutput: [TerminalOutputLine] {
         guard session.isPerformingAction,
               screen == .confirmation(.removeJailbreak)
@@ -119,7 +134,7 @@ struct PostJailbreakHomeView: View {
             isVolumeButtonInputEnabled: alert == nil
                 && !session.isPerformingAction,
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
-            screen: screen,
+            screen: homeContentScreen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction
         )
