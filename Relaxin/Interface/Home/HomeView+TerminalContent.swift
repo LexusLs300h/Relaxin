@@ -25,17 +25,15 @@ enum RelaxinTerminalContent {
     static func running(
         output: [TerminalOutputLine],
         isJailbroken: Bool,
-        isRemovingJailbreak: Bool = false,
         terminalWidth: Int,
         resourceBundle: Bundle
     ) -> String {
         var lines = baseLines(
             isJailbroken: isJailbroken,
-            isRemovingJailbreak: isRemovingJailbreak,
             resourceBundle: resourceBundle
         )
         lines.append("")
-        lines.append(TerminalStyle.accent("❯") + " " + (isRemovingJailbreak ? "relaxin remove-jailbreak" : "relaxin do"))
+        lines.append(TerminalStyle.accent("❯") + " relaxin do")
         lines.append("")
         lines.append(contentsOf: output.flatMap {
             render($0, width: terminalWidth)

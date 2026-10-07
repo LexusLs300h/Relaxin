@@ -3,8 +3,7 @@ import SwiftUI
 import UIKit
 
 extension HomeView {
-    func startEngine(removingJailbreak: Bool = false) {
-        isRemovingJailbreak = removingJailbreak
+    func startEngine() {
         guard screen != .engine, case .idle = engineSession.phase else { return }
 
         var manifest: [RLXEngineManifestKey: String]
@@ -28,11 +27,12 @@ extension HomeView {
             )
             return
         }
-        manifest[.removeJailbreakEnabledKey] = removingJailbreak ? "true" : "false"
+        let removesJailbreak = configuration.removeJailbreakEnabled
+        configuration.consumeRemoveJailbreakRequest()
 
         let runEngine = {
             engineSession.start(manifest: manifest) {
-                guard removingJailbreak else { return }
+                guard removesJailbreak else { return }
                 alert = .jailbreakRemovalComplete(in: runtime.resourceBundle)
             }
         }

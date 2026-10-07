@@ -105,20 +105,6 @@ extension PostJailbreakHomeView {
                         )
                     ),
                     (
-                        .gotoInstallWhitelistApp,
-                        String(
-                            localized: "Install Whitelist App",
-                            bundle: resourceBundle
-                        )
-                    ),
-                    (
-                        .gotoInstallMountApp,
-                        String(
-                            localized: "Install Mount App",
-                            bundle: resourceBundle
-                        )
-                    ),
-                    (
                         .refreshJailbreakApps,
                         String(
                             localized: "Refresh Jailbreak Apps",
@@ -275,8 +261,6 @@ extension PostJailbreakHomeView {
         case toggleOption(ToggleOption)
         case restartSpringBoard
         case restartUserspace
-        case gotoInstallWhitelistApp
-        case gotoInstallMountApp
         case refreshJailbreakApps
         case resetMobilePassword
         case reinstallSileo

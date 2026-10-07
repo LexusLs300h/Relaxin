@@ -56,7 +56,7 @@ extension HomeView {
             case let .confirmation(action):
                 switch action {
                 case .removeJailbreak:
-                    .advancedOptions
+                    .home
                 case .resetRelaxin:
                     .maintenance
                 }
@@ -83,7 +83,9 @@ extension HomeView {
                 var entries: [(MenuAction, String)] = [
                     (
                         .jailbreak,
-                        String(localized: "Jailbreak", bundle: resourceBundle)
+                        configuration.removeJailbreakEnabled
+                            ? String(localized: "Remove Jailbreak", bundle: resourceBundle)
+                            : String(localized: "Jailbreak", bundle: resourceBundle)
                     ),
                     (
                         .advancedOptions,
@@ -125,8 +127,12 @@ extension HomeView {
                         "\(String(localized: "Jetsam Multiplier", bundle: resourceBundle)): \(configuration.jetsamMultiplier.title(in: resourceBundle))"
                     ),
                     (
-                        .confirm(.removeJailbreak),
-                        String(localized: "Remove Jailbreak", bundle: resourceBundle)
+                        .toggleOption(.removeJailbreak),
+                        optionTitle(
+                            for: .removeJailbreak,
+                            configuration: configuration,
+                            resourceBundle: resourceBundle
+                        )
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]

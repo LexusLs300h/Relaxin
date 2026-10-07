@@ -1,9 +1,8 @@
 import Foundation
 import SwiftUI
 
-/// Read-only SwiftTerm surface used for banners and engine output. It follows
-/// streaming output automatically while still allowing the user to scroll back
-/// through earlier output. It never accepts keyboard focus or text selection.
+/// Read-only SwiftTerm surface used for banners and engine output. It never
+/// scrolls, accepts keyboard focus, or allows text selection.
 struct TerminalPresenter: UIViewRepresentable {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.openURL) private var openURL
@@ -20,13 +19,7 @@ struct TerminalPresenter: UIViewRepresentable {
         view.onOpenLink = allowsOpeningLinks ? { [openURL] in openURL($0) } : nil
         view.onLongPress = onLongPress
         view.accessibleLinks = allowsOpeningLinks ? accessibleLinks : []
-        // Keep the scroll view enabled so streaming output can follow the newest
-        // line while the user can still scroll back through earlier output.
-        view.isScrollEnabled = true
-        view.isDirectionalLockEnabled = true
-        view.alwaysBounceHorizontal = false
-        view.showsHorizontalScrollIndicator = false
-        view.showsVerticalScrollIndicator = false
+        view.isScrollEnabled = false
         // Read-only surfaces never gain focus, so cursor rendering must remain independent of responder state.
         view.caretViewTracksFocus = false
         TerminalStyle.configure(view, colorScheme: colorScheme)
@@ -51,8 +44,6 @@ extension TerminalPresenter {
     }
 
     final class ReadOnlyView: TerminalView {
-        private let terminalContentInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
-
         var onColumnCountChange: ((Int) -> Void)?
         var onOpenLink: ((URL) -> Void)?
         var onLongPress: (() -> Void)?
@@ -72,40 +63,13 @@ extension TerminalPresenter {
         private var renderedContent: String?
         private var reportedColumnCount: Int?
 
-
         override var canBecomeFirstResponder: Bool {
             false
-        }
-
-        override var contentSize: CGSize {
-            get { super.contentSize }
-            set {
-                guard bounds.width > 0 else {
-                    super.contentSize = newValue
-                    return
-                }
-                let viewportWidth = max(
-                    0,
-                    bounds.width - adjustedContentInset.left - adjustedContentInset.right
-                )
-                // SwiftTerm owns the height, but this screen must never expose
-                // its terminal-column width as a horizontal scroll range.
-                super.contentSize = CGSize(width: viewportWidth, height: newValue.height)
-            }
         }
 
         override func layoutSubviews() {
             super.layoutSubviews()
 
-            // The terminal owns its four-sided content margin. Disable UIKit's
-            // safe-area adjustment so 10/16 always means exactly 10/16.
-            contentInsetAdjustmentBehavior = .never
-            // SwiftTerm can recalculate its scroll geometry during layout, so
-            // re-apply the exact inset here as well as during initial setup.
-            contentInset = terminalContentInset
-            scrollIndicatorInsets = terminalContentInset
-            clipsToBounds = true
-            updateScrollBehavior()
             let columnCount = getTerminal().cols
             guard columnCount != reportedColumnCount else { return }
             reportedColumnCount = columnCount
@@ -151,60 +115,12 @@ extension TerminalPresenter {
 
         override func showContextMenu(forRegion _: CGRect, pos _: Position) {}
 
-        private func updateScrollBehavior() {
-            guard bounds.height > 0 else { return }
-
-            // contentInset is only the visual margin. It must not create a
-            // scroll range by itself. Only terminal content taller than the
-            // actual scroll view bounds may enable vertical scrolling.
-            let contentHeight = contentSize.height
-            let needsVerticalScroll = contentHeight > bounds.height + 1
-
-            isDirectionalLockEnabled = true
-            alwaysBounceHorizontal = false
-            alwaysBounceVertical = needsVerticalScroll
-            showsHorizontalScrollIndicator = false
-            showsVerticalScrollIndicator = needsVerticalScroll
-            isScrollEnabled = needsVerticalScroll
-            bounces = needsVerticalScroll
-            // When the output fits, disable both scrolling and bouncing.
-
-            // SwiftTerm sizes the scroll content from its terminal column count.
-            // That internal width must never become a horizontal scrolling area:
-            // the execution/removal screens are a vertical log only.
-            let viewportWidth = max(
-                0,
-                bounds.width - adjustedContentInset.left - adjustedContentInset.right
-            )
-            if contentSize.width != viewportWidth {
-                contentSize = CGSize(width: viewportWidth, height: contentSize.height)
-            }
-
-            if !needsVerticalScroll {
-                // When all output fits, keep the complete four-sided margin
-                // visible and make the surface completely static.
-                super.setContentOffset(
-                    CGPoint(x: -terminalContentInset.left, y: -terminalContentInset.top),
-                    animated: false
-                )
-            }
-        }
-
         func render(_ content: String) {
-            guard content != renderedContent else {
-                updateScrollBehavior()
-                return
-            }
+            guard content != renderedContent else { return }
             renderedContent = content
             feed(text: content)
             selection.selectNone()
             disableSelectionPanGesture()
-
-            // SwiftTerm updates contentSize while feeding the terminal. Defer
-            // the measurement until that layout pass has completed.
-            DispatchQueue.main.async { [weak self] in
-                self?.updateScrollBehavior()
-            }
         }
     }
 }

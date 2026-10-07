@@ -59,5 +59,3 @@ jobs:
         with:
           name: Relaxin-TIPA
           path: build/Artifacts/*.tipa
-
-# UI build sync

@@ -13,7 +13,6 @@ struct HomeView: View {
     @State var logExportState = LogExportState.idle
     @State private var visibleCreditCharacterCount = 0
     @State private var terminalColumnCount = 32
-    @State var isRemovingJailbreak = false
 
     init(runtime: RelaxinRuntime) {
         self.runtime = runtime
@@ -65,7 +64,6 @@ struct HomeView: View {
                 RelaxinTerminalContent.running(
                     output: engineSession.output,
                     isJailbroken: false,
-                    isRemovingJailbreak: isRemovingJailbreak,
                     terminalWidth: terminalColumnCount,
                     resourceBundle: runtime.resourceBundle
                 )
@@ -118,18 +116,8 @@ struct HomeView: View {
             loadingMenuActions: loadingMenuActions,
             isVolumeButtonInputEnabled: alert == nil,
             allowsOpeningTerminalLinks: runtime.interfaceMode.allowsExternalNavigation,
-            screen: screen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
-            onOpenAdvancedOptions: { screen = .advancedOptions },
-            onOpenMaintenance: {
-                guard runtime.interfaceMode.showsMaintenance else { return }
-                if runtime.interfaceMode.allowsFileExport {
-                    prepareLogExport()
-                }
-                screen = .maintenance
-            },
-            onOpenCredits: { screen = .credits },
             onTerminalLongPress: {
                 #if DEBUG
                     engineSession.postJailbreakSession.debugSetAvailable(true)
@@ -168,19 +156,11 @@ struct HomeView: View {
     @ViewBuilder private var productContent: some View {
         if runtime.interfaceMode.showsPostJailbreakInterface,
            engineSession.postJailbreakSession.isAvailable,
-           screen != .maintenance,
            !isShowingFailure
         {
             PostJailbreakHomeView(
                 session: engineSession.postJailbreakSession,
-                environment: runtime.postJailbreakEnvironment,
-                onOpenMaintenance: {
-                    guard runtime.interfaceMode.showsMaintenance else { return }
-                    if runtime.interfaceMode.allowsFileExport {
-                        prepareLogExport()
-                    }
-                    screen = .maintenance
-                }
+                environment: runtime.postJailbreakEnvironment
             )
         } else {
             presentedContent
