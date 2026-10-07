@@ -146,7 +146,7 @@ struct PostJailbreakHomeView: View {
             dashboardFirstSubtitle: "重启用户空间",
             dashboardFirstSystemImage: "arrow.clockwise.circle.fill",
             onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
-            onOpenMaintenance: { performMenuAction(.confirm(.restartUserspace)) },
+            onOpenMaintenance: onOpenMaintenance,
             onOpenCredits: { performMenuAction(.credits) },
             onTerminalLongPress: { }
         )

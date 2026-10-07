@@ -108,20 +108,6 @@ extension PostJailbreakHomeView {
                         String(localized: "Install Mount App", bundle: resourceBundle)
                     ),
                     (
-                        .gotoInstallWhitelistApp,
-                        String(
-                            localized: "Install Whitelist App",
-                            bundle: resourceBundle
-                        )
-                    ),
-                    (
-                        .gotoInstallMountApp,
-                        String(
-                            localized: "Install Mount App",
-                            bundle: resourceBundle
-                        )
-                    ),
-                    (
                         .refreshJailbreakApps,
                         String(
                             localized: "Refresh Jailbreak Apps",
