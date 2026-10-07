@@ -55,8 +55,8 @@ extension HomeView {
                 .advancedOptions
             case let .confirmation(action):
                 switch action {
-                case .removeJailbreak:
-                    .advancedOptions
+                case .jailbreak, .removeJailbreak:
+                    .home
                 case .resetRelaxin:
                     .maintenance
                 }
@@ -82,7 +82,7 @@ extension HomeView {
             case .home:
                 var entries: [(MenuAction, String)] = [
                     (
-                        .jailbreak,
+                        .confirm(.jailbreak),
                         String(localized: "Jailbreak", bundle: resourceBundle)
                     ),
                     (
@@ -177,6 +177,8 @@ extension HomeView {
                 } + [(.back, String(localized: "Back", bundle: resourceBundle))]
             case let .confirmation(action):
                 let title = switch action {
+                case .jailbreak:
+                    String(localized: "Jailbreak", bundle: resourceBundle)
                 case .resetRelaxin:
                     String(localized: "Reset Relaxin", bundle: resourceBundle)
                 case .removeJailbreak:
