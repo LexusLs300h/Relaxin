@@ -19,7 +19,7 @@ jobs:
 
       - name: Install build dependencies
         run: |
-          brew install ripgrep dpkg ldid
+          brew install ripgrep dpkg ldid zstd gnu-tar
 
       - name: Install trustcache
         run: |
@@ -36,9 +36,13 @@ jobs:
             build/Relaxin054Resources
             build/BaseBinResources
             build/BaseBinWork
-          key: relaxin-build-resources-${{ runner.os }}-${{ hashFiles('DevKit/Helpers/download-bootstrap.sh', 'DevKit/Helpers/prepare-v054-resources.sh', 'DevKit/Helpers/build-basebin-resources.sh', 'Configuration/Targets/RelaxinPostJailbreak.xcconfig', 'Makefile') }}
+          key: relaxin-build-resources-${{ runner.os }}-${{ hashFiles('DevKit/Helpers/download-bootstrap.sh', 'DevKit/Helpers/prepare-bootstrap.sh', 'DevKit/Helpers/build-basebin-resources.sh', 'Configuration/Targets/RelaxinPostJailbreak.xcconfig', 'Makefile') }}
           restore-keys: |
             relaxin-build-resources-${{ runner.os }}-
+
+      - name: Prepare build resources
+        run: |
+          make bootstrap-resources
 
       - name: Build IPA & TIPA
         run: |
