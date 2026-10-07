@@ -38,11 +38,14 @@ extension HomeView {
     }
 
     enum ConfirmationAction: Hashable {
+        case jailbreak
         case removeJailbreak
         case resetRelaxin
 
         var menuAction: MenuAction {
             switch self {
+            case .jailbreak:
+                .jailbreak
             case .removeJailbreak:
                 .removeJailbreak
             case .resetRelaxin:
