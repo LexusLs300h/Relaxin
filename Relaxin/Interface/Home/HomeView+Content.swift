@@ -84,25 +84,27 @@ struct HomeContent<Action: Hashable>: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                     .padding(.top, 8)
                 } else {
-                    VStack(alignment: .leading, spacing: 12) {
-                        header
+                    ScrollView(.vertical, showsIndicators: false) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            header
 
-                        if isEngine {
-                            engineCard
-                            terminalCard(compactHeight: max(220, geometry.size.height * 0.36))
-                        } else {
-                            terminalCard(compactHeight: max(260, geometry.size.height * 0.40))
-                        }
+                            if isEngine {
+                                engineCard
+                                terminalCard(compactHeight: max(220, geometry.size.height * 0.36))
+                            } else {
+                                terminalCard(compactHeight: max(260, geometry.size.height * 0.40))
+                            }
 
-                        if showsMenu {
-                            menuCard
+                            if showsMenu {
+                                menuCard
+                            }
                         }
+                        .frame(maxWidth: 620)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, Theme.pagePadding)
+                        .padding(.vertical, 8)
                     }
-                    .frame(maxWidth: 620)
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, Theme.pagePadding)
-                    .padding(.vertical, 8)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
         }
