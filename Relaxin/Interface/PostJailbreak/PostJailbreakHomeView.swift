@@ -146,8 +146,8 @@ struct PostJailbreakHomeView: View {
             dashboardFirstSubtitle: "重启用户空间",
             dashboardFirstSystemImage: "arrow.clockwise.circle.fill",
             onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
-            // “涅槃重生” is the post-jailbreak userspace restart action.
-            onOpenMaintenance: { performMenuAction(.restartUserspace) },
+            // Match “妙手回春”: opening the action first shows the Execute confirmation screen.
+            onOpenMaintenance: { screen = .confirmation(.restartUserspace) },
             onOpenCredits: { performMenuAction(.credits) },
             onTerminalLongPress: { }
         )
