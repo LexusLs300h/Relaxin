@@ -136,7 +136,17 @@ struct PostJailbreakHomeView: View {
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
             screen: homeContentScreen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
-            onSelectMenuItem: performMenuAction
+            onSelectMenuItem: performMenuAction,
+            onOpenAdvancedOptions: {
+                session.refreshRuntimeOptions()
+                screen = .advancedOptions
+            },
+            onOpenMaintenance: {
+                screen = .resetAndRemoval
+            },
+            onOpenCredits: {
+                screen = .credits
+            }
         )
         .disabled(session.isPerformingAction)
         .allowsHitTesting(!session.isPerformingAction)
