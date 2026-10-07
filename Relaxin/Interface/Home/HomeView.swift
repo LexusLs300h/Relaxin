@@ -119,6 +119,19 @@ struct HomeView: View {
             screen: screen,
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
             onSelectMenuItem: performMenuAction,
+            onOpenAdvancedOptions: {
+                screen = .advancedOptions
+            },
+            onOpenMaintenance: {
+                guard runtime.interfaceMode.showsMaintenance else { return }
+                if runtime.interfaceMode.allowsFileExport {
+                    prepareLogExport()
+                }
+                screen = .maintenance
+            },
+            onOpenCredits: {
+                screen = .credits
+            },
             onTerminalLongPress: {
                 #if DEBUG
                     engineSession.postJailbreakSession.debugSetAvailable(true)
