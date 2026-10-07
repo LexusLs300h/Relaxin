@@ -1,8 +1,8 @@
 import SwiftUI
 
 extension OptionList {
-    /// Modern card row. Selection and loading indicators are rendered by the label,
-    /// while this style owns press feedback and the selected surface.
+    /// Compact row whose marker keeps a stable four-point gap from the label.
+    /// Touch-down only moves the list's single selection.
     struct RowButtonStyle: ButtonStyle {
         let isSelected: Bool
         let isLoading: Bool
@@ -10,30 +10,58 @@ extension OptionList {
         let onPress: () -> Void
 
         func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .padding(.horizontal, 2)
-                .padding(.vertical, 2)
-                .background {
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(
-                            isSelected
-                                ? accent.opacity(configuration.isPressed ? 0.15 : 0.09)
-                                : configuration.isPressed ? .primary.opacity(0.05) : .clear
-                        )
-                }
-                .overlay {
-                    if isSelected {
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .strokeBorder(accent.opacity(0.16))
+            HStack(spacing: OptionListLayout.markerSpacing) {
+                Group {
+                    if isLoading {
+                        LoadingMarker(color: accent)
+                    } else if isSelected {
+                        SelectionMarker(color: accent)
+                    } else {
+                        SwiftUI.Color.clear
                     }
                 }
-                .opacity(isLoading ? 0.65 : 1)
-                .contentShape(Rectangle())
-                .transaction { $0.animation = nil }
-                .onChange(of: configuration.isPressed) { isPressed in
-                    guard isPressed else { return }
-                    onPress()
-                }
+                .frame(width: OptionListLayout.markerWidth)
+
+                configuration.label
+            }
+            .padding(.vertical, 4)
+            .contentShape(Rectangle())
+            .transaction { $0.animation = nil }
+            .onChange(of: configuration.isPressed) { isPressed in
+                guard isPressed else { return }
+                onPress()
+            }
+        }
+    }
+
+    private struct LoadingMarker: View {
+        let color: SwiftUI.Color
+
+        var body: some View {
+            TimelineView(.animation) { context in
+                let progress = context.date.timeIntervalSinceReferenceDate
+                    .truncatingRemainder(dividingBy: 1)
+                Image(systemName: "hourglass")
+                    .font(.system(size: Theme.fontSize * 0.75))
+                    .foregroundStyle(color)
+                    .rotationEffect(.degrees(progress * 360))
+            }
+            .accessibilityHidden(true)
+        }
+    }
+
+    private struct SelectionMarker: View {
+        let color: SwiftUI.Color
+
+        var body: some View {
+            TimelineView(.periodic(from: .now, by: 0.5)) { context in
+                let tick = Int(context.date.timeIntervalSinceReferenceDate / 0.5)
+                Image(systemName: "play.fill")
+                    .font(.system(size: Theme.fontSize * 0.5))
+                    .foregroundStyle(color)
+                    .opacity(tick.isMultiple(of: 2) ? 1 : 0)
+            }
+            .accessibilityHidden(true)
         }
     }
 }
