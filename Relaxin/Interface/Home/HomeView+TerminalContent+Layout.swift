@@ -125,6 +125,12 @@ extension RelaxinTerminalContent {
         }
 
         lines.append(TerminalStyle.dim(String(repeating: "─", count: dividerWidth)))
+        
+        // 新增一个提醒, 遇到任何问题, 请使用官方版本复测, 然后再反馈问题
+        lines.append(TerminalStyle.dim(String(
+            localized: "If you encounter any issues, please reproduce them using the official version before reporting.",
+            bundle: resourceBundle
+        )))
         return lines
     }
 
