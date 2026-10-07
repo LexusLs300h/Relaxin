@@ -211,8 +211,8 @@ struct HomeView: View {
             }
             .task {
                 guard runtime.interfaceMode == .full else { return }
-                if UserDefaults.standard.bool(forKey: "RelaxinQuickJailbreakPending") {
-                    UserDefaults.standard.set(false, forKey: "RelaxinQuickJailbreakPending")
+                if runtime.defaults.bool(forKey: "RelaxinQuickJailbreakPending") {
+                    runtime.defaults.set(false, forKey: "RelaxinQuickJailbreakPending")
                     guard screen == .home else { return }
                     startEngine()
                     return
