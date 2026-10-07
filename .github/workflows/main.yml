@@ -1,4 +1,4 @@
-name: Build Relaxin IPA & TIPA
+name: main Build Relaxin IPA & TIPA
 
 on:
   push:
