@@ -80,10 +80,16 @@ extension HomeView {
         ) -> [(action: MenuAction, title: String)] {
             switch self {
             case .home:
+                let primaryAction: MenuAction = configuration.removeJailbreakEnabled
+                    ? .confirm(.removeJailbreak)
+                    : .confirm(.jailbreak)
+                let primaryTitle = configuration.removeJailbreakEnabled
+                    ? String(localized: "Remove Jailbreak", bundle: resourceBundle)
+                    : String(localized: "Jailbreak", bundle: resourceBundle)
                 var entries: [(MenuAction, String)] = [
                     (
-                        .confirm(.jailbreak),
-                        String(localized: "Jailbreak", bundle: resourceBundle)
+                        primaryAction,
+                        primaryTitle
                     ),
                     (
                         .advancedOptions,
