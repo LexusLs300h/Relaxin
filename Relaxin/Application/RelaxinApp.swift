@@ -10,6 +10,7 @@ private let networkAccessProbeURL = URL(
 final class RelaxinAppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         if shortcutItem.type == "com.relaxin.jailbreak" {
+            UserDefaults.standard.set(true, forKey: "RelaxinQuickJailbreakPending")
             NotificationCenter.default.post(name: .relaxinQuickJailbreak, object: nil)
             completionHandler(true)
         } else {
