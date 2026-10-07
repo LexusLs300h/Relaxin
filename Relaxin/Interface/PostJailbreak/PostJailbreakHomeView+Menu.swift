@@ -6,6 +6,7 @@ extension PostJailbreakHomeView {
         case home
         case advancedOptions
         case resetAndRemoval
+        case packageManagers
         case credits
         case confirmation(ConfirmationAction)
 
@@ -29,6 +30,8 @@ extension PostJailbreakHomeView {
                 .command("relaxin/advanced-options")
             case .resetAndRemoval:
                 .command("relaxin/advanced-options/reset-and-remove")
+            case .packageManagers:
+                .command("relaxin/advanced-options/reset-and-remove/reinstall-package-managers")
             case .credits:
                 .credits
             case .confirmation:
@@ -42,6 +45,8 @@ extension PostJailbreakHomeView {
                 .home
             case .resetAndRemoval:
                 .advancedOptions
+            case .packageManagers:
+                .resetAndRemoval
             case let .confirmation(action):
                 switch action {
                 case .restartSpringBoard, .restartUserspace:
@@ -100,6 +105,20 @@ extension PostJailbreakHomeView {
                         )
                     ),
                     (
+                        .gotoInstallWhitelistApp,
+                        String(
+                            localized: "Install Whitelist App",
+                            bundle: resourceBundle
+                        )
+                    ),
+                    (
+                        .gotoInstallMountApp,
+                        String(
+                            localized: "Install Mount App",
+                            bundle: resourceBundle
+                        )
+                    ),
+                    (
                         .refreshJailbreakApps,
                         String(
                             localized: "Refresh Jailbreak Apps",
@@ -108,7 +127,7 @@ extension PostJailbreakHomeView {
                     ),
                     (
                         .resetAndRemoval,
-                        String(localized: "Reset & Remove", bundle: resourceBundle)
+                        String(localized: "重置与移除", bundle: resourceBundle)
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
@@ -117,27 +136,39 @@ extension PostJailbreakHomeView {
                     (
                         .resetMobilePassword,
                         String(
-                            localized: "Reset Mobile Password",
+                            localized: "重置移动密码",
                             bundle: resourceBundle
                         )
                     ),
+                    (
+                        .packageManagers,
+                        String(localized: "软件包管理器", bundle: resourceBundle)
+                    ),
                 ]
-                if canReinstallSileo {
-                    entries.append(
-                        (
-                            .reinstallSileo,
-                            String(localized: "Reinstall Sileo", bundle: resourceBundle)
-                        )
-                    )
-                }
                 entries.append(contentsOf: [
                     (
                         .confirm(.removeJailbreak),
-                        String(localized: "Remove Jailbreak", bundle: resourceBundle)
+                        String(localized: "移除越狱", bundle: resourceBundle)
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ])
                 return entries
+            case .packageManagers:
+                return [
+                    (
+                        .reinstallPackageManager("sileo"),
+                        String(localized: "重新安装 Sileo", bundle: resourceBundle)
+                    ),
+                    (
+                        .reinstallPackageManager("irisin"),
+                        String(localized: "重新安装 Irisin", bundle: resourceBundle)
+                    ),
+                    (
+                        .reinstallPackageManager("umbra"),
+                        String(localized: "重新安装 Umbra", bundle: resourceBundle)
+                    ),
+                    (.back, String(localized: "Back", bundle: resourceBundle)),
+                ]
             case .credits:
                 var entries: [(MenuAction, String)] = []
                 if allowsExternalNavigation {
@@ -166,7 +197,7 @@ extension PostJailbreakHomeView {
                 return [
                     (
                         action.menuAction,
-                        "\(String(localized: "Execute", bundle: resourceBundle)): \(action.title(in: resourceBundle))"
+                        "\(action.executeLabel(in: resourceBundle))"
                     ),
                     (.back, String(localized: "Back", bundle: resourceBundle)),
                 ]
@@ -211,14 +242,14 @@ extension PostJailbreakHomeView {
         case restartUserspace
         case removeJailbreak
 
-        func title(in resourceBundle: Bundle) -> String {
+        func executeLabel(in resourceBundle: Bundle) -> String {
             switch self {
             case .restartSpringBoard:
-                String(localized: "Restart SpringBoard", bundle: resourceBundle)
+                String(localized: "执行：妙手回春", bundle: resourceBundle)
             case .restartUserspace:
-                String(localized: "Restart Userspace", bundle: resourceBundle)
+                String(localized: "执行：涅磐重生", bundle: resourceBundle)
             case .removeJailbreak:
-                String(localized: "Remove Jailbreak", bundle: resourceBundle)
+                String(localized: "执行：移除越狱", bundle: resourceBundle)
             }
         }
 
@@ -237,15 +268,19 @@ extension PostJailbreakHomeView {
     enum MenuAction: Hashable {
         case advancedOptions
         case resetAndRemoval
+        case packageManagers
         case credits
         case openOwnGoalStudioPicks
         case showSoftwareLicense
         case toggleOption(ToggleOption)
         case restartSpringBoard
         case restartUserspace
+        case gotoInstallWhitelistApp
+        case gotoInstallMountApp
         case refreshJailbreakApps
         case resetMobilePassword
         case reinstallSileo
+        case reinstallPackageManager(String)
         case removeJailbreak
         case confirm(ConfirmationAction)
         case back

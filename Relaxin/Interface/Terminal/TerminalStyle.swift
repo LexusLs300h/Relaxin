@@ -33,7 +33,7 @@ enum TerminalStyle {
     }
 
     static func white(_ text: String) -> String {
-        "\u{1B}[97m\(text)\(reset)"
+        "\u{1B}[30m\(text)\(reset)"
     }
 
     static func hyperlink(_ text: String, destination: URL) -> String {

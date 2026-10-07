@@ -51,10 +51,6 @@ extension HomeView {
     func performMenuAction(_ action: MenuAction) {
         switch action {
         case .jailbreak:
-            guard !configuration.removeJailbreakEnabled else {
-                screen = .confirmation(.removeJailbreak)
-                return
-            }
             startEngine()
         case .advancedOptions:
             screen = .advancedOptions
@@ -90,7 +86,7 @@ extension HomeView {
         case let .confirm(action):
             screen = .confirmation(action)
         case .removeJailbreak:
-            startEngine()
+            startEngine(removingJailbreak: true)
         case .back:
             if let destination = screen.backDestination {
                 screen = destination

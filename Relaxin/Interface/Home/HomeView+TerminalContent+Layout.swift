@@ -103,10 +103,12 @@ extension RelaxinTerminalContent {
 
     static func baseLines(
         isJailbroken: Bool,
+        isRemovingJailbreak: Bool = false,
         resourceBundle: Bundle
     ) -> [String] {
         var lines = bannerLines(
             isJailbroken: isJailbroken,
+            isRemovingJailbreak: isRemovingJailbreak,
             resourceBundle: resourceBundle
         )
 
@@ -123,29 +125,46 @@ extension RelaxinTerminalContent {
         }
 
         lines.append(TerminalStyle.dim(String(repeating: "─", count: dividerWidth)))
+        
+        // 新增一个提醒, 遇到任何问题, 请使用官方版本复测, 然后再反馈问题
+        lines.append(TerminalStyle.dim(String(
+            localized: "If you encounter any issues, please reproduce them using the official version before reporting.",
+            bundle: resourceBundle
+        )))
         return lines
     }
 
     static func bannerLines(
         isJailbroken: Bool,
+        isRemovingJailbreak: Bool = false,
         resourceBundle: Bundle
     ) -> [String] {
-        let bannerTop = "█▀█ █▀▀ █   ▄▀█ ▀▄▀ █ █▄ █"
-        let bannerBottom = "█▀▄ ██▄ █▄▄ █▀█ █ █ █ █ ▀█"
-        let status = isJailbroken
-            ? TerminalStyle.danger("▄")
-            : TerminalStyle.accent("▄")
+        // Keep the terminal as a real SwiftTerm surface, but use a compact
+        // execution-log header instead of the oversized ASCII banner.
+        let state = if isRemovingJailbreak {
+            TerminalStyle.danger("REMOVING JAILBREAK")
+        } else if isJailbroken {
+            TerminalStyle.danger("JAILBROKEN")
+        } else {
+            TerminalStyle.accent("READY")
+        }
+        let title = TerminalStyle.bold("RELAXIN")
+        let subtitle = TerminalStyle.dim(
+            isRemovingJailbreak ? "JAILBREAK REMOVAL" : "ENGINE OUTPUT"
+        )
+        let version = TerminalStyle.accent("VERSION ") + AppInfo.displayVersion(in: resourceBundle)
+        let uptime = TerminalStyle.accent("UPTIME ") + DeviceInfo.uptime
+        let support = TerminalStyle.dim(
+            String(
+                localized: "For iOS 16.5.1-17.3.1 devices",
+                bundle: resourceBundle
+            )
+        )
 
         return [
-            TerminalStyle.bold(bannerTop),
-            TerminalStyle.bold(bannerBottom) + " " + status,
-            "",
-            TerminalStyle.dim(
-                String(
-                    localized: "For iOS 16.5.1-17.3.1 devices",
-                    bundle: resourceBundle
-                )
-            ),
+            title + "  " + subtitle + "  " + state,
+            version + TerminalStyle.dim("  •  ") + uptime,
+            support,
             TerminalStyle.dim(String(repeating: "─", count: dividerWidth)),
         ]
     }

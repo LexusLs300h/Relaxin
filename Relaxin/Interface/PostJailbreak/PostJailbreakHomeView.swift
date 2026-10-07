@@ -9,6 +9,7 @@ struct PostJailbreakHomeView: View {
     @ObservedObject var session: PostJailbreakSession
 
     let environment: PostJailbreakEnvironment
+    var onOpenMaintenance: () -> Void = {}
 
     @State private var screen = Screen.home
     @State private var alert: Alert?
@@ -61,6 +62,22 @@ struct PostJailbreakHomeView: View {
                 visibleCharacterCount: visibleCreditCharacterCount,
                 linksEnabled: environment.interfaceMode.allowsExternalNavigation
             )
+        }
+    }
+
+    private var homeContentScreen: HomeView.Screen {
+        switch screen {
+        case .home:
+            .home
+        case .advancedOptions, .resetAndRemoval, .packageManagers:
+            .advancedOptions
+        case .credits:
+            .credits
+        case let .confirmation(action):
+            switch action {
+            case .restartSpringBoard, .restartUserspace, .removeJailbreak:
+                .confirmation(.removeJailbreak)
+            }
         }
     }
 
@@ -119,8 +136,19 @@ struct PostJailbreakHomeView: View {
             isVolumeButtonInputEnabled: alert == nil
                 && !session.isPerformingAction,
             allowsOpeningTerminalLinks: environment.interfaceMode.allowsExternalNavigation,
+            screen: homeContentScreen,
+            homeHeroTitle: "妙手回春",
+            homeHeroSubtitle: "注销 SpringBoard",
+            homeHeroButtonTitle: "妙手回春",
             onTerminalColumnCountChange: { terminalColumnCount = $0 },
-            onSelectMenuItem: performMenuAction
+            onSelectMenuItem: performMenuAction,
+            dashboardFirstTitle: "涅槃重生",
+            dashboardFirstSubtitle: "重启用户空间",
+            dashboardFirstSystemImage: "arrow.clockwise.circle.fill",
+            onOpenAdvancedOptions: { performMenuAction(.advancedOptions) },
+            onOpenMaintenance: { performMenuAction(.confirm(.restartUserspace)) },
+            onOpenCredits: { performMenuAction(.credits) },
+            onTerminalLongPress: { }
         )
         .disabled(session.isPerformingAction)
         .allowsHitTesting(!session.isPerformingAction)
@@ -182,6 +210,8 @@ struct PostJailbreakHomeView: View {
             screen = .advancedOptions
         case .resetAndRemoval:
             screen = .resetAndRemoval
+        case .packageManagers:
+            screen = .packageManagers
         case .credits:
             screen = .credits
         case .openOwnGoalStudioPicks:
@@ -198,6 +228,10 @@ struct PostJailbreakHomeView: View {
             session.perform(.restartSpringBoard)
         case .restartUserspace:
             restartUserspace()
+        case .gotoInstallWhitelistApp:
+            gotoInstallWhitelistApp()
+        case .gotoInstallMountApp:
+            gotoInstallMountApp()
         case .refreshJailbreakApps:
             session.perform(.refreshJailbreakApps)
         case .resetMobilePassword:
@@ -205,11 +239,27 @@ struct PostJailbreakHomeView: View {
         case .reinstallSileo:
             guard session.canReinstallSileo else { return }
             session.reinstallSileo()
+        case let .reinstallPackageManager(packageName):
+            session.reinstallPackageManager(named: packageName)
         case .removeJailbreak:
             session.perform(.removeJailbreak)
         case .back:
-            if let destination = screen.backDestination {
-                screen = destination
+            switch screen {
+            case .advancedOptions, .credits:
+                screen = .home
+            case .resetAndRemoval:
+                screen = .advancedOptions
+            case .packageManagers:
+                screen = .resetAndRemoval
+            case let .confirmation(action):
+                switch action {
+                case .restartSpringBoard, .restartUserspace:
+                    screen = .home
+                case .removeJailbreak:
+                    screen = .resetAndRemoval
+                }
+            case .home:
+                break
             }
         }
     }
@@ -293,4 +343,19 @@ struct PostJailbreakHomeView: View {
             visibleCreditCharacterCount = characterCount
         }
     }
+    private func gotoInstallWhitelistApp() {
+        guard environment.interfaceMode.allowsExternalNavigation else { return }
+        let url = URL(string: "sileo://package/cn.zqbb.inject.manager")!
+        let canOpen = UIApplication.shared.canOpenURL(url)
+        let finalURL = canOpen ? url : URL(string: "sssss://package/cn.zqbb.inject.manager")!
+        UIApplication.shared.open(finalURL, options: [:], completionHandler: nil)
+    }
+    private func gotoInstallMountApp() {
+        guard environment.interfaceMode.allowsExternalNavigation else { return }
+        let url = URL(string: "sileo://package/package/cn.zqbb.hello.mnt")!
+        let canOpen = UIApplication.shared.canOpenURL(url)
+        let finalURL = canOpen ? url : URL(string: "sssss://package/cn.zqbb.hello.mnt")!
+        UIApplication.shared.open(finalURL, options: [:], completionHandler: nil)
+    }
+
 }
