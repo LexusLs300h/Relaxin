@@ -1,29 +1,33 @@
-
 name: Build Relaxin IPA & TIPA
 
 on:
   push:
-    branches: [ ui ]
+    branches:
+      - main
+      - ui
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: macos-latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v5
         with:
           submodules: recursive
 
-      - name: Install brew dependencies
+      - name: Install build dependencies
         run: |
           brew install ripgrep dpkg ldid
-      - name: Download trustcache binary
+
+      - name: Install trustcache
         run: |
           curl -L -o trustcache https://github.com/CRKatri/trustcache/releases/download/v2.0/trustcache_macos_arm64
           chmod +x trustcache
           sudo mv trustcache /usr/local/bin/
-      - name: Cache Relaxin build resources
+
+      - name: Cache build resources
         uses: actions/cache@v5
         with:
           path: |
@@ -32,19 +36,21 @@ jobs:
             build/Relaxin054Resources
             build/BaseBinResources
             build/BaseBinWork
-          key: relaxin-build-resources-v0.5.5-v2-${{ runner.os }}-${{ hashFiles('DevKit/Helpers/download-bootstrap.sh', 'DevKit/Helpers/prepare-v054-resources.sh', 'DevKit/Helpers/build-basebin-resources.sh', 'Configuration/Targets/RelaxinPostJailbreak.xcconfig', 'Makefile') }}
+          key: relaxin-build-resources-${{ runner.os }}-${{ hashFiles('DevKit/Helpers/download-bootstrap.sh', 'DevKit/Helpers/prepare-v054-resources.sh', 'DevKit/Helpers/build-basebin-resources.sh', 'Configuration/Targets/RelaxinPostJailbreak.xcconfig', 'Makefile') }}
           restore-keys: |
-            relaxin-build-resources-v0.5.5-v2-${{ runner.os }}-
-      - name: Build + Generate IPA & TIPA (use Make native target)
+            relaxin-build-resources-${{ runner.os }}-
+
+      - name: Build IPA & TIPA
         run: |
           make ipa tipa
-      - name: Upload IPA artifact
+
+      - name: Upload IPA
         uses: actions/upload-artifact@v5
         with:
           name: Relaxin-IPA
           path: build/Artifacts/*.ipa
 
-      - name: Upload TIPA artifact
+      - name: Upload TIPA
         uses: actions/upload-artifact@v5
         with:
           name: Relaxin-TIPA
